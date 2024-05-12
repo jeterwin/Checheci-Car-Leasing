@@ -15,4 +15,10 @@ add_executable(Checheci_Car_Leasing
         LeasingCar.h
         CarFactory.cpp
         CarFactory.h
+        Display.cpp
+        Display.h
+        LoginHandler.cpp
+        LoginHandler.h
+        FileHandler.cpp
+        FileHandler.h
 )
