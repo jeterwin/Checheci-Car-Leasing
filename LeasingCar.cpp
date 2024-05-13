@@ -31,3 +31,8 @@ void LeasingCar::print() {
     std::cout << *this;
 }
 
+std::string LeasingCar::getStatus()
+{
+    return "Leasing";
+}
+
