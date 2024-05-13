@@ -51,20 +51,19 @@ char DisplayAccountPanel()
 {
     ResetScreen();
 
-    std::cout << "/////////////////////////////////////////////////////";
-    std::cout << "///////////// Welcome to your profile! /////////////";
-    std::cout << "/////////////////////////////////////////////////////" << std::endl << std::endl;
+    std::cout << "////////////////////////////////////////////////////" << std::endl;
+    std::cout << "///////////// Welcome to your profile! /////////////" << std::endl;
+    std::cout << "////////////////////////////////////////////////////" << std::endl << std::endl;
 
-    std::cout << "Please enter a number between 1-3 representing the interface you are interested in accessing.";
+    std::cout << "Please enter a number between 1-6 representing the interface you are interested in accessing.";
     std::cout << std::endl << std::endl;
 
     std::cout << "1. View rented cars.\n"
             "2. View loaned cars.\n"
             "3. View cars for sale.\n"
             "4. View sold cars.\n"
-            "5. Update car for sale.\n"
-            "6. Remove car for sale.\n"
-            "7. Update personal information." << std::endl << std::endl;
+            "5. Update or create car listing.\n"
+            "6. Update personal information." << std::endl << std::endl;
 
     char menuChoice;
     std::cin >> menuChoice;

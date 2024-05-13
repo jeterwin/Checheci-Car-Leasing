@@ -21,17 +21,15 @@ CarFactory::CarFactory(Car * car)
 
 void DisplayRentedCars()
 {
-    std::ifstream file = OpenReadFile("test.txt");
+    std::ifstream file = std::ifstream("test.txt");
     std::string a,b;
     while(file >> a >> b)
     {
-        std::cout << a << " " << b;
+        std::cout << a << " " << b << std::endl;
     }
+    file.close();
 
-    while(1 == 1)
-    {
 
-    }
 }
 
 void DisplayLoanedCars()

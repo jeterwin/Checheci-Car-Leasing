@@ -36,36 +36,45 @@ int main()
 
     switch(menuChoice)
     {
-        case 1:
-            switch(DisplayAccountPanel())
+        case '1':
+            switch (DisplayAccountPanel())
             {
-                case 1:
+                case '1':
                     DisplayRentedCars();
-                case 2:
+                    break;
+                case '2':
                     DisplayLoanedCars();
-                case 3:
+                    break;
+                case '3':
                     DisplaySoldCars();
-                case 4:
+                    break;
+                case '4':
                     UpdateCarListing();
-                case 6:
+                    break;
+                case '6':
                     UpdatePersonalInformation();
-                case 7:
-                    MainPage();
+                    break;
                 default:
-                    std::cout << "Error";
+                    DisplayError("Bye bye.");
             }
-        case 2:
+            break;
+        case '2':
             switch(DisplayShopInterface())
             {
-                case 1:
+                case '1':
 
-                case 2:
+                break;
+                case '2':
 
+                break;
                 default:
-                    std::cout << "Error";
+                    DisplayError("Bye bye.");
+                    break;
             }
+            break;
         default:
-            std::cout << "Error";
+            DisplayError("Bye bye.");
+            break;
     }
 
 

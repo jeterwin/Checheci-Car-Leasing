@@ -9,12 +9,12 @@
 
 
 class FileHandler {
-    private:
-
+    protected:
+        std::string
 
     public:
-        std::ofstream OpenWriteFile(std::string fileName);
-        std::ifstream OpenReadFile(std::string fileName);
+        std::ofstream OpenWriteFile(const std::string&);
+        std::ifstream OpenReadFile(const std::string&);
 
 };
 
