@@ -62,6 +62,7 @@ class Car
             enum FuelType, enum TransmissionType, enum BodyType, enum Drivetrain, std::string VIN, std::string color, std::string make, std::string model);
         int GetHP();
         friend std::ostream& operator<< (std::ostream& os, const Car&);
+        virtual std::string getStatus();
 };
 
 
