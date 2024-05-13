@@ -41,6 +41,11 @@ std::ostream& operator<<(std::ostream& os, const Car& car)
     return os;
 }
 
+std::string Car::getStatus()
+{
+    return "Available";
+}
+
 int Car::GetHP()
 {
     return this -> horsePower;
