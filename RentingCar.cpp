@@ -11,11 +11,15 @@ RentingCar::RentingCar()
     rentingPrice = 0;
 }
 
+void RentingCar::print() {
+    std::cout << "Renting Period: " << rentingPeriod << "\n";
+    std::cout << "Renting Price: " << rentingPrice << "\n";
+    std::cout << *this;
+}
 
-RentingCar::
-RentingCar(int horsePower, int carPrice, int productionYear, int kmsDriven, int motorSize,
-enum FuelType fuelType, enum TransmissionType transmissionType, std::string color, std::string brand, std::string model, std::string carName, int rentingPrice, int rentingPeriod)
-{
-    this -> horsePower = horsePower;
+RentingCar::RentingCar(int horsePower, int carPrice, int productionYear, int kmsDriven, int motorSize,
+           enum FuelType fuelType, enum TransmissionType transmissionType, enum BodyType bodyType, enum Drivetrain drivetrain, std::string VIN, std::string color,
+           std::string make, std::string model, int rentingPrice, int rentingPeriod)
+    : Car(horsePower, carPrice, productionYear, kmsDriven, motorSize, fuelType, transmissionType, bodyType, drivetrain, VIN, color, make, model) , rentingPrice(rentingPrice), rentingPeriod(rentingPeriod){
 }
 
