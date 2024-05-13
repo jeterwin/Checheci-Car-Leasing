@@ -8,6 +8,7 @@
 #include "LeasingCar.h"
 #include "RentingCar.h"
 
+
 class CarFactory {
 
     protected:
@@ -20,6 +21,11 @@ class CarFactory {
     public:
         CarFactory();
         CarFactory(Car * leasingCar);
+
+        void DisplayRentedCars();
+        void DisplayLoanedCars();
+        void DisplaySoldCars();
+        void UpdateCarListing();
 
         void AddCar(Car *);
         Car ** GetAvailableCars();

@@ -10,13 +10,13 @@ class Display {
     public:
         void LoginDisplay();
         void MainPage();
+        void DisplayMainOptions();
 
-        void DisplayAvailableRentCars();
-        void DisplayAvailableLeaseCars();
+        char DisplayAccountPanel();
+        char DisplayShopInterface();
 
-        void DisplayRentedCars();
-        void DisplayLeasedCars();
-
+        void ResetScreen();
+        void DisplayError(std::string errorMessage);
 };
 
 

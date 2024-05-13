@@ -7,8 +7,6 @@
 
 #include <string>
 
-using namespace std;
-
 enum FuelType
 {
     Diesel = 0,
@@ -42,15 +40,15 @@ class Car
         FuelType fuelType;
         TransmissionType transmissionType;
 
-        string color = "White";
-        string brand;
-        string model;
-        string carName;
+    std::string color = "White";
+    std::string brand;
+    std::string model;
+    std::string carName;
 
     public:
         Car();
         Car(int horsePower, int carPrice, int productionYear, int kmsDriven, int motorSize,
-            enum FuelType, enum TransmissionType, string color, string brand, string model, string carName);
+            enum FuelType, enum TransmissionType, std::string color, std::string brand, std::string model, std::string carName);
         int GetHP();
 };
 

@@ -14,7 +14,7 @@ Car::Car()
 }
 
 Car::Car(int horsePower, int carPrice, int productionYear, int kmsDriven, int motorSize,
-    enum FuelType fuelType, enum TransmissionType transmissionType, string color, string brand, string model, string carName)
+    enum FuelType fuelType, enum TransmissionType transmissionType, std::string color, std::string brand, std::string model, std::string carName)
             : horsePower(horsePower), carPrice(carPrice), productionYear(productionYear),
             kmsDriven(kmsDriven), motorSize(motorSize), fuelType(fuelType),
             transmissionType(transmissionType), color(color), brand(brand), model(model), carName(carName) {}

@@ -14,7 +14,7 @@ RentingCar::RentingCar()
 
 RentingCar::
 RentingCar(int horsePower, int carPrice, int productionYear, int kmsDriven, int motorSize,
-enum FuelType fuelType, enum TransmissionType transmissionType, string color, string brand, string model, string carName, int rentingPrice, int rentingPeriod)
+enum FuelType fuelType, enum TransmissionType transmissionType, std::string color, std::string brand, std::string model, std::string carName, int rentingPrice, int rentingPeriod)
 {
     this -> horsePower = horsePower;
 }
