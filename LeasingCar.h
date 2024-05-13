@@ -22,6 +22,7 @@ class LeasingCar : public Car {
                        enum Drivetrain drivetrain, std::string VIN, std::string color,
                std::string make, std::string model, int leasingPrice, int leasingPeriod);
         void print();
+        std::string getStatus();
 
 };
 
