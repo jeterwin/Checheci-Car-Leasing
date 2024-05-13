@@ -17,6 +17,11 @@ class LeasingCar : public Car {
         LeasingCar();
         ~LeasingCar() = default;
         LeasingCar(int leasingPrice, int leasingPeriod);
+        LeasingCar(int horsePower, int carPrice, int productionYear, int kmsDriven, int motorSize,
+               enum FuelType fuelType, enum TransmissionType transmissionType, enum BodyType bodyType,
+                       enum Drivetrain drivetrain, std::string VIN, std::string color,
+               std::string make, std::string model, int leasingPrice, int leasingPeriod);
+        void print();
 
 };
 
