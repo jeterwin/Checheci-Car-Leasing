@@ -23,3 +23,7 @@ RentingCar::RentingCar(int horsePower, int carPrice, int productionYear, int kms
     : Car(horsePower, carPrice, productionYear, kmsDriven, motorSize, fuelType, transmissionType, bodyType, drivetrain, VIN, color, make, model) , rentingPrice(rentingPrice), rentingPeriod(rentingPeriod){
 }
 
+std::string RentingCar::getStatus()
+{
+    return "Renting";
+}
