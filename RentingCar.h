@@ -20,6 +20,7 @@ class RentingCar : public Car {
         RentingCar(int horsePower, int carPrice, int productionYear, int kmsDriven, int motorSize,
                    enum FuelType fuelType, enum TransmissionType transmissionType, enum BodyType bodyType, enum Drivetrain drivetrain, std::string VIN, std::string color,
                            std::string make, std::string model, int rentingPrice, int rentingPeriod);
+        std::string getStatus();
 };
 
 
