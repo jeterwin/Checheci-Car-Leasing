@@ -5,12 +5,13 @@
 #include <iostream>
 
 
-#include "CarFactory.cpp"
-#include "RentingCar.cpp"
-#include "LeasingCar.cpp"
-#include "Car.cpp"
-#include "LoginHandler.cpp"
-#include "Display.cpp"
+#include "CarFactory.h"
+#include "RentingCar.h"
+#include "LeasingCar.h"
+#include "Car.h"
+#include "LoginHandler.h"
+#include "Display.h"
+#include "FileHandler.h"
 
 #include <string>
 #include <windows.h>
@@ -19,17 +20,22 @@ void UpdatePersonalInformation();
 
 std::string loggedUserName;
 
+Display display;
+FileHandler fileHandler;
+LoginHandler loginHandler;
+CarFactory carFactory;
+
 int main()
 {
-    Logo();
-    LoginDisplay();
-    if(Login(&loggedUserName) == 1) { return 1; }
+    display.Logo();
+
+    loginHandler.Login(&loggedUserName);
 
     std::cout << "Successfully logged in, welcome " << loggedUserName << "!" << std::endl;
     Sleep(2000);
 
-    MainPage();
-    DisplayMainOptions();
+    display.MainPage();
+    display.DisplayMainOptions();
 
     char menuChoice;
     std::cin >> menuChoice;
@@ -37,55 +43,57 @@ int main()
     switch(menuChoice)
     {
         case '1':
-            switch (DisplayAccountPanel())
+            switch (display.DisplayAccountPanel())
             {
                 case '1':
-                    DisplayRentedCars();
+                    carFactory.DisplayRentedCars(loggedUserName);
                     break;
                 case '2':
-                    DisplayLoanedCars();
+                    carFactory.DisplayLoanedCars(loggedUserName);
                     break;
                 case '3':
-                    DisplaySoldCars();
+                    carFactory.DisplaySoldCars(loggedUserName);
                     break;
                 case '4':
-                    UpdateCarListing();
+                    carFactory.UpdateCarListing(loggedUserName);
                     break;
                 case '6':
                     UpdatePersonalInformation();
                     break;
+                case '7':
+                    display.MainPage();
+                    break;
                 default:
-                    DisplayError("Bye bye.");
+                    display.DisplayError("Invalid menu choice!");
+                    display.MainPage();
             }
             break;
         case '2':
-            switch(DisplayShopInterface())
+            switch(display.DisplayShopInterface())
             {
                 case '1':
-
+                    carFactory.DisplayAvailableCars();
                 break;
                 case '2':
-
+                    carFactory.DisplayAvailableCars();
                 break;
+                    carFactory.DisplayAvailableCars();
+                case '3':
+                    carFactory.DisplayAvailableCars();
+                break;
+                    carFactory.DisplayAvailableCars();
+                case '4':
+                    display.MainPage();
                 default:
-                    DisplayError("Bye bye.");
-                    break;
+                    display.DisplayError("Invalid menu choice!");
+                    display.MainPage();
             }
             break;
         default:
-            DisplayError("Bye bye.");
+            display.DisplayError("Invalid menu choice!");
+            display.MainPage();
             break;
     }
-
-
-    // CarFactory carFactory { };
-
-    // RentingCar car{425, 80000, 2010, 200000, 3999, Diesel, Manual, "Black", "Mercedes-Benz", "AMG", "idk", 100, 10};
-//    LeasingCar car1{200, 7, 2000, 300, "Dodge Mustang"};;
-//
-//    carFactory.AddCar(&car);
-//    cout << carFactory.GetAvailableCars()[0]->GetHP() << endl;
-//    cout << carFactory.GetAvailableCars()[0]->GetHP() << endl;
 }
 
 void UpdatePersonalInformation()

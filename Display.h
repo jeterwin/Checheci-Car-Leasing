@@ -9,6 +9,7 @@
 class Display {
     public:
         void LoginDisplay();
+        void Logo();
         void MainPage();
         void DisplayMainOptions();
 
@@ -16,7 +17,7 @@ class Display {
         char DisplayShopInterface();
 
         void ResetScreen();
-        void DisplayError(std::string errorMessage);
+        void DisplayError(const std::string& errorMessage);
 };
 
 

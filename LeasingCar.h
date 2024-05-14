@@ -6,6 +6,7 @@
 #define CHECHECI_CAR_LEASING_LEASINGCAR_H
 
 #include "Car.h"
+#include <string>
 
 class LeasingCar : public Car {
 

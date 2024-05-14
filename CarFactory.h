@@ -22,10 +22,11 @@ class CarFactory {
         CarFactory();
         CarFactory(Car * leasingCar);
 
-        void DisplayRentedCars();
-        void DisplayLoanedCars();
-        void DisplaySoldCars();
-        void UpdateCarListing();
+        void DisplayRentedCars(std::string carOwner);
+        void DisplayLoanedCars(std::string carOwner);
+        void DisplayAvailableCars();
+        void DisplaySoldCars(std::string carOwner);
+        void UpdateCarListing(std::string carOwner);
 
         void AddCar(Car *);
         Car ** GetAvailableCars();

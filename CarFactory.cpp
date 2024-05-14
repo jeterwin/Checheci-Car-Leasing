@@ -4,9 +4,10 @@
 
 #include <iostream>
 
-#include "FileHandler.cpp"
-
 #include "CarFactory.h"
+
+#include "FileHandler.h"
+
 CarFactory::CarFactory()
 {
     availableCarsNr = givenCarsNr = 0;
@@ -19,32 +20,69 @@ CarFactory::CarFactory(Car * car)
     availableCarsNr++;
 }
 
-void DisplayRentedCars()
+void CarFactory::DisplayRentedCars(std::string carOwner)
 {
-    std::ifstream file = std::ifstream("test.txt");
-    std::string a,b;
-    while(file >> a >> b)
+    int horsePower, carPrice, productionYear, kmsDriven, motorSize, fuelTypeInt, transmissionTypeInt, driveTrainInt;
+    FuelType fuelType;
+    TransmissionType transmissionType;
+    Drivetrain driveTrain;
+    std::string VIN, color, make, model, renterFirstName, renterLastName;
+
+    std::ifstream carFile;
+    carFile.open(FileHandler::GetRentedCars());
+
+    std::cout << "These are all the cars you have currently loaned from Checheci® Leasing Automobiles";
+
+    while(carFile >> renterFirstName >> renterLastName)
     {
-        std::cout << a << " " << b << std::endl;
+        carFile >> horsePower >> carPrice >> productionYear >> kmsDriven >> motorSize >> fuelTypeInt;
+        carFile >> transmissionTypeInt >> driveTrainInt >> VIN >> color >> make >> model;
+        fuelType = (FuelType) fuelTypeInt;
+        transmissionType = (TransmissionType) transmissionTypeInt;
+        driveTrain = (Drivetrain) driveTrainInt;
+        //std::cout <<
+    }
+}
+
+void CarFactory::DisplayLoanedCars(std::string carOwner)
+{
+
+}
+
+void CarFactory::DisplaySoldCars(std::string carOwner)
+{
+
+}
+
+void CarFactory::UpdateCarListing(std::string carOwner)
+{
+
+}
+
+void CarFactory::DisplayAvailableCars()
+{
+    std::ifstream file;
+    file.open(FileHandler::GetAvailableCars());
+    /*int horsePower, carPrice, productionYear, kmsDriven, motorSize;
+    FuelType fuelType;
+    TransmissionType transmissionType;
+    Drivetrain driveTrain;
+    std::string VIN, color, make, model;*/
+    std::cout << "These are all the available cars in Checheci® Leasing Automobiles:\n\n";
+
+    std::string carInformation;
+    while(std::getline(file, carInformation))
+    {
+        std::cout << carInformation << std::endl;
     }
     file.close();
 
+    while(1 == 1)
+    {
 
+    }
 }
 
-void DisplayLoanedCars()
-{
-
-}
-
-void DisplaySoldCars()
-{
-
-}
-void UpdateCarListing()
-{
-
-}
 
 int CarFactory::CurrentAvailableCarsNr()
 {

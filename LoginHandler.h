@@ -5,13 +5,14 @@
 #ifndef CHECHECI_CAR_LEASING_LOGINHANDLER_H
 #define CHECHECI_CAR_LEASING_LOGINHANDLER_H
 
+#include <string>
 
 class LoginHandler {
     private:
 
 
-    public:
-        int Login();
+public:
+    void Login(std::string *userName);
 };
 
 

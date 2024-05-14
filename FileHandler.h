@@ -6,16 +6,19 @@
 #define CHECHECI_CAR_LEASING_FILEHANDLER_H
 
 #include <fstream>
-
+#include <string>
 
 class FileHandler {
     protected:
-        std::string
+
 
     public:
-        std::ofstream OpenWriteFile(const std::string&);
-        std::ifstream OpenReadFile(const std::string&);
+        static std::string GetUsersFile();
+        static std::string GetRentedCars();
+        static std::string GetLeasedCars();
+        static std::string GetAvailableCars();
 
+        bool is_empty(std::fstream& pFile) const;
 };
 
 

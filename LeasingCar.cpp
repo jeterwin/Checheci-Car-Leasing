@@ -3,6 +3,7 @@
 //
 
 #include "LeasingCar.h"
+#include <iostream>
 
 LeasingCar::LeasingCar()
 {
