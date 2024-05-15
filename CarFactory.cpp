@@ -3,7 +3,6 @@
 //
 
 #include <iostream>
-#include <cstring>
 
 #include "CarFactory.h"
 
@@ -23,48 +22,25 @@ CarFactory::CarFactory(Car * car)
 
 void CarFactory::DisplayRentedCars(std::string carOwner)
 {
-    std::string carInfo, renterFirstName, renterLastName;
+    int horsePower, carPrice, productionYear, kmsDriven, motorSize, fuelTypeInt, transmissionTypeInt, driveTrainInt;
+    FuelType fuelType;
+    TransmissionType transmissionType;
+    Drivetrain driveTrain;
+    std::string VIN, color, make, model, renterFirstName, renterLastName;
 
     std::ifstream carFile;
     carFile.open(FileHandler::GetRentedCars());
 
+    std::cout << "These are all the cars you have currently loaned from Checheci® Leasing Automobiles";
 
-    while(std::getline(carFile, carInfo))
+    while(carFile >> renterFirstName >> renterLastName)
     {
-        int counter = 0;
-
-        short wordCharLength = carInfo.length();
-        char* cString = new char[wordCharLength];
-        strcpy(cString, carInfo.c_str());
-
-        char *p = strtok(cString, " ");
-        while(p)
-        {
-            if(counter == 0)
-            {
-                renterFirstName = p;
-            }
-            if(counter == 1)
-            {
-                renterLastName = p;
-            }
-            if(counter > 1)
-                break;
-            p = strtok(NULL, " ");
-            counter++;
-        }
-
-        if(renterFirstName + " " + renterLastName == carOwner)
-        {
-            std::cout <<  p << "\n";
-        }
-
-    }
-
-    carFile.close();
-    while(1 == 1)
-    {
-
+        carFile >> horsePower >> carPrice >> productionYear >> kmsDriven >> motorSize >> fuelTypeInt;
+        carFile >> transmissionTypeInt >> driveTrainInt >> VIN >> color >> make >> model;
+        fuelType = (FuelType) fuelTypeInt;
+        transmissionType = (TransmissionType) transmissionTypeInt;
+        driveTrain = (Drivetrain) driveTrainInt;
+        //std::cout <<
     }
 }
 
