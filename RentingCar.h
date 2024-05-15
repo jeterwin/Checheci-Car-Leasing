@@ -18,9 +18,11 @@ class RentingCar : public Car {
         void print();
         RentingCar();
         ~RentingCar() = default;
-        RentingCar(int horsePower, int carPrice, int productionYear, int kmsDriven, int motorSize,
-                   enum FuelType fuelType, enum TransmissionType transmissionType, enum BodyType bodyType, enum Drivetrain drivetrain, std::string VIN, std::string color,
-                           std::string make, std::string model, int rentingPrice, int rentingPeriod);
+        RentingCar(int rentingPrice, int rentingPeriod, std::string make, std::string model, int carPrice, enum BodyType, std::string color,
+                int productionYear, std::string VIN, int kmsDriven, enum FuelType,
+                enum TransmissionType, enum Drivetrain, int motorSize, int horsePower);
+        void writeToFile();
+
         std::string getStatus();
 };
 
