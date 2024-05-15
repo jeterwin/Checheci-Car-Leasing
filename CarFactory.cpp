@@ -23,23 +23,19 @@ CarFactory::CarFactory(Car * car)
 
 void CarFactory::DisplayRentedCars(std::string carOwner)
 {
-    int horsePower, carPrice, productionYear, kmsDriven, motorSize, fuelTypeInt, transmissionTypeInt, driveTrainInt;
-    FuelType fuelType;
-    TransmissionType transmissionType;
-    Drivetrain driveTrain;
-    std::string VIN, color, make, model, renterFirstName, renterLastName;
+    std::string carInfo, renterFirstName, renterLastName;
 
     std::ifstream carFile;
     carFile.open(FileHandler::GetRentedCars());
 
 
-    while(std::getline(carFile, VIN))
+    while(std::getline(carFile, carInfo))
     {
         int counter = 0;
 
-        short wordCharLength = VIN.length();
+        short wordCharLength = carInfo.length();
         char* cString = new char[wordCharLength];
-        strcpy(cString, VIN.c_str());
+        strcpy(cString, carInfo.c_str());
 
         char *p = strtok(cString, " ");
         while(p)
@@ -57,14 +53,10 @@ void CarFactory::DisplayRentedCars(std::string carOwner)
             p = strtok(NULL, " ");
             counter++;
         }
-/*        carFile >> renterFirstName >> renterLastName >> horsePower >> carPrice >> productionYear >> kmsDriven >> motorSize >> fuelTypeInt;
-        carFile >> transmissionTypeInt >> driveTrainInt >> VIN >> color >> make >> model;
-        fuelType = (FuelType) fuelTypeInt;
-        transmissionType = (TransmissionType) transmissionTypeInt;
-        driveTrain = (Drivetrain) driveTrainInt;*/
+
         if(renterFirstName + " " + renterLastName == carOwner)
         {
-            std::cout << "Nigga you purchased this car " << p << "\n";
+            std::cout << p << "\n";
         }
 
     }
@@ -100,7 +92,7 @@ void CarFactory::DisplayAvailableCars()
     TransmissionType transmissionType;
     Drivetrain driveTrain;
     std::string VIN, color, make, model;*/
-    std::cout << "These are all the available cars in Checheci® Leasing Automobiles:\n\n";
+    std::cout << "These are all the available cars in ChecheciÂ® Leasing Automobiles:\n\n";
 
     std::string carInformation;
     while(std::getline(file, carInformation))
