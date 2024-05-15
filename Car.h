@@ -37,6 +37,11 @@ enum Drivetrain
     FWD,
 };
 
+std::string stringFuelType(enum FuelType x);
+std::string stringTransmissionType(enum TransmissionType x);
+std::string stringBodyType(enum BodyType x);
+std::string stringDrivetrain(enum Drivetrain x);
+
 class Car
 {
     protected:
