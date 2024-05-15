@@ -6,8 +6,12 @@
 #include <cstring>
 
 #include "CarFactory.h"
-
+#include "Display.h"
+#include "main.h"
 #include "FileHandler.h"
+
+static Display display;
+static MainClass mainClass;
 
 CarFactory::CarFactory()
 {
@@ -21,17 +25,27 @@ CarFactory::CarFactory(Car * car)
     availableCarsNr++;
 }
 
-void CarFactory::DisplayRentedCars(std::string carOwner)
+void CarFactory::DisplayRentedOrLeasedCars(std::string carOwner, int option)
 {
-    std::string carInfo, renterFirstName, renterLastName;
+    display.ResetScreen();
+    // Option 0 = Rented, option 1 = leased
+    // We need to initialize two strings in order to compare it to the user we're logged in
+    std::string carInfo, renterFirstName = "a", renterLastName = "a";
 
     std::ifstream carFile;
-    carFile.open(FileHandler::GetRentedCars());
+    carFile.open(option == 0 ? FileHandler::GetRentedCars() : FileHandler::GetLeasedCars());
+    // The counter is needed in order to keep track of who rented the car (first and second strings
+    // represent the person that rented it)
+    int counter = 0;
 
+    std::cout << "These are all the cars you have ";
+    option == 0 ? std::cout << "rented " : std::cout << "leased ";
+    std::cout << "so far\n";
+    display.DisplayWithColor("----------------------------------------------\n\n", 2);
 
     while(std::getline(carFile, carInfo))
     {
-        int counter = 0;
+        counter = 0;
 
         short wordCharLength = carInfo.length();
         char* cString = new char[wordCharLength];
@@ -50,61 +64,118 @@ void CarFactory::DisplayRentedCars(std::string carOwner)
             }
             if(counter > 1)
                 break;
-            p = strtok(NULL, " ");
+            p = strtok(nullptr, " ");
             counter++;
         }
 
         if(renterFirstName + " " + renterLastName == carOwner)
         {
-            std::cout << p << "\n";
+            while(p)
+            {
+                display.DisplayWithColor(p, 1); std::cout << " ";
+                p = strtok(nullptr, " ");
+            }
+
+            std::cout << "\n";
         }
 
     }
 
     carFile.close();
-    while(1 == 1)
-    {
-
-    }
-}
-
-void CarFactory::DisplayLoanedCars(std::string carOwner)
-{
-
+    display.PressAnyKey();
+    mainClass.MenuOptions();
 }
 
 void CarFactory::DisplaySoldCars(std::string carOwner)
 {
+    display.ResetScreen();
+    // Option 0 = Rented, option 1 = leased
+    // We need to initialize two strings in order to compare it to the user we're logged in
+    std::string carInfo, renterFirstName = "a", renterLastName = "a";
 
+    std::ifstream carFile;
+    carFile.open(FileHandler::GetSoldCars());
+    // The counter is needed in order to keep track of who rented the car (first and second strings
+    // represent the person that rented it)
+    int counter = 0;
+
+    std::cout << "These are all the cars you have sold so far\n";
+    std::cout << "<Owner of the car> <Car information>\n\n";
+    display.DisplayWithColor("----------------------------------------------\n\n", 2);
+
+    while(std::getline(carFile, carInfo))
+    {
+        counter = 0;
+
+        short wordCharLength = carInfo.length();
+        char* cString = new char[wordCharLength];
+        strcpy(cString, carInfo.c_str());
+
+        char *p = strtok(cString, " ");
+        while(p)
+        {
+            if(counter == 0)
+            {
+                renterFirstName = p;
+            }
+            if(counter == 1)
+            {
+                renterLastName = p;
+            }
+            if(counter > 1)
+                break;
+            p = strtok(nullptr, " ");
+            counter++;
+        }
+
+        if(renterFirstName + " " + renterLastName == carOwner)
+        {
+            while(p)
+            {
+                if(counter == 4)
+                {
+                    std::cout << "--> ";
+                }
+                display.DisplayWithColor(p, 1);
+                std::cout << " ";
+                p = strtok(nullptr, " ");
+                counter++;
+            }
+            std::cout << "\n";
+        }
+    }
+
+    carFile.close();
+    display.PressAnyKey();
+    mainClass.MenuOptions();
 }
 
 void CarFactory::UpdateCarListing(std::string carOwner)
 {
-
+    display.PressAnyKey();
+    mainClass.MenuOptions();
 }
 
 void CarFactory::DisplayAvailableCars()
 {
-    std::ifstream file;
-    file.open(FileHandler::GetAvailableCars());
+    std::ifstream carFile;
+    carFile.open(FileHandler::GetAvailableCars());
     /*int horsePower, carPrice, productionYear, kmsDriven, motorSize;
     FuelType fuelType;
     TransmissionType transmissionType;
     Drivetrain driveTrain;
     std::string VIN, color, make, model;*/
-    std::cout << "These are all the available cars in ChecheciÂ® Leasing Automobiles:\n\n";
+    std::cout << "These are all the available cars in Checheci Leasing Automobile:\n\n";
 
     std::string carInformation;
-    while(std::getline(file, carInformation))
+    while(std::getline(carFile, carInformation))
     {
         std::cout << carInformation << std::endl;
     }
-    file.close();
+    carFile.close();
 
-    while(1 == 1)
-    {
-
-    }
+    display.PressAnyKey();
+    mainClass.MenuOptions();
 }
 
 
@@ -132,4 +203,19 @@ Car** CarFactory::GetAvailableCars()
 Car** CarFactory::GetGivenCars()
 {
     return givenCars;
+}
+
+void CarFactory::DisplayCarsForRent()
+{
+
+}
+
+void CarFactory::DisplayCarsForLease()
+{
+
+}
+
+void CarFactory::SearchForCar(std::string personName)
+{
+
 }

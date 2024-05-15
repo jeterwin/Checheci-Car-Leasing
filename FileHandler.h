@@ -9,16 +9,17 @@
 #include <string>
 
 class FileHandler {
-    protected:
+protected:
 
 
-    public:
-        static std::string GetUsersFile();
-        static std::string GetRentedCars();
-        static std::string GetLeasedCars();
-        static std::string GetAvailableCars();
+public:
+    static std::string GetUsersFile();
+    static std::string GetRentedCars();
+    static std::string GetLeasedCars();
+    static std::string GetAvailableCars();
+    static std::string GetSoldCars();
 
-        bool is_empty(std::fstream& pFile) const;
+    bool is_empty(std::fstream& pFile) const;
 };
 
 

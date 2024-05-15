@@ -2,8 +2,10 @@
 // Created by Erwin on 5/10/2024.
 //
 
-#include "LeasingCar.h"
 #include <iostream>
+
+#include "LeasingCar.h"
+#include "FileHandler.h"
 
 LeasingCar::LeasingCar()
 {
@@ -17,19 +19,32 @@ LeasingCar::LeasingCar(int leasingPrice, int leasingPeriod)
     this -> leasingPrice = leasingPrice;
 }
 
-LeasingCar::LeasingCar(int horsePower, int carPrice, int productionYear, int kmsDriven, int motorSize,
-                       enum FuelType fuelType, enum TransmissionType transmissionType,
-                               enum BodyType bodyType,enum Drivetrain drivetrain,
-                                       std::string VIN, std::string color,std::string make, std::string model,
-                                       int leasingPrice, int leasingPeriod)
-                       : Car(horsePower, carPrice, productionYear, kmsDriven, motorSize, fuelType, transmissionType,
-                             bodyType, drivetrain, VIN, color, make, model),
-                             leasingPrice(leasingPrice), leasingPeriod(leasingPeriod) {}
+LeasingCar::LeasingCar(int leasingPrice, int leasingPeriod, std::string make, std::string model, int carPrice, enum BodyType bodyType, std::string color,
+                       int productionYear, std::string VIN, int kmsDriven, enum FuelType fuelType,
+                       enum TransmissionType transmissionType, enum Drivetrain drivetrain, int motorSize, int horsePower)
+                       : Car(make, model, carPrice, bodyType, color, productionYear, VIN, kmsDriven,
+                             fuelType, transmissionType, drivetrain, motorSize, horsePower), leasingPrice(leasingPrice), leasingPeriod(leasingPeriod) {}
 
 void LeasingCar::print() {
     std::cout << "Leasing Price: " << leasingPrice << "\n";
     std::cout << "Leasing Period: " << leasingPeriod << "\n";
     std::cout << *this;
+}
+
+void LeasingCar::writeToFile()
+{
+    FileHandler handler;
+    std::string filePath = handler.GetLeasedCars();
+
+    std::fstream myFile (filePath, std::ios_base::app);
+    if (myFile.is_open())
+    {
+        myFile << leasingPrice << " " << leasingPeriod << " ";
+        myFile << *this;
+        myFile.close();
+    }
+    else
+        return;
 }
 
 std::string LeasingCar::getStatus()

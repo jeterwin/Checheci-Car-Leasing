@@ -63,11 +63,17 @@ class Car
 
     public:
         Car();
-        Car(int horsePower, int carPrice, int productionYear, int kmsDriven, int motorSize,
-            enum FuelType, enum TransmissionType, enum BodyType, enum Drivetrain, std::string VIN, std::string color, std::string make, std::string model);
+        Car(std::string make, std::string model, int carPrice, enum BodyType, std::string color,
+                int productionYear, std::string VIN, int kmsDriven, enum FuelType,
+                        enum TransmissionType, enum Drivetrain, int motorSize, int horsePower);
+
         int GetHP();
         friend std::ostream& operator<< (std::ostream& os, const Car&);
+        friend std::fstream& operator<< (std::fstream& os, const Car&);
         virtual std::string getStatus();
+        virtual void writeToFile();
+        virtual void deleteFromFile();
+
 };
 
 

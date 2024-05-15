@@ -15,10 +15,10 @@ void Display::ResetScreen()
 
 void Display::Logo()
 {
-    std::cout << "/////////////////////////////////////////" << std::endl;
-    std::cout << "/////////       Welcome to      /////////" << std::endl;
-    std::cout << "//////" << dye::aqua(" Checheci Leasing Automobile ") << "//////" << std::endl;
-    std::cout << "/////////////////////////////////////////" << std::endl << std::endl << std::endl;
+    std::cout << dye::black_on_bright_white("/////////////////////////////////////////") << std::endl;
+    std::cout << dye::black_on_white("/////////       Welcome to      /////////") << std::endl;
+    std::cout << dye::black_on_bright_white("////// Checheci Leasing Automobile //////") << std::endl;
+    std::cout << dye::black_on_white("/////////////////////////////////////////") << std::endl << std::endl << std::endl;
 }
 
 void Display::LoginDisplay()
@@ -32,40 +32,40 @@ void Display::MainPage()
 {
     ResetScreen();
 
-    std::cout << dye::yellow("//////////////////////////////////////////") << std::endl;
-    std::cout << dye::yellow("//////     Welcome, dear client!    //////") << std::endl;
-    std::cout << dye::yellow("////  Type the number of the command  ////") << std::endl;
-    std::cout << dye::yellow("/////    That is of most interest!   /////") << std::endl;
-    std::cout << dye::yellow("//////////////////////////////////////////") << std::endl << std::endl;
-}
+    std::cout << dye::black_on_bright_white("//////////////////////////////////////////\n");
+    std::cout << dye::black_on_white("//////     Welcome, dear client!    //////\n");
+    std::cout << dye::black_on_bright_white("////  Type the number of the command  ////\n");
+    std::cout << dye::black_on_white("/////    That is of most interest!   /////\n");
+    std::cout << dye::black_on_bright_white("//////////////////////////////////////////\n\n");
 
-void Display::DisplayMainOptions()
-{
     std::cout << "Please enter a number between 1-3 representing the interface you are interested in accessing.";
     std::cout << std::endl;
-    std::cout << dye::aqua("1. My account.") << std::endl;
-    std::cout << dye::aqua("2. Access Shop Interface.") << std::endl;
-    std:: cout << dye::red("3. Exit application.") << std::endl << std::endl;
+    std::cout << dye::light_aqua("1. My account.\n"
+                                 "2. Access Shop Interface.\n");
+    std::cout << dye::red("3. Exit application.\n\n");
+}
+
+void Display::WelcomeProfile()
+{
+    std::cout <<dye::black_on_bright_white("////////////////////////////////////////////////////\n");
+    std::cout << dye::black_on_white("///////////// Welcome to your profile! /////////////\n");
+    std::cout << dye::black_on_bright_white("////////////////////////////////////////////////////\n\n");
 }
 
 char Display::DisplayAccountPanel()
 {
     ResetScreen();
 
-    std::cout << dye::yellow("////////////////////////////////////////////////////") << std::endl;
-    std::cout << dye::yellow("///////////// Welcome to your profile! /////////////") << std::endl;
-    std::cout << dye::yellow("////////////////////////////////////////////////////") << std::endl << std::endl;
+    Display::WelcomeProfile();
 
     std::cout << "Please enter a number between 1-6 representing the interface you are interested in accessing.";
     std::cout << std::endl << std::endl;
 
-    std::cout << dye::aqua("1. View rented cars.\n"
-            "2. View loaned cars.\n"
-            "3. View cars for sale.\n"
-            "4. View sold cars.\n"
-            "5. Update or create car listing.\n"
-            "6. Update personal information.\n"
-            "7. Go back.") << std::endl << std::endl;
+    std::cout << dye::light_aqua("1. View rented cars.\n"
+                                 "2. View leased cars.\n"
+                                 "3. View sold cars.\n"
+                                 "4. Create, view or update car listings.\n"
+                                 "5. Go back.\n\n");
 
     char menuChoice;
     std::cin >> menuChoice;
@@ -83,20 +83,49 @@ char Display::DisplayShopInterface()
 {
     ResetScreen();
 
-    std::cout << "////////////////////////////////////////////////////" << std::endl;
-    std::cout << "///////////// Welcome to your profile! /////////////" << std::endl;
-    std::cout << "////////////////////////////////////////////////////" << std::endl << std::endl;
+    Display::WelcomeProfile();
 
     std::cout << "Please enter a number between 1-6 representing the interface you are interested in accessing.";
     std::cout << std::endl << std::endl;
 
-    std::cout << "1. Display all available cars.\n"
-                 "2. Display cars for rent.\n"
-                 "3. Display cars for lease.\n"
-                 "4. Go back.\n" << std::endl << std::endl;
+    std::cout << dye::light_aqua("1. Display all available cars.\n"
+                                 "2. Display cars for rent.\n"
+                                 "3. Display cars for lease.\n"
+                                 "4. Search for a car.\n"
+                                 "5. Go back.\n\n");
 
     char menuChoice;
     std::cin >> menuChoice;
 
     return menuChoice;
+}
+
+void Display::PressAnyKey()
+{
+/*    std::cout << "Press any key to continue.\n";
+    char c;
+    std::cin >> c;*/
+    system("pause");
+}
+
+void Display::DisplayWithColor(std::string string, int colorCode)
+{
+    switch(colorCode)
+    {
+        case 1:
+            std::cout << dye::aqua(string);
+            break;
+        case 2:
+            std::cout << dye::green(string);
+            break;
+        case 3:
+            std::cout << dye::yellow(string);
+            break;
+        case 4:
+            std::cout << dye::light_aqua(string);
+            break;
+        default:
+            std::cout << dye::green(string);
+            break;
+    }
 }

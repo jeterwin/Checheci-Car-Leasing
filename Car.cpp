@@ -3,7 +3,11 @@
 //
 
 #include <iostream>
+#include <fstream>
+
 #include "Car.h"
+#include "FileHandler.h"
+
 
 
 Car::Car()
@@ -16,12 +20,12 @@ Car::Car()
     VIN = color = make = model = "";
 }
 
-Car::Car(int horsePower, int carPrice, int productionYear, int kmsDriven, int motorSize,
-    enum FuelType fuelType, enum TransmissionType transmissionType, enum BodyType bodyType, enum Drivetrain drivetrain, std::string VIN, std::string color, std::string make, std::string model)
-            : horsePower(horsePower), carPrice(carPrice), productionYear(productionYear),
-            kmsDriven(kmsDriven), motorSize(motorSize), fuelType(fuelType),
-            transmissionType(transmissionType), bodyType(bodyType), drivetrain(drivetrain), VIN(VIN), color(color), make(make), model(model){}
-
+Car::Car(std::string make, std::string model, int carPrice, enum BodyType bodyType, std::string color,
+            int productionYear, std::string VIN, int kmsDriven, enum FuelType fuelType,
+            enum TransmissionType transmissionType, enum Drivetrain drivetrain, int motorSize, int horsePower)
+                    : make(make), model(model), carPrice(carPrice), bodyType(bodyType), color(color), productionYear(productionYear),
+                      VIN(VIN), kmsDriven(kmsDriven), fuelType(fuelType), transmissionType(transmissionType), drivetrain(drivetrain),
+                      motorSize(motorSize), horsePower(horsePower) {}
 
 std::ostream& operator<<(std::ostream& os, const Car& car)
 {
@@ -40,6 +44,48 @@ std::ostream& operator<<(std::ostream& os, const Car& car)
     os << "Horse Power: " << car.horsePower;
 
     return os;
+}
+
+std::fstream& operator<<(std::fstream& file, const Car& car)
+{
+    file << car.make << " ";
+    file << car.model << " ";
+    file << car.carPrice << " ";
+    file << stringBodyType(car.bodyType) << " ";
+    file << car.color << " ";
+    file << car.productionYear << " ";
+    file << car.VIN << " ";
+    file << car.kmsDriven << " ";
+    file << stringFuelType(car.fuelType) << " ";
+    file << stringTransmissionType(car.transmissionType) << " ";
+    file << stringDrivetrain(car.drivetrain) << " ";
+    file << car.motorSize << " ";
+    file << car.horsePower;
+    file << "\n";
+
+    return file;
+}
+
+void Car::writeToFile()
+{
+    FileHandler handler;
+    std::string filePath = handler.GetAvailableCars();
+
+    std::fstream myFile (filePath, std::ios_base::app);
+    if (myFile.is_open())
+    {
+        myFile << *this;
+        myFile.close();
+    }
+    else
+        return;
+
+}
+
+void Car::deleteFromFile()
+{
+    FileHandler handler;
+    std::string filePath = handler.GetAvailableCars();
 }
 
 std::string Car::getStatus()

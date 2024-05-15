@@ -11,29 +11,31 @@
 
 class CarFactory {
 
-    protected:
-        Car * availableCars[1000];
-        Car * givenCars[1000];
+protected:
+    Car * availableCars[1000];
+    Car * givenCars[1000];
 
-        int availableCarsNr;
-        int givenCarsNr;
+    int availableCarsNr;
+    int givenCarsNr;
 
-    public:
-        CarFactory();
-        CarFactory(Car * leasingCar);
+public:
+    CarFactory();
+    CarFactory(Car * leasingCar);
 
-        void DisplayRentedCars(std::string carOwner);
-        void DisplayLoanedCars(std::string carOwner);
-        void DisplayAvailableCars();
-        void DisplaySoldCars(std::string carOwner);
-        void UpdateCarListing(std::string carOwner);
+    void DisplayCarsForRent();
+    void DisplayCarsForLease();
+    void SearchForCar(std::string personName);
+    void DisplayRentedOrLeasedCars(std::string carOwner, int option);
+    void DisplayAvailableCars();
+    void DisplaySoldCars(std::string carOwner);
+    void UpdateCarListing(std::string carOwner);
 
-        void AddCar(Car *);
-        Car ** GetAvailableCars();
-        Car ** GetGivenCars();
+    void AddCar(Car *);
+    Car ** GetAvailableCars();
+    Car ** GetGivenCars();
 
-        int CurrentAvailableCarsNr();
-        int GivenCarsNr();
+    int CurrentAvailableCarsNr();
+    int GivenCarsNr();
 };
 
 

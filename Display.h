@@ -7,17 +7,20 @@
 
 
 class Display {
-    public:
-        void LoginDisplay();
-        void Logo();
-        void MainPage();
-        void DisplayMainOptions();
+public:
+    void LoginDisplay();
+    void Logo();
+    void MainPage();
+    static void WelcomeProfile();
 
-        char DisplayAccountPanel();
-        char DisplayShopInterface();
+    char DisplayAccountPanel();
+    char DisplayShopInterface();
 
-        void ResetScreen();
-        void DisplayError(const std::string& errorMessage);
+    void DisplayWithColor(std::string, int colorCode);
+
+    void PressAnyKey();
+    void ResetScreen();
+    void DisplayError(const std::string& errorMessage);
 };
 
 

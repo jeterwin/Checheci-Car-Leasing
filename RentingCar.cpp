@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include "RentingCar.h"
+#include "FileHandler.h"
 
 RentingCar::RentingCar()
 {
@@ -18,10 +19,27 @@ void RentingCar::print() {
     std::cout << *this;
 }
 
-RentingCar::RentingCar(int horsePower, int carPrice, int productionYear, int kmsDriven, int motorSize,
-           enum FuelType fuelType, enum TransmissionType transmissionType, enum BodyType bodyType, enum Drivetrain drivetrain, std::string VIN, std::string color,
-           std::string make, std::string model, int rentingPrice, int rentingPeriod)
-    : Car(horsePower, carPrice, productionYear, kmsDriven, motorSize, fuelType, transmissionType, bodyType, drivetrain, VIN, color, make, model) , rentingPrice(rentingPrice), rentingPeriod(rentingPeriod){
+RentingCar::RentingCar(int rentingPrice, int rentingPeriod, std::string make, std::string model, int carPrice, enum BodyType bodyType, std::string color,
+                       int productionYear, std::string VIN, int kmsDriven, enum FuelType fuelType,
+                       enum TransmissionType transmissionType, enum Drivetrain drivetrain,
+                               int motorSize, int horsePower)
+                    : rentingPrice(rentingPrice), rentingPeriod(rentingPeriod), Car(make, model, carPrice, bodyType, color, productionYear, VIN, kmsDriven,
+                        fuelType, transmissionType, drivetrain, motorSize, horsePower) {}
+
+void RentingCar::writeToFile()
+{
+    FileHandler handler;
+    std::string filePath = handler.GetRentedCars();
+
+    std::fstream myFile (filePath, std::ios_base::app);
+    if (myFile.is_open())
+    {
+        myFile << rentingPrice << " " << rentingPeriod << " ";
+        myFile << *this;
+        myFile.close();
+    }
+    else
+        return;
 }
 
 std::string RentingCar::getStatus()

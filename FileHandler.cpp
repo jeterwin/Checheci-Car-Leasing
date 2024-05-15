@@ -28,3 +28,8 @@ std::string FileHandler::GetRentedCars()
 {
     return "Files/RentedCars.txt";
 }
+
+std::string FileHandler::GetSoldCars()
+{
+    return "Files/SoldCars.txt";
+}
