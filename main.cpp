@@ -57,10 +57,10 @@ int main()
                 case '4':
                     carFactory.UpdateCarListing(loggedUserName);
                     break;
-                case '6':
+                case '5':
                     UpdatePersonalInformation();
                     break;
-                case '7':
+                case '6':
                     display.MainPage();
                     break;
                 default:
@@ -73,15 +73,13 @@ int main()
             {
                 case '1':
                     carFactory.DisplayAvailableCars();
-                break;
+                    break;
                 case '2':
                     carFactory.DisplayAvailableCars();
-                break;
-                    carFactory.DisplayAvailableCars();
+                    break;
                 case '3':
                     carFactory.DisplayAvailableCars();
-                break;
-                    carFactory.DisplayAvailableCars();
+                    break;
                 case '4':
                     display.MainPage();
                 default:
