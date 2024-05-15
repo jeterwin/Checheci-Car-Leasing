@@ -1,3 +1,4 @@
+
 //
 // Created by Erwin on 5/10/2024.
 //
@@ -12,6 +13,7 @@
 #include "LoginHandler.h"
 #include "Display.h"
 #include "FileHandler.h"
+#include "main.h"
 
 #include <string>
 #include <windows.h>
@@ -20,10 +22,13 @@ void UpdatePersonalInformation();
 
 std::string loggedUserName;
 
-Display display;
-FileHandler fileHandler;
-LoginHandler loginHandler;
-CarFactory carFactory;
+static Display display;
+static FileHandler fileHandler;
+static LoginHandler loginHandler;
+static CarFactory carFactory;
+static MainClass mainClass;
+
+void MenuOptions();
 
 int main()
 {
@@ -34,8 +39,12 @@ int main()
     std::cout << "Successfully logged in, welcome " << loggedUserName << "!" << std::endl;
     Sleep(2000);
 
+    mainClass.MenuOptions();
+}
+
+void MainClass::MenuOptions()
+{
     display.MainPage();
-    display.DisplayMainOptions();
 
     char menuChoice;
     std::cin >> menuChoice;
@@ -46,10 +55,10 @@ int main()
             switch (display.DisplayAccountPanel())
             {
                 case '1':
-                    carFactory.DisplayRentedCars(loggedUserName);
+                    carFactory.DisplayRentedOrLeasedCars(loggedUserName, 0);
                     break;
                 case '2':
-                    carFactory.DisplayLoanedCars(loggedUserName);
+                    carFactory.DisplayRentedOrLeasedCars(loggedUserName, 1);
                     break;
                 case '3':
                     carFactory.DisplaySoldCars(loggedUserName);
@@ -57,15 +66,12 @@ int main()
                 case '4':
                     carFactory.UpdateCarListing(loggedUserName);
                     break;
-                case '6':
-                    UpdatePersonalInformation();
-                    break;
-                case '7':
-                    display.MainPage();
+                case '5':
+                    mainClass.MenuOptions();
                     break;
                 default:
                     display.DisplayError("Invalid menu choice!");
-                    display.MainPage();
+                    mainClass.MenuOptions();
             }
             break;
         case '2':
@@ -73,30 +79,26 @@ int main()
             {
                 case '1':
                     carFactory.DisplayAvailableCars();
-                break;
+                    break;
                 case '2':
-                    carFactory.DisplayAvailableCars();
-                break;
-                    carFactory.DisplayAvailableCars();
+                    carFactory.DisplayCarsForRent();
+                    break;
                 case '3':
-                    carFactory.DisplayAvailableCars();
-                break;
-                    carFactory.DisplayAvailableCars();
+                    carFactory.DisplayCarsForLease();
+                    break;
                 case '4':
-                    display.MainPage();
+                    carFactory.SearchForCar(loggedUserName);
+                    break;
+                case '5':
+                    mainClass.MenuOptions();
                 default:
                     display.DisplayError("Invalid menu choice!");
-                    display.MainPage();
+                    mainClass.MenuOptions();
             }
             break;
         default:
-            display.DisplayError("Invalid menu choice!");
-            display.MainPage();
-            break;
+            display.DisplayWithColor("Goodbye and have a nice day!", 4);
+            display.DisplayError("");
+            return;
     }
-}
-
-void UpdatePersonalInformation()
-{
-
 }
