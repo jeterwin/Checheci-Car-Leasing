@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <cstring>
 
 #include "CarFactory.h"
 
@@ -31,16 +32,47 @@ void CarFactory::DisplayRentedCars(std::string carOwner)
     std::ifstream carFile;
     carFile.open(FileHandler::GetRentedCars());
 
-    std::cout << "These are all the cars you have currently loaned from Checheci® Leasing Automobiles";
 
-    while(carFile >> renterFirstName >> renterLastName)
+    while(std::getline(carFile, VIN))
     {
-        carFile >> horsePower >> carPrice >> productionYear >> kmsDriven >> motorSize >> fuelTypeInt;
+        int counter = 0;
+
+        short wordCharLength = VIN.length();
+        char* cString = new char[wordCharLength];
+        strcpy(cString, VIN.c_str());
+
+        char *p = strtok(cString, " ");
+        while(p)
+        {
+            if(counter == 0)
+            {
+                renterFirstName = p;
+            }
+            if(counter == 1)
+            {
+                renterLastName = p;
+            }
+            if(counter > 1)
+                break;
+            p = strtok(NULL, " ");
+            counter++;
+        }
+/*        carFile >> renterFirstName >> renterLastName >> horsePower >> carPrice >> productionYear >> kmsDriven >> motorSize >> fuelTypeInt;
         carFile >> transmissionTypeInt >> driveTrainInt >> VIN >> color >> make >> model;
         fuelType = (FuelType) fuelTypeInt;
         transmissionType = (TransmissionType) transmissionTypeInt;
-        driveTrain = (Drivetrain) driveTrainInt;
-        //std::cout <<
+        driveTrain = (Drivetrain) driveTrainInt;*/
+        if(renterFirstName + " " + renterLastName == carOwner)
+        {
+            std::cout << "Nigga you purchased this car " << p << "\n";
+        }
+
+    }
+
+    carFile.close();
+    while(1 == 1)
+    {
+
     }
 }
 
