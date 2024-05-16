@@ -33,3 +33,11 @@ std::string FileHandler::GetSoldCars()
 {
     return "Files/SoldCars.txt";
 }
+
+std::string FileHandler::GetAvailableRentingCars() {
+    return "Files/LeasingCars.txt";
+}
+
+std::string FileHandler::GetAvailableLeasingCars() {
+    return "Files/RentingCars.txt";
+}

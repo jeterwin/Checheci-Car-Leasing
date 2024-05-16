@@ -4,6 +4,9 @@
 
 #include <iostream>
 #include <cstring>
+#include <sstream>
+#include <vector>
+#include <string>
 
 #include "CarFactory.h"
 #include "Display.h"
@@ -152,12 +155,17 @@ void CarFactory::DisplaySoldCars(std::string carOwner)
 
 void CarFactory::UpdateCarListing(std::string carOwner)
 {
+    display.ResetScreen();
+
     display.PressAnyKey();
     mainClass.MenuOptions();
 }
 
-void CarFactory::DisplayAvailableCars()
+void CarFactory::DisplayAvailableCars(int displayedCarsPerPage = 5)
 {
+    display.ResetScreen();
+    int maxCarsPerPage = 10;
+
     std::ifstream carFile;
     carFile.open(FileHandler::GetAvailableCars());
     /*int horsePower, carPrice, productionYear, kmsDriven, motorSize;
@@ -166,6 +174,7 @@ void CarFactory::DisplayAvailableCars()
     Drivetrain driveTrain;
     std::string VIN, color, make, model;*/
     std::cout << "These are all the available cars in Checheci Leasing Automobile:\n\n";
+    display.DisplayWithColor("----------------------------------------------\n\n", 2);
 
     std::string carInformation;
     while(std::getline(carFile, carInformation))
@@ -205,17 +214,104 @@ Car** CarFactory::GetGivenCars()
     return givenCars;
 }
 
-void CarFactory::DisplayCarsForRent()
+void CarFactory::DisplayCarsForRentOrLease(int displayedCars, int option)
 {
+    display.ResetScreen();
+    int maxCarsPerPage = 10;
 
-}
+    /*int horsePower, carPrice, productionYear, kmsDriven, motorSize;
+    FuelType fuelType;
+    TransmissionType transmissionType;
+    Drivetrain driveTrain;
+    std::string VIN, color, make, model;*/
 
-void CarFactory::DisplayCarsForLease()
-{
+    // Option = 0 => renting cars, Option = 1 => leasing cars
+    std::cout << "These are all the cars that can be ";
+    option == 0 ? std::cout << "rented " : std::cout << "leased ";
+    std::cout << "from Checheci Leasing Automobile\n\n";
 
+    display.DisplayWithColor("----------------------------------------------\n\n", 2);
+
+    std::string carInformation;
+    std::ifstream carFile;
+    carFile.open(option == 0 ? FileHandler::GetAvailableRentingCars() : FileHandler::GetAvailableLeasingCars());
+
+    while(std::getline(carFile, carInformation))
+    {
+        std::cout << carInformation << std::endl;
+    }
+    carFile.close();
+
+    display.PressAnyKey();
+    mainClass.MenuOptions();
 }
 
 void CarFactory::SearchForCar(std::string personName)
 {
+    display.ResetScreen();
 
+    display.DisplayWithColor("Welcome to our advanced car search engine!\n", 6);
+    display.DisplayWithColor("You will be asked to provide certain details about "
+    "the car you are looking for!", 6);
+    display.DisplayError("\n\n");
+
+    int horsePower, carPrice, productionYear, kmsDriven, motorSize;
+    FuelType fuelType;
+    TransmissionType transmissionType;
+    Drivetrain driveTrain;
+    std::string VIN, color, make, model;
+
+    std::cout << "What is the make (car brand) of your desired car? (leave blank to not specify)\n";
+    //std::cin >> make;
+    std::cin.ignore();
+    std::getline(std::cin, make);
+
+    std::cout << "What is the model of your desired car? (leave blank to not specify)\n";
+    std::cin >> model;
+
+    std::cout << "What is the color of your desired car? (leave blank to not specify)\n";
+    std::cin >> color;
+
+    // We could add a range (cool idea)
+    std::cout << "What is the minimum production year of your desired car?\n";
+    std::cin >> productionYear;
+
+    // Could add a range too
+    std::cout << "What is the horse power of your desired car? (leave blank to not specify)\n";
+    std::cin >> horsePower;
+
+    // Should add a range
+    std::cout << "What is the motor size (in cc) of your desired car? (leave blank to not specify)\n";
+    std::cin >> motorSize;
+
+    std::cout << "What is the transmission type of your desired car? (0 for Automatic, 1 for Manual)  (leave blank to not specify)\n";
+    int transmissionInput;
+    std::cin >> transmissionInput;
+    transmissionType = static_cast<TransmissionType>(transmissionInput);
+
+    std::cout << "What is the fuel type of your desired car? (0 for Diesel, 1 for Electric, 2 for Hybrid, 3 for Gasoline) (leave blank to not specify)\n";
+    int fuelInput;
+    std::cin >> fuelInput;
+    fuelType = static_cast<FuelType>(fuelInput);
+
+    std::cout << "What is the drivetrain type of your desired car? (0 for AWD, 1 for 4WD, 2 for RWD, 3 for FWD) (leave blank to not specify)\n";
+    int drivetrainInput;
+    std::cin >> drivetrainInput;
+    driveTrain = static_cast<Drivetrain>(drivetrainInput);
+    // Range
+    std::cout << "What is the maximum price of your desired car?\n";
+    std::cin >> carPrice;
+
+    // Range
+    std::cout << "How many kilometers has the car been driven?\n";
+    std::cin >> kmsDriven;
+    std::vector<Car> cars = Car::readCarsFromFile(FileHandler::GetAvailableCars());
+
+    Car::searchCars(cars, make, model, color, Car::stringTransmissionType(transmissionType),
+Car::stringFuelType(fuelType), Car::stringDrivetrain(driveTrain),
+kmsDriven, motorSize, horsePower, carPrice, productionYear);
+    while(1 == 1)
+    {
+
+    }
 }

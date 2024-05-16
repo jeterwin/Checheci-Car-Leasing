@@ -5,7 +5,6 @@
 
 #include <iostream>
 
-
 #include "CarFactory.h"
 #include "RentingCar.h"
 #include "LeasingCar.h"
@@ -16,6 +15,7 @@
 #include "main.h"
 
 #include <string>
+#include <vector>
 #include <windows.h>
 
 void UpdatePersonalInformation();
@@ -32,6 +32,27 @@ void MenuOptions();
 
 int main()
 {
+    std::string deleteline;
+
+    std::ifstream fin;
+    fin.open("Files/SoldCars.txt");
+    //std::ofstream test; wtf?????????
+
+    //std::cin >> deleteline;
+
+    std::string line;
+    while(std::getline(fin, line))
+    {
+        std::cout << line << "\n";
+    }
+    fin.close();
+
+    //remove("Files/SoldCars.txt");
+    //rename("Files/temp.txt","Files/SoldCars.txt");
+    while(1 == 1)
+    {
+
+    }
     display.Logo();
 
     loginHandler.Login(&loggedUserName);
@@ -78,13 +99,13 @@ void MainClass::MenuOptions()
             switch(display.DisplayShopInterface())
             {
                 case '1':
-                    carFactory.DisplayAvailableCars();
+                    carFactory.DisplayAvailableCars(5);
                     break;
                 case '2':
-                    carFactory.DisplayCarsForRent();
+                    carFactory.DisplayCarsForRentOrLease(5, 0);
                     break;
                 case '3':
-                    carFactory.DisplayCarsForLease();
+                    carFactory.DisplayCarsForRentOrLease(5, 1);
                     break;
                 case '4':
                     carFactory.SearchForCar(loggedUserName);

@@ -6,7 +6,8 @@
 #define CHECHECI_CAR_LEASING_CAR_H
 
 #include <string>
-
+#include <sstream>
+#include <vector>
 
 enum FuelType
 {
@@ -37,10 +38,6 @@ enum Drivetrain
     FWD,
 };
 
-std::string stringFuelType(enum FuelType x);
-std::string stringTransmissionType(enum TransmissionType x);
-std::string stringBodyType(enum BodyType x);
-std::string stringDrivetrain(enum Drivetrain x);
 
 class Car
 {
@@ -70,9 +67,22 @@ class Car
         int GetHP();
         friend std::ostream& operator<< (std::ostream& os, const Car&);
         friend std::fstream& operator<< (std::fstream& os, const Car&);
+
         virtual std::string getStatus();
         virtual void writeToFile();
         virtual void deleteFromFile();
+
+        static std::string stringFuelType(enum FuelType x);
+        static std::string stringTransmissionType(enum TransmissionType x);
+        static std::string stringBodyType(enum BodyType x);
+        static std::string stringDrivetrain(enum Drivetrain x);
+
+
+        static std::vector<Car> readCarsFromFile(const std::string& filename);
+        static void searchCars(const std::vector<Car>& cars, const std::string& make,
+        const std::string& model, const std::string& color, const std::string& transmissionType,
+        const std::string& fuelType, const std::string& drivetrainType, int maxKilometers, int motorSize,
+        int horsePower, int maxPrice, int minYear);
 
 };
 

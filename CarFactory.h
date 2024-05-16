@@ -22,15 +22,17 @@ public:
     CarFactory();
     CarFactory(Car * leasingCar);
 
-    void DisplayCarsForRent();
-    void DisplayCarsForLease();
     void SearchForCar(std::string personName);
+
+    void DisplayCarsForRentOrLease(int displayedCars, int option);
     void DisplayRentedOrLeasedCars(std::string carOwner, int option);
-    void DisplayAvailableCars();
+    void DisplayAvailableCars(int displayedCars);
     void DisplaySoldCars(std::string carOwner);
+
     void UpdateCarListing(std::string carOwner);
 
     void AddCar(Car *);
+
     Car ** GetAvailableCars();
     Car ** GetGivenCars();
 

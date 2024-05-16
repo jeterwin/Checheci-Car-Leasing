@@ -23,9 +23,9 @@ void Display::Logo()
 
 void Display::LoginDisplay()
 {
-    std::cout << "Login using the following parameters:" << std::endl;
-    std::cout << "login <FIRST NAME> <LAST NAME>" << std::endl;
-    std::cout << "You must provide both your first and last name in order to login into your account!" << std::endl << std::endl;
+    std::cout << "Login using the following parameters:\n";
+    std::cout << "login <FIRST NAME> <LAST NAME>\n";
+    std::cout << "You must provide both your first and last name in order to login into your account!\n\n";
 }
 
 void Display::MainPage()
@@ -123,6 +123,15 @@ void Display::DisplayWithColor(std::string string, int colorCode)
             break;
         case 4:
             std::cout << dye::light_aqua(string);
+            break;
+        case 5:
+            std::cout << dye::red(string);
+            break;
+        case 6:
+            std::cout << dye::black_on_bright_white(string);
+            break;
+        case 7:
+            std::cout << dye::black_on_white(string);
             break;
         default:
             std::cout << dye::green(string);

@@ -39,7 +39,7 @@ void LoginHandler::Login(std::string * userName)
         if(strlen(cString) == 0)
         {
             usersFile.close();
-            display.DisplayError("You provided wrong login arguments!");
+            display.DisplayWithColor("You provided wrong login arguments!", 5);
             display.ResetScreen();
             Login(userName);
             return;
@@ -59,8 +59,8 @@ void LoginHandler::Login(std::string * userName)
         if(wordsInName != 2)
         {
             usersFile.close();
-            display.DisplayError("You must insert two parameters in the following way:\n"
-                                 "<FIRST NAME> <LAST NAME>");
+            display.DisplayError("You must insert two parameters in the following way:\n");
+            display.DisplayWithColor("<FIRST NAME> <LAST NAME>", 5);
             display.ResetScreen();
             Login(userName);
             return;
@@ -88,7 +88,8 @@ void LoginHandler::Login(std::string * userName)
         if(strlen(cString) == 0)
         {
             usersFile.close();
-            display.DisplayError("You provided wrong login arguments!");
+            display.DisplayWithColor("You provided wrong login arguments!", 5);
+            display.DisplayError("");
             display.ResetScreen();
             Login(userName);
             return;
@@ -99,8 +100,9 @@ void LoginHandler::Login(std::string * userName)
         // Check if first word is "login"
         if(strcmp(p, "login") != 0)
         {
-            display.DisplayError("You must input your first and last name as follows:\n"
-                                 "login <FIRST NAME> <LAST NAME>\n\n");
+            std::cout << "You must input your first and last name as follows:\n";
+            display.DisplayWithColor("login <FIRST NAME> <LAST NAME>", 5);
+            display.DisplayError("");
             display.ResetScreen();
             Login(userName);
             return;
@@ -117,8 +119,9 @@ void LoginHandler::Login(std::string * userName)
         // Not in the right format because there are 2 or less words
         if(wordsInName != 3)
         {
-            display.DisplayError("You must input your first and last name as follows:\n"
-                                 "login <FIRST NAME> <LAST NAME>\n\n");
+            std::cout << "You must input your first and last name as follows:\n";
+            display.DisplayWithColor("login <FIRST NAME> <LAST NAME>", 5);
+            display.DisplayError("");
             display.ResetScreen();
             Login(userName);
             return;
