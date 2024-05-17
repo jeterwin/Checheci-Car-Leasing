@@ -108,6 +108,37 @@ void Display::PressAnyKey()
     system("pause");
 }
 
+void Display::DisplayWithColor(int string, int colorCode)
+{
+    switch(colorCode)
+    {
+        case 1:
+            std::cout << dye::aqua(string);
+            break;
+        case 2:
+            std::cout << dye::green(string);
+            break;
+        case 3:
+            std::cout << dye::yellow(string);
+            break;
+        case 4:
+            std::cout << dye::light_aqua(string);
+            break;
+        case 5:
+            std::cout << dye::red(string);
+            break;
+        case 6:
+            std::cout << dye::black_on_bright_white(string);
+            break;
+        case 7:
+            std::cout << dye::black_on_white(string);
+            break;
+        default:
+            std::cout << dye::green(string);
+            break;
+    }
+}
+
 void Display::DisplayWithColor(std::string string, int colorCode)
 {
     switch(colorCode)

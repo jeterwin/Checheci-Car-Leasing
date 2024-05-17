@@ -9,6 +9,7 @@ class MainClass
 {
 public:
     void MenuOptions();
+    static std::string GetUsername();
 };
 
 #endif //CHECHECI_CAR_LEASING_MAIN_H

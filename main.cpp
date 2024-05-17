@@ -4,6 +4,10 @@
 //
 
 #include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <windows.h>
 
 #include "CarFactory.h"
 #include "RentingCar.h"
@@ -13,10 +17,6 @@
 #include "Display.h"
 #include "FileHandler.h"
 #include "main.h"
-
-#include <string>
-#include <vector>
-#include <windows.h>
 
 void UpdatePersonalInformation();
 
@@ -32,27 +32,6 @@ void MenuOptions();
 
 int main()
 {
-    std::string deleteline;
-
-    std::ifstream fin;
-    fin.open("Files/SoldCars.txt");
-    //std::ofstream test; wtf?????????
-
-    //std::cin >> deleteline;
-
-    std::string line;
-    while(std::getline(fin, line))
-    {
-        std::cout << line << "\n";
-    }
-    fin.close();
-
-    //remove("Files/SoldCars.txt");
-    //rename("Files/temp.txt","Files/SoldCars.txt");
-    while(1 == 1)
-    {
-
-    }
     display.Logo();
 
     loginHandler.Login(&loggedUserName);
@@ -122,4 +101,10 @@ void MainClass::MenuOptions()
             display.DisplayError("");
             return;
     }
+}
+
+std::string MainClass::GetUsername()
+{
+    // Make sure it isn't null or something lmao
+    return loggedUserName;
 }

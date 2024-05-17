@@ -17,6 +17,7 @@ public:
     char DisplayShopInterface();
 
     void DisplayWithColor(std::string, int colorCode);
+    void DisplayWithColor(int, int colorCode);
 
     void PressAnyKey();
     void ResetScreen();

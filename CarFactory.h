@@ -5,8 +5,11 @@
 #ifndef CHECHECI_CAR_LEASING_CARFACTORY_H
 #define CHECHECI_CAR_LEASING_CARFACTORY_H
 
+#include <map>
+
 #include "LeasingCar.h"
 #include "RentingCar.h"
+#include "main.h"
 
 
 class CarFactory {
@@ -23,6 +26,7 @@ public:
     CarFactory(Car * leasingCar);
 
     void SearchForCar(std::string personName);
+    static void DeleteCarFromFile(std::string fileName, int lineToBeDeleted);
 
     void DisplayCarsForRentOrLease(int displayedCars, int option);
     void DisplayRentedOrLeasedCars(std::string carOwner, int option);

@@ -69,7 +69,7 @@ class Car
         friend std::fstream& operator<< (std::fstream& os, const Car&);
 
         virtual std::string getStatus();
-        virtual void writeToFile();
+        virtual void writeToFile(std::string fileToWriteInto, std::string carOwner);
         virtual void deleteFromFile();
 
         static std::string stringFuelType(enum FuelType x);
@@ -79,7 +79,7 @@ class Car
 
 
         static std::vector<Car> readCarsFromFile(const std::string& filename);
-        static void searchCars(const std::vector<Car>& cars, const std::string& make,
+        static void searchCars(std::vector<Car> cars, const std::string& make,
         const std::string& model, const std::string& color, const std::string& transmissionType,
         const std::string& fuelType, const std::string& drivetrainType, int maxKilometers, int motorSize,
         int horsePower, int maxPrice, int minYear);

@@ -4,7 +4,6 @@
 
 #include <iostream>
 #include <cstring>
-#include <sstream>
 #include <vector>
 #include <string>
 
@@ -246,13 +245,54 @@ void CarFactory::DisplayCarsForRentOrLease(int displayedCars, int option)
     mainClass.MenuOptions();
 }
 
+void CarFactory::DeleteCarFromFile(std::string fileName, int lineToBeDeleted)
+{
+    std::ifstream inputFile(fileName);
+    if (!inputFile)
+    {
+        // Error
+        std::cerr << "Error opening file: " << fileName << std::endl;
+        return;
+    }
+
+    std::vector<std::string> lines;
+    std::string line;
+    int i = 0;
+    while (std::getline(inputFile, line))
+    {
+        //std::cout << line << " " << lineToRemove << "\n";
+        if (i != lineToBeDeleted)
+        {
+            lines.push_back(line);
+        }
+        i++;
+    }
+
+    inputFile.close();
+
+    std::ofstream outputFile(fileName);
+    if (!outputFile)
+    {
+        std::cerr << "Error opening file for writing: " << fileName << std::endl;
+        // Error
+        return;
+    }
+
+    for (const std::string& l : lines)
+    {
+        outputFile << l << std::endl;
+    }
+
+    outputFile.close();
+}
+
 void CarFactory::SearchForCar(std::string personName)
 {
     display.ResetScreen();
 
     display.DisplayWithColor("Welcome to our advanced car search engine!\n", 6);
     display.DisplayWithColor("You will be asked to provide certain details about "
-    "the car you are looking for!", 6);
+                             "the car you are looking for!", 6);
     display.DisplayError("\n\n");
 
     int horsePower, carPrice, productionYear, kmsDriven, motorSize;
@@ -261,16 +301,16 @@ void CarFactory::SearchForCar(std::string personName)
     Drivetrain driveTrain;
     std::string VIN, color, make, model;
 
-    std::cout << "What is the make (car brand) of your desired car? (leave blank to not specify)\n";
-    //std::cin >> make;
+    // Equivalent to fflush(stdin) from C
     std::cin.ignore();
+    std::cout << "What is the make (car brand) of your desired car? (leave blank to not specify)\n";
     std::getline(std::cin, make);
 
     std::cout << "What is the model of your desired car? (leave blank to not specify)\n";
-    std::cin >> model;
+    std::getline(std::cin, model);
 
     std::cout << "What is the color of your desired car? (leave blank to not specify)\n";
-    std::cin >> color;
+    std::getline(std::cin, color);
 
     // We could add a range (cool idea)
     std::cout << "What is the minimum production year of your desired car?\n";
@@ -286,16 +326,19 @@ void CarFactory::SearchForCar(std::string personName)
 
     std::cout << "What is the transmission type of your desired car? (0 for Automatic, 1 for Manual)  (leave blank to not specify)\n";
     int transmissionInput;
+
     std::cin >> transmissionInput;
     transmissionType = static_cast<TransmissionType>(transmissionInput);
 
     std::cout << "What is the fuel type of your desired car? (0 for Diesel, 1 for Electric, 2 for Hybrid, 3 for Gasoline) (leave blank to not specify)\n";
     int fuelInput;
+
     std::cin >> fuelInput;
     fuelType = static_cast<FuelType>(fuelInput);
 
     std::cout << "What is the drivetrain type of your desired car? (0 for AWD, 1 for 4WD, 2 for RWD, 3 for FWD) (leave blank to not specify)\n";
     int drivetrainInput;
+
     std::cin >> drivetrainInput;
     driveTrain = static_cast<Drivetrain>(drivetrainInput);
     // Range
@@ -303,15 +346,12 @@ void CarFactory::SearchForCar(std::string personName)
     std::cin >> carPrice;
 
     // Range
-    std::cout << "How many kilometers has the car been driven?\n";
+    std::cout << "How many kilometers has the car been driven? (leave blank to not specify)\n";
+
     std::cin >> kmsDriven;
     std::vector<Car> cars = Car::readCarsFromFile(FileHandler::GetAvailableCars());
 
     Car::searchCars(cars, make, model, color, Car::stringTransmissionType(transmissionType),
-Car::stringFuelType(fuelType), Car::stringDrivetrain(driveTrain),
-kmsDriven, motorSize, horsePower, carPrice, productionYear);
-    while(1 == 1)
-    {
-
-    }
+                    Car::stringFuelType(fuelType), Car::stringDrivetrain(driveTrain),
+                    kmsDriven, motorSize, horsePower, carPrice, productionYear);
 }

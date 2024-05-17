@@ -4,7 +4,10 @@
 
 #include <iostream>
 #include <fstream>
+#include <map>
+#include <regex>
 
+#include "CarFactory.h"
 #include "Car.h"
 #include "main.h"
 #include "FileHandler.h"
@@ -50,30 +53,36 @@ std::ostream& operator<<(std::ostream& os, const Car& car)
 
 std::fstream& operator<<(std::fstream& file, const Car& car)
 {
-    file << car.make << " ";
-    file << car.model << " ";
-    file << car.carPrice << " ";
-    file << Car::stringBodyType(car.bodyType) << " ";
-    file << car.color << " ";
-    file << car.productionYear << " ";
-    file << car.VIN << " ";
-    file << car.kmsDriven << " ";
-    file << Car::stringFuelType(car.fuelType) << " ";
-    file << Car::stringTransmissionType(car.transmissionType) << " ";
-    file << Car::stringDrivetrain(car.drivetrain) << " ";
-    file << car.motorSize << " ";
+    file << car.make << ",";
+    file << car.model << ",";
+    file << car.carPrice << ",";
+    file << Car::stringBodyType(car.bodyType) << ",";
+    file << car.color << ",";
+    file << car.productionYear << ",";
+    file << car.VIN << ",";
+    file << car.kmsDriven << ",";
+    file << Car::stringFuelType(car.fuelType) << ",";
+    file << Car::stringTransmissionType(car.transmissionType) << ",";
+    file << Car::stringDrivetrain(car.drivetrain) << ",";
+    file << car.motorSize << ",";
     file << car.horsePower;
     file << "\n";
 
     return file;
 }
 
-void Car::writeToFile()
+void Car::writeToFile(std::string fileToWriteInto, std::string carOwner)
 {
-    FileHandler handler;
-    std::string filePath = handler.GetAvailableCars();
+    std::fstream myFile (fileToWriteInto, std::ios_base::app);
 
-    std::fstream myFile (filePath, std::ios_base::app);
+    if(!carOwner.empty())
+    {
+        // Error opening file
+        if(!myFile.is_open()) { return; }
+
+        myFile << carOwner << ",";
+    }
+
     if (myFile.is_open())
     {
         myFile << *this;
@@ -81,13 +90,11 @@ void Car::writeToFile()
     }
     else
         return;
-
 }
 
 void Car::deleteFromFile()
 {
-    FileHandler handler;
-    std::string filePath = handler.GetAvailableCars();
+    std::string filePath = FileHandler::GetAvailableCars();
 }
 
 std::string Car::getStatus()
@@ -223,14 +230,15 @@ std::vector<Car> Car::readCarsFromFile(const std::string& filename)
     return cars;
 }
 
-void Car::searchCars(const std::vector<Car> &cars, const std::string &make, const std::string &model,
+void Car::searchCars(std::vector<Car> cars, const std::string &make, const std::string &model,
 const std::string &color, const std::string& transmissionType, const std::string& fuelType,
-const std::string&  drivetrainType, int maxKilometers, int motorSize, int horsePower, int maxPrice,
+const std::string& drivetrainType, int maxKilometers, int motorSize, int horsePower, int maxPrice,
 int minYear)
 {
     display.DisplayWithColor("\nThese are all the cars that fit in the criteria given:\n\n", 4);
-    int currentCar = 0;
-    std::vector<Car> foundCars;
+    int currentCar = 0, interestedCars = 0;
+    //std::vector<Car> foundCars;
+    std::map<int, int> carDictionary = { };
 
     for (const auto& car: cars)
     {
@@ -239,24 +247,62 @@ int minYear)
         && car.carPrice <= maxPrice && car.productionYear >= minYear
         && car.kmsDriven <= maxKilometers)
         {
-            foundCars[currentCar] = car;
-            std::cout << currentCar + 1 <<". Make: " << car.make << ", Model: " << car.model <<
+            carDictionary.insert(std::pair<int, int>(interestedCars, currentCar));
+            //foundCars[currentCar] = car;
+            std::cout << interestedCars + 1 <<". Make: " << car.make << ", Model: " << car.model <<
             ", Price: " << car.carPrice << ", Production Year: " << car.productionYear << std::endl;
-            currentCar++;
+            interestedCars++;
         }
+        currentCar++;
     }
     MainClass mainClass;
     // There were no cars found
-    if(currentCar == 0)
+    if(interestedCars == 0)
     {
+        display.DisplayWithColor("There were no cars found given the parameters given by you, try"
+                                 " a broader search!", 4);
 
         mainClass.MenuOptions();
     }
     // At least one car was found
     else
     {
-        display.DisplayWithColor("There were no cars found given the parameters given by you, try"
-         " a broader search!", 4);
+        display.DisplayWithColor("\nPlease enter the index of the car you are interested in.\n", 4);
+        int ch;
+        // What if he introduces a character? xd
+        std::cin >> ch;
+        while(ch > interestedCars || ch < 0)
+        {
+            std::cout << "Nuh-uh, pick a correct number you fa~\n";
+            std::cin >> ch;
+        }
+
+        display.DisplayWithColor("You have successfully chosen car number ", 2);
+        display.DisplayWithColor(ch, 2);
+        std::cout << "\n";
+        display.DisplayWithColor("Now, would you like to rent or lease the car? (type rent | lease)\n\n", 4);
+
+        std::cin.ignore();
+        std::string option;
+        std::getline(std::cin, option);
+
+        //std::regex rentPattern("([rR]ent)\\w*");
+        //std::regex leasePattern("([lL]ease)\\w*");
+
+        //while(!std::regex_match(option, rentPattern) || !std::regex_match(option, leasePattern))
+        //{
+            //std::cout << "Bro can't you read, type rent or lease ffs.\n";
+            //std::getline(std::cin, option);
+        //}
+
+        // Write in rent or lease file depending on our option
+        //cars[0].writeToFile(std::regex_match(option, rentPattern)
+        //? FileHandler::GetRentedCars() : FileHandler::GetLeasedCars());
+        cars[carDictionary[ch - 1]].writeToFile(option == "rent"
+        ? FileHandler::GetRentedCars() : FileHandler::GetLeasedCars(), MainClass::GetUsername());
+
+        CarFactory::DeleteCarFromFile(FileHandler::GetAvailableCars(), carDictionary[ch - 1]);
+
         display.DisplayError("");
         mainClass.MenuOptions();
     }
