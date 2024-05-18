@@ -349,7 +349,9 @@ void CarFactory::SearchForCar(std::string personName)
     std::cout << "How many kilometers has the car been driven? (leave blank to not specify)\n";
 
     std::cin >> kmsDriven;
-    std::vector<Car> cars = Car::readCarsFromFile(FileHandler::GetAvailableCars());
+
+    // CHANGED IN 19TH MAY COMMIT
+    std::vector<Car> cars = Car::readCarsFromFile(FileHandler::GetAvailableCars(),"");
 
     Car::searchCars(cars, make, model, color, Car::stringTransmissionType(transmissionType),
                     Car::stringFuelType(fuelType), Car::stringDrivetrain(driveTrain),
