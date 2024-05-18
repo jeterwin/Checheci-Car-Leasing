@@ -14,7 +14,8 @@ enum FuelType
     Diesel = 0,
     Electric,
     Hybrid,
-    Gasoline
+    Gasoline,
+    LPG // GPL ( Gaz petrolier lichefiat )
 };
 
 enum TransmissionType
@@ -25,9 +26,14 @@ enum TransmissionType
 
 enum BodyType
 {
-    Suv = 0,
+    SUV = 0,
     Coupe,
-    Sports,
+    Compact,
+    Convertible,
+    Wagon,
+    Sedan,
+    Van,
+    Transporter,
 };
 
 enum Drivetrain
@@ -72,13 +78,27 @@ class Car
         virtual void writeToFile(std::string fileToWriteInto, std::string carOwner);
         virtual void deleteFromFile();
 
+        static void ValidateChoiceBodyType(int &userChoice, int userTries=0);
+        static void ValidateChoiceFuelType(int &userChoice, int userTries=0);
+        static void ValidateChoiceTransmissionType(int &userChoice, int userTries=0);
+        static void ValidateChoiceDrivetrain(int &userChoice, int userTries=0);
+
         static std::string stringFuelType(enum FuelType x);
         static std::string stringTransmissionType(enum TransmissionType x);
         static std::string stringBodyType(enum BodyType x);
         static std::string stringDrivetrain(enum Drivetrain x);
 
+        static int stringToIntTransmissionType(const std::string& transmissionType);
+        static int stringToIntFuelType(const std::string& fuelType);
+        static int stringToIntBodyType(const std::string& bodyType);
+        static int stringToIntDrivetrain(const std::string& drivetrain);
 
-        static std::vector<Car> readCarsFromFile(const std::string& filename);
+        static void PrintBodyTypes();
+        static void PrintFuelTypes();
+        static void PrintTransmissionTypes();
+        static void PrintDrivetrains();
+
+        static std::vector<Car> readCarsFromFile(const std::string& filename, const std::string& loggedUser);
         static void searchCars(std::vector<Car> cars, const std::string& make,
         const std::string& model, const std::string& color, const std::string& transmissionType,
         const std::string& fuelType, const std::string& drivetrainType, int maxKilometers, int motorSize,
