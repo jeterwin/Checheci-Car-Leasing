@@ -146,6 +146,10 @@ std::string Car::stringFuelType(enum FuelType x)
             return "Gasoline";
             break;
 
+        case 4:
+            return "LPG";
+            break;
+
         default:
             return "InvalidFuelType";
     }
@@ -156,7 +160,7 @@ std::string Car::stringBodyType(enum BodyType x)
     switch(x)
     {
         case 0:
-            return "Suv";
+            return "SUV";
             break;
 
         case 1:
@@ -164,7 +168,27 @@ std::string Car::stringBodyType(enum BodyType x)
             break;
 
         case 2:
-            return "Sports";
+            return "Compact";
+            break;
+
+        case 3:
+            return "Convertible";
+            break;
+
+        case 4:
+            return "Wagon";
+            break;
+
+        case 5:
+            return "Sedan";
+            break;
+
+        case 6:
+            return "Van";
+            break;
+
+        case 7:
+            return "Transporter";
             break;
 
         default:
@@ -197,7 +221,8 @@ std::string Car::stringDrivetrain(enum Drivetrain x)
     }
 }
 
-std::vector<Car> Car::readCarsFromFile(const std::string& filename)
+//TODO: CHANGE THIS FUNCTION SUCH THAT IT RETURNS A VECTOR WITH THE CARS AN OWNER HAS, ADD A NEW PARAMETER FOR USERNAME
+std::vector<Car> Car::readCarsFromFile(const std::string& filename, const std::string& loggedUser)
 {
     std::vector<Car> cars;
     std::ifstream file(filename);
@@ -211,19 +236,53 @@ std::vector<Car> Car::readCarsFromFile(const std::string& filename)
     std::string line;
     while (std::getline(file, line))
     {
+        std::string ownerName;
         std::istringstream iss(line);
+        std::string token;
         Car car;
-        int t1, t2, t3;
-        iss >> car.make >> car.model >> car.carPrice >> t1 >> t2 >> t3 >> car.color >> car.productionYear
-            >> car.VIN >> car.kmsDriven;
+        FuelType fuelType;
+        BodyType bodyType;
+        TransmissionType transmissionType;
+        Drivetrain drivetrain;
 
-        car.fuelType = static_cast<FuelType>(t1);
-        car.transmissionType = static_cast<TransmissionType>(t2);
-        car.drivetrain = static_cast<Drivetrain>(t3);;
+        std::getline(iss, ownerName, ',');
+        if ( ownerName == loggedUser ) {
+            std::getline(iss, car.make, ',');
+            std::getline(iss, car.model, ',');
 
-        iss >> car.motorSize >> car.horsePower;
+            std::getline(iss, token, ',');
+            car.carPrice = std::stoi(token);
 
-        cars.push_back(car);
+            std::getline(iss, token, ',');
+            car.bodyType = static_cast<BodyType>(Car::stringToIntBodyType(token));
+
+            std::getline(iss, car.color, ',');
+
+            std::getline(iss, token, ',');
+            car.productionYear = std::stoi(token);
+
+            std::getline(iss, car.VIN, ',');
+
+            std::getline(iss, token, ',');
+            car.kmsDriven = std::stoi(token);
+
+            std::getline(iss, token, ',');
+            car.fuelType = static_cast<FuelType>(Car::stringToIntFuelType(token));
+
+            std::getline(iss, token, ',');
+            car.transmissionType = static_cast<TransmissionType>(Car::stringToIntTransmissionType(token));
+
+            std::getline(iss, token, ',');
+            car.drivetrain = static_cast<Drivetrain>(Car::stringToIntDrivetrain(token));
+
+            std::getline(iss, token, ',');
+            car.motorSize = std::stoi(token);
+
+            std::getline(iss, token, ',');
+            car.horsePower = std::stoi(token);
+
+            cars.push_back(car);
+        }
     }
 
     file.close();
@@ -306,4 +365,181 @@ int minYear)
         display.DisplayError("");
         mainClass.MenuOptions();
     }
+}
+
+void Car::PrintBodyTypes()
+{
+    std::cout << "0. SUV\n";
+    std::cout << "1. Coupe\n";
+    std::cout << "2. Compact\n";
+    std::cout << "3. Convertible\n";
+    std::cout << "4. Wagon\n";
+    std::cout << "5. Sedan\n";
+    std::cout << "6. Van\n";
+    std::cout << "7. Transporter\n";
+}
+
+void Car::PrintFuelTypes()
+{
+    std::cout << "0. Diesel\n";
+    std::cout << "1. Electric\n";
+    std::cout << "2. Hybrid\n";
+    std::cout << "3. Gasoline\n";
+    std::cout << "4. LPG\n";
+}
+
+void Car::PrintTransmissionTypes()
+{
+    std::cout << "0.Automatic\n";
+    std::cout << "1.Manual\n";
+}
+
+void Car::PrintDrivetrains()
+{
+    std::cout << "0.AWD\n";
+    std::cout << "1.4WD\n";
+    std::cout << "2.RWD\n";
+    std::cout << "3.FWD\n";
+}
+
+void Car::ValidateChoiceBodyType(int &userChoice, int userTries)
+{
+    std::cin>>userChoice;
+    userTries++;
+
+    while ( (userChoice<0 || userChoice > 7) && userTries <=5 )
+    {
+        std::cout << userChoice << " is not a valid choice!\n";
+        std::cout << "Please, try again!\n";
+
+        std::cin>>userChoice;
+        userTries++;
+    }
+
+    if ( userTries > 5)
+        userChoice=-1;
+
+    return ;
+}
+
+void Car::ValidateChoiceFuelType(int &userChoice, int userTries)
+{
+    std::cin>>userChoice;
+    userTries++;
+
+    while ( (userChoice<0 || userChoice > 4) && userTries <=5 )
+    {
+        std::cout << userChoice << " is not a valid choice!\n";
+        std::cout << "Please, try again!\n";
+
+        std::cin>>userChoice;
+        userTries++;
+    }
+
+    if ( userTries > 5)
+        userChoice=-1;
+
+    return ;
+}
+
+void Car::ValidateChoiceTransmissionType(int &userChoice, int userTries)
+{
+    std::cin>>userChoice;
+    userTries++;
+
+    while ( (userChoice<0 || userChoice > 1) && userTries <=5 )
+    {
+        std::cout << userChoice << " is not a valid choice!\n";
+        std::cout << "Please, try again!\n";
+
+        std::cin>>userChoice;
+        userTries++;
+    }
+
+    if ( userTries > 5)
+        userChoice=-1;
+
+    return ;
+}
+
+void Car::ValidateChoiceDrivetrain(int &userChoice, int userTries)
+{
+    std::cin>>userChoice;
+    userTries++;
+
+    while ( (userChoice<0 || userChoice > 3) && userTries <=5 )
+    {
+        std::cout << userChoice << " is not a valid choice!\n";
+        std::cout << "Please, try again!\n";
+
+        std::cin>>userChoice;
+        userTries++;
+    }
+
+    if ( userTries > 5)
+        userChoice=-1;
+
+    return ;
+}
+
+int Car::stringToIntTransmissionType(const std::string& transmissionType)
+{
+    if ( transmissionType == "Automatic" )
+        return 0;
+    if ( transmissionType == "Manual" )
+        return 1;
+
+    return -1;
+}
+
+int Car::stringToIntDrivetrain(const std::string &drivetrain)
+{
+    if ( drivetrain == "AWD" )
+        return 0;
+    if ( drivetrain == "4WD" )
+        return 1;
+    if ( drivetrain == "RWD" )
+        return 2;
+    if ( drivetrain == "FWD" )
+        return 3;
+
+    return -1;
+}
+
+int Car::stringToIntBodyType(const std::string &bodyType)
+{
+    if ( bodyType == "SUV" )
+        return 0;
+    if ( bodyType == "Coupe" )
+        return 1;
+    if ( bodyType == "Compact" )
+        return 2;
+    if ( bodyType == "Convertible" )
+        return 3;
+    if ( bodyType == "Wagon" )
+        return 4;
+    if ( bodyType == "Sedan" )
+        return 5;
+    if ( bodyType == "Van" )
+        return 6;
+    if ( bodyType == "Transporter" )
+        return 7;
+
+    return -1;
+}
+
+int Car::stringToIntFuelType(const std::string &fuelType)
+{
+    if ( fuelType == "Diesel" )
+        return 0;
+    if ( fuelType == "Electric" )
+        return 1;
+    if ( fuelType == "Hybrid" )
+        return 2;
+    if ( fuelType == "Gasoline" )
+        return 3;
+    if ( fuelType == "LPG" )
+        return 4;
+
+    return -1;
 }
