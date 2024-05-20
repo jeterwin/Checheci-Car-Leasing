@@ -1,2 +1,12 @@
-K E,tatal tau,mertan,mcompetition de pe jermania,12012,Transporter,negru mat cu rugina,2012,nuamideevin123,500000,LPG,Manual,4WD,9000,20,  10, 1000
-K E,tatal nostru,LAMBORGHINI,GALLARDO LP,120000,Coupe,YELLOW,2008,JFJAW812515,30000,Gasoline,Manual,AWD,5999,400 5, 500
+K E,mertan,mcompetition de pe jermania,12012,Transporter,negru mat cu rugina,2012,nuamideevin123,500000,LPG,Manual,4WD,9000,20, 10, 1000
+K E,LAMBORGHINI,GALLARDO LP,120000,Coupe,YELLOW,2008,JFJAW812515,30000,Gasoline,Manual,AWD,5999,400 5, 500
+K E,mertan,mcompetition de pe jermania,12012,Transporter,negru mat cu rugina,2012,nuamideevin123,500000,LPG,Manual,4WD,9000,20, 10, 1000
+K E,LAMBORGHINI,GALLARDO LP,120000,Coupe,YELLOW,2008,JFJAW812515,30000,Gasoline,Manual,AWD,5999,400 5, 500
+K E,mertan,mcompetition de pe jermania,12012,Transporter,negru mat cu rugina,2012,nuamideevin123,500000,LPG,Manual,4WD,9000,20, 10, 1000
+K E,LAMBORGHINI,GALLARDO LP,120000,Coupe,YELLOW,2008,JFJAW812515,30000,Gasoline,Manual,AWD,5999,400 5, 500
+K E,mertan,mcompetition de pe jermania,12012,Transporter,negru mat cu rugina,2012,nuamideevin123,500000,LPG,Manual,4WD,9000,20, 10, 1000
+K E,LAMBORGHINI,GALLARDO LP,120000,Coupe,YELLOW,2008,JFJAW812515,30000,Gasoline,Manual,AWD,5999,400 5, 500
+K E,mertan,mcompetition de pe jermania,12012,Transporter,negru mat cu rugina,2012,nuamideevin123,500000,LPG,Manual,4WD,9000,20, 10, 1000
+K E,LAMBORGHINI,GALLARDO LP,120000,Coupe,YELLOW,2008,JFJAW812515,30000,Gasoline,Manual,AWD,5999,400 5, 500
+K E,mertan,mcompetition de pe jermania,12012,Transporter,negru mat cu rugina,2012,nuamideevin123,500000,LPG,Manual,4WD,9000,20, 10, 1000
+K E,LAMBORGHINI,GALLARDO LP,120000,Coupe,YELLOW,2008,JFJAW812515,30000,Gasoline,Manual,AWD,5999,400 5, 500

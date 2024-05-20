@@ -23,10 +23,10 @@ RentingCar::RentingCar(int rentingPrice, int rentingPeriod, std::string make, st
                        int productionYear, std::string VIN, int kmsDriven, enum FuelType fuelType,
                        enum TransmissionType transmissionType, enum Drivetrain drivetrain,
                                int motorSize, int horsePower)
-                    : rentingPrice(rentingPrice), rentingPeriod(rentingPeriod), Car(make, model, carPrice, bodyType, color, productionYear, VIN, kmsDriven,
+                    : rentingPrice(rentingPrice), rentingPeriod(rentingPeriod), Car(carOwner, make, model, carPrice, bodyType, color, productionYear, VIN, kmsDriven,
                         fuelType, transmissionType, drivetrain, motorSize, horsePower) {}
 
-void RentingCar::writeToFile()
+void RentingCar::writeToFile(std::string carOwner)
 {
     std::string filePath = FileHandler::GetRentedCarsFileName();
 
@@ -41,12 +41,53 @@ void RentingCar::writeToFile()
         return;
 }
 
+
+std::fstream& operator<<(std::fstream& file, const RentingCar& car)
+{
+    file << car.make << ",";
+    file << car.model << ",";
+    file << car.carPrice << ",";
+    file << Car::stringBodyType(car.bodyType) << ",";
+    file << car.color << ",";
+    file << car.productionYear << ",";
+    file << car.VIN << ",";
+    file << car.kmsDriven << ",";
+    file << Car::stringFuelType(car.fuelType) << ",";
+    file << Car::stringTransmissionType(car.transmissionType) << ",";
+    file << Car::stringDrivetrain(car.drivetrain) << ",";
+    file << car.motorSize << ",";
+    file << car.horsePower;
+    file << "\n";
+
+    return file;
+}
+
+std::ostream& operator<<(std::ostream& os, const RentingCar& car)
+{
+    os << "Make: "<< car.make << "\n";
+    os << "Model: "<< car.model << "\n";
+    os << "Price: "<< car.carPrice << "\n";
+    os << "Body Type: "<< Car::stringBodyType(car.bodyType) << "\n";
+    os << "Color: "<< car.color << "\n";
+    os << "Year of Fabrication: " << car.productionYear << "\n";
+    os << "VIN: " << car.VIN << "\n";
+    os << "Mileage: " << car.kmsDriven << "\n";
+    os << "Fuel Type: " << Car::stringFuelType(car.fuelType) << "\n";
+    os << "Transmission: " << Car::stringTransmissionType(car.transmissionType) << "\n";
+    os << "Drivetrain: " << Car::stringDrivetrain(car.drivetrain) << "\n";
+    os << "Capacity: " << car.motorSize << "\n";
+    os << "Horse Power: " << car.horsePower;
+
+    return os;
+}
+
 std::string RentingCar::getStatus()
 {
     return "Renting";
 }
 
-void RentingCar::writeToFile(std::string carOwner)
+std::string RentingCar::GetCarOwnerName()
 {
-    //Car::writeToFile(fileToWriteInto, carOwner);
+    //return Car::GetCarOwnerName();
+    return this -> carOwner;
 }

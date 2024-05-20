@@ -25,17 +25,20 @@ static LoginHandler loginHandler;
 static CarFactory carFactory;
 static MainClass mainClass;
 
-std::vector<Car> userAvailableCars;
-std::vector<RentingCar> userRentingCars;
-std::vector<LeasingCar> userLeasingCars;
+std::vector<Car> AvailableCars;
 
-std::vector<Car> UpdateAvailableCars(const std::string& filename);
-std::vector<LeasingCar> UpdateLeasingCars(const std::string& filename);
-std::vector<RentingCar> UpdateRentingCars(const std::string& filename);
+std::vector<RentingCar> AvailableRentingCars;
+std::vector<RentingCar> RentedCars;
 
-std::vector<Car> UpdateAvailableCars(const std::string &filename)
+std::vector<LeasingCar> AvailableLeasingCars;
+std::vector<LeasingCar> LeasedCars;
+
+
+std::vector<Car> UpdateAvailableCars()
 {
+    // Renter name, Car owner name, car specs, last 2 data will be renting amount and renting time
     std::vector<Car> cars;
+    std::string filename = FileHandler::GetAvailableLeasingCars();;
     std::ifstream file(filename);
 
     if (!file.is_open())
@@ -47,17 +50,13 @@ std::vector<Car> UpdateAvailableCars(const std::string &filename)
     std::string line;
     while (std::getline(file, line))
     {
-        std::string ownerName;
-        std::istringstream iss(line);
         std::string token;
-        Car car;
-        FuelType fuelType;
-        BodyType bodyType;
-        TransmissionType transmissionType;
-        Drivetrain drivetrain;
+        std::istringstream iss(line);
+        LeasingCar car;
 
-        std::getline(iss, ownerName, ',');
-        if (ownerName == MainClass::GetUsername() ) {
+        std::getline(iss, car.carOwner, ',');
+        if (car.carOwner == loggedUserName)
+        {
             std::getline(iss, car.make, ',');
             std::getline(iss, car.model, ',');
 
@@ -100,10 +99,11 @@ std::vector<Car> UpdateAvailableCars(const std::string &filename)
     return cars;
 }
 
-std::vector<LeasingCar> UpdateLeasingCars(const std::string &filename)
+std::vector<LeasingCar> UpdateLeasedCars()
 {
     // Renter name, Car owner name, car specs, last 2 data will be renting amount and renting time
     std::vector<LeasingCar> cars;
+    std::string filename = FileHandler::GetLeasedCarsFileName();;
     std::ifstream file(filename);
 
     if (!file.is_open())
@@ -119,15 +119,11 @@ std::vector<LeasingCar> UpdateLeasingCars(const std::string &filename)
         std::string token;
         std::istringstream iss(line);
         LeasingCar car;
-        FuelType fuelType;
-        BodyType bodyType;
-        TransmissionType transmissionType;
-        Drivetrain drivetrain;
 
         std::getline(iss, renterName, ',');
-        if (renterName == MainClass::GetUsername())
+        if (renterName == loggedUserName)
         {
-            std::getline(iss, ownerName, ',');
+            std::getline(iss, car.carOwner, ',');
 
             std::getline(iss, car.make, ',');
             std::getline(iss, car.model, ',');
@@ -177,10 +173,11 @@ std::vector<LeasingCar> UpdateLeasingCars(const std::string &filename)
     return cars;
 }
 
-std::vector<RentingCar> UpdateRentingCars(const std::string &filename)
+std::vector<LeasingCar> UpdateLeasingCars()
 {
     // Renter name, Car owner name, car specs, last 2 data will be renting amount and renting time
-    std::vector<RentingCar> cars;
+    std::vector<LeasingCar> cars;
+    std::string filename = FileHandler::GetAvailableLeasingCars();;
     std::ifstream file(filename);
 
     if (!file.is_open())
@@ -192,19 +189,164 @@ std::vector<RentingCar> UpdateRentingCars(const std::string &filename)
     std::string line;
     while (std::getline(file, line))
     {
-        std::string renterName, ownerName;
+        std::string ownerName;
+        std::string token;
+        std::istringstream iss(line);
+        LeasingCar car;
+
+        std::getline(iss, ownerName, ',');
+        if (ownerName == loggedUserName)
+        {
+            std::getline(iss, car.make, ',');
+            std::getline(iss, car.model, ',');
+
+            std::getline(iss, token, ',');
+            car.carPrice = std::stoi(token);
+
+            std::getline(iss, token, ',');
+            car.bodyType = static_cast<BodyType>(Car::stringToIntBodyType(token));
+
+            std::getline(iss, car.color, ',');
+
+            std::getline(iss, token, ',');
+            car.productionYear = std::stoi(token);
+
+            std::getline(iss, car.VIN, ',');
+
+            std::getline(iss, token, ',');
+            car.kmsDriven = std::stoi(token);
+
+            std::getline(iss, token, ',');
+            car.fuelType = static_cast<FuelType>(Car::stringToIntFuelType(token));
+
+            std::getline(iss, token, ',');
+            car.transmissionType = static_cast<TransmissionType>(Car::stringToIntTransmissionType(token));
+
+            std::getline(iss, token, ',');
+            car.drivetrain = static_cast<Drivetrain>(Car::stringToIntDrivetrain(token));
+
+            std::getline(iss, token, ',');
+            car.motorSize = std::stoi(token);
+
+            std::getline(iss, token, ',');
+            car.horsePower = std::stoi(token);
+
+            std::getline(iss, token, ',');
+            car.leasingPeriod = std::stoi(token);
+
+            std::getline(iss, token, ',');
+            car.leasingPrice = std::stoi(token);
+
+            cars.push_back(car);
+        }
+    }
+
+    file.close();
+    return cars;
+}
+
+std::string LeasingCar::GetCarOwnerName()
+{
+    //return Car::GetCarOwnerName();
+    return this -> carOwner;
+}
+
+std::vector<RentingCar> UpdateRentingCars()
+{
+    // Renter name, Car owner name, car specs, last 2 data will be renting amount and renting time
+    std::vector<RentingCar> cars;
+    std::string filename = FileHandler::GetAvailableRentingCars();
+    std::ifstream file(filename);
+
+    if (!file.is_open())
+    {
+        std::cerr << "Error opening file " << filename << std::endl;
+        return cars;
+    }
+
+    std::string line;
+    while (std::getline(file, line))
+    {
+        std::string ownerName;
         std::istringstream iss(line);
         std::string token;
         RentingCar car;
-        FuelType fuelType;
-        BodyType bodyType;
-        TransmissionType transmissionType;
-        Drivetrain drivetrain;
+
+        std::getline(iss, ownerName, ',');
+        if (ownerName == loggedUserName)
+        {
+            std::getline(iss, car.make, ',');
+            std::getline(iss, car.model, ',');
+
+            std::getline(iss, token, ',');
+            car.carPrice = std::stoi(token);
+
+            std::getline(iss, token, ',');
+            car.bodyType = static_cast<BodyType>(Car::stringToIntBodyType(token));
+
+            std::getline(iss, car.color, ',');
+
+            std::getline(iss, token, ',');
+            car.productionYear = std::stoi(token);
+
+            std::getline(iss, car.VIN, ',');
+
+            std::getline(iss, token, ',');
+            car.kmsDriven = std::stoi(token);
+
+            std::getline(iss, token, ',');
+            car.fuelType = static_cast<FuelType>(Car::stringToIntFuelType(token));
+
+            std::getline(iss, token, ',');
+            car.transmissionType = static_cast<TransmissionType>(Car::stringToIntTransmissionType(token));
+
+            std::getline(iss, token, ',');
+            car.drivetrain = static_cast<Drivetrain>(Car::stringToIntDrivetrain(token));
+
+            std::getline(iss, token, ',');
+            car.motorSize = std::stoi(token);
+
+            std::getline(iss, token, ',');
+            car.horsePower = std::stoi(token);
+
+            std::getline(iss, token, ',');
+            car.rentingPeriod = std::stoi(token);
+            std::getline(iss, token, ',');
+            car.rentingPrice = std::stoi(token);
+
+            cars.push_back(car);
+        }
+    }
+
+    file.close();
+    return cars;
+}
+
+std::vector<RentingCar> UpdateRentedCars()
+{
+    // Renter name, Car owner name, car specs, last 2 data will be renting amount and renting time
+    std::vector<RentingCar> cars;
+    std::string filename = FileHandler::GetRentedCarsFileName();
+    std::ifstream file(filename);
+
+    if (!file.is_open())
+    {
+        std::cerr << "Error opening file " << filename << std::endl;
+        return cars;
+    }
+
+    std::string line;
+    while (std::getline(file, line))
+    {
+        std::string ownerName, renterName;
+        std::istringstream iss(line);
+        std::string token;
+        RentingCar car;
 
         std::getline(iss, renterName, ',');
-        if (renterName == MainClass::GetUsername())
+        if (renterName == loggedUserName)
         {
-            std::getline(iss, ownerName, ',');
+            std::getline(iss, car.carOwner, ',');
 
             std::getline(iss, car.make, ',');
             std::getline(iss, car.model, ',');
@@ -256,24 +398,26 @@ void MenuOptions();
 
 int main()
 {
-    display.Logo();
+    Display::Logo();
 
     loginHandler.Login(&loggedUserName);
 
     // Get the cars owned by the logged in user
-    userAvailableCars = UpdateAvailableCars(FileHandler::GetAvailableCarsFileName());
-    userRentingCars = UpdateRentingCars(FileHandler::GetAvailableRentingCars());
-    userLeasingCars = UpdateLeasingCars(FileHandler::GetAvailableLeasingCars());
+    AvailableCars = UpdateAvailableCars();
+    AvailableRentingCars = UpdateRentingCars();
+    AvailableLeasingCars = UpdateLeasingCars();
+    RentedCars = UpdateRentedCars();
+    LeasedCars = UpdateLeasedCars();
 
     std::cout << "Successfully logged in, welcome " << loggedUserName << "!" << std::endl;
 
     Sleep(2000);
-    mainClass.MenuOptions();
+    MainClass::MenuOptions();
 }
 
 void MainClass::MenuOptions()
 {
-    display.MainPage();
+    Display::MainPage();
 
     char menuChoice;
     std::cin >> menuChoice;
@@ -284,49 +428,50 @@ void MainClass::MenuOptions()
             switch (display.DisplayAccountPanel())
             {
                 case '1':
-                    carFactory.DisplayRentedOrLeasedCars(loggedUserName, 0);
+                    carFactory.DisplayRentedOrLeasedCars(RentedCars);
                     break;
                 case '2':
-                    carFactory.DisplayRentedOrLeasedCars(loggedUserName, 1);
+                    carFactory.DisplayRentedOrLeasedCars(LeasedCars);
                     break;
                 case '3':
-                    carFactory.DisplaySoldCars(loggedUserName);
+                    // TODO this
+                    // carFactory.DisplaySoldCars(AvailableCars);
                     break;
                 case '4':
                     carFactory.UpdateCarListing(loggedUserName);
                     break;
                 case '5':
-                    mainClass.MenuOptions();
+                    MainClass::MenuOptions();
                     break;
                 default:
-                    display.DisplayError("Invalid menu choice!");
-                    mainClass.MenuOptions();
+                    Display::DisplayError("Invalid menu choice!");
+                    MainClass::MenuOptions();
             }
             break;
         case '2':
             switch(display.DisplayShopInterface())
             {
                 case '1':
-                    carFactory.DisplayAvailableCars(5);
+                    carFactory.DisplayAvailableCars(AvailableCars);
                     break;
                 case '2':
-                    carFactory.DisplayCarsForRentOrLease(5, 0);
+                    carFactory.DisplayCarsForRentOrLease(AvailableRentingCars);
                     break;
                 case '3':
-                    carFactory.DisplayCarsForRentOrLease(5, 1);
+                    carFactory.DisplayCarsForRentOrLease(AvailableLeasingCars);
                     break;
                 case '4':
-                    carFactory.SearchForCar(userAvailableCars, loggedUserName);
+                    carFactory.SearchForCar(AvailableCars, loggedUserName);
                     break;
                 case '5':
-                    mainClass.MenuOptions();
+                    MainClass::MenuOptions();
                 default:
-                    display.DisplayError("Invalid menu choice!");
-                    mainClass.MenuOptions();
+                    Display::DisplayError("Invalid menu choice!");
+                    MainClass::MenuOptions();
             }
             break;
         default:
-            display.DisplayWithColor("Goodbye and have a nice day!", 4);
+            Display::DisplayWithColor("Goodbye and have a nice day!", 4);
             Sleep(2000);
             return;
     }

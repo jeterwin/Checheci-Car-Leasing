@@ -12,7 +12,7 @@
 class MainClass
 {
 public:
-    void MenuOptions();
+    static void MenuOptions();
     static std::string GetUsername();
 };
 

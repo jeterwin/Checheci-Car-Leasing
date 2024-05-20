@@ -13,9 +13,6 @@
 #include "main.h"
 #include "FileHandler.h"
 
-static Display display;
-static MainClass mainClass;
-
 CarFactory::CarFactory()
 {
     availableCarsNr = givenCarsNr = 0;
@@ -28,69 +25,10 @@ CarFactory::CarFactory(Car * car)
     availableCarsNr++;
 }
 
-void CarFactory::DisplayRentedOrLeasedCars(std::vector<Car> carVector, std::string carOwner, int option)
-{
-    display.ResetScreen();
-    // Option 0 = Rented, option 1 = leased
-    // We need to initialize two strings in order to compare it to the user we're logged in
-    std::string carInfo, renterFirstName = "a", renterLastName = "a";
-
-    // The counter is needed in order to keep track of who rented the car (first and second strings
-    // represent the person that rented it)
-    int counter = 0;
-
-    std::cout << "These are all the cars you have ";
-    option == 0 ? std::cout << "rented " : std::cout << "leased ";
-    std::cout << "so far\n";
-    display.DisplayWithColor("----------------------------------------------\n\n", 2);
-
-    for(int i = 0; i < carVector.size(); i++)
-    {
-        counter = 0;
-
-        short wordCharLength = carInfo.length();
-        char* cString = new char[wordCharLength];
-        strcpy(cString, carInfo.c_str());
-
-        char *p = strtok(cString, " ");
-        while(p)
-        {
-            if(counter == 0)
-            {
-                renterFirstName = p;
-            }
-            if(counter == 1)
-            {
-                renterLastName = p;
-            }
-            if(counter > 1)
-                break;
-            p = strtok(nullptr, " ");
-            counter++;
-        }
-
-        if(renterFirstName + " " + renterLastName == carOwner)
-        {
-            while(p)
-            {
-                display.DisplayWithColor(p, 1); std::cout << " ";
-                p = strtok(nullptr, " ");
-            }
-
-            std::cout << "\n";
-        }
-
-    }
-
-    carFile.close();
-    display.PressAnyKey();
-    mainClass.MenuOptions();
-}
-
 // TODO this function
-void CarFactory::DisplaySoldCars(std::vector<Car> cars, std::string carOwner)
+void CarFactory::DisplaySoldCars(std::vector<Car> cars)
 {
-    display.ResetScreen();
+    Display::ResetScreen();
     // Option 0 = Rented, option 1 = leased
     // We need to initialize two strings in order to compare it to the user we're logged in
     std::string carInfo, renterFirstName = "a", renterLastName = "a";
@@ -103,7 +41,7 @@ void CarFactory::DisplaySoldCars(std::vector<Car> cars, std::string carOwner)
 
     std::cout << "These are all the cars you have sold so far\n";
     std::cout << "<Owner of the car> <Car information>\n\n";
-    display.DisplayWithColor("----------------------------------------------\n\n", 2);
+    Display::DisplayWithColor("----------------------------------------------\n\n", 2);
 
     while(std::getline(carFile, carInfo))
     {
@@ -130,7 +68,7 @@ void CarFactory::DisplaySoldCars(std::vector<Car> cars, std::string carOwner)
             counter++;
         }
 
-        if(renterFirstName + " " + renterLastName == carOwner)
+        if(renterFirstName + " " + renterLastName == MainClass::GetUsername())
         {
             while(p)
             {
@@ -138,7 +76,7 @@ void CarFactory::DisplaySoldCars(std::vector<Car> cars, std::string carOwner)
                 {
                     std::cout << "--> ";
                 }
-                display.DisplayWithColor(p, 1);
+                Display::DisplayWithColor(p, 1);
                 std::cout << " ";
                 p = strtok(nullptr, " ");
                 counter++;
@@ -148,25 +86,25 @@ void CarFactory::DisplaySoldCars(std::vector<Car> cars, std::string carOwner)
     }
 
     carFile.close();
-    display.PressAnyKey();
-    mainClass.MenuOptions();
+    Display::PressAnyKey();
+    MainClass::MenuOptions();
 }
 
 void CarFactory::UpdateCarListing(std::string carOwner)
 {
-    display.ResetScreen();
+    Display::ResetScreen();
 
-    display.PressAnyKey();
-    mainClass.MenuOptions();
+    Display::PressAnyKey();
+    MainClass::MenuOptions();
 }
 
-void CarFactory::DisplayAvailableCars(std::vector<Car> cars, int displayedCarsPerPage = 5)
+void CarFactory::DisplayAvailableCars(std::vector<Car> cars)
 {
-    display.ResetScreen();
+    Display::ResetScreen();
     int maxCarsPerPage = 10;
 
     std::cout << "These are all the available cars in Checheci Leasing Automobile:\n\n";
-    display.DisplayWithColor("----------------------------------------------\n\n", 2);
+    Display::DisplayWithColor("----------------------------------------------\n\n", 2);
 
     std::string carInformation;
     for(int i = 0; i < cars.size(); i++)
@@ -174,10 +112,9 @@ void CarFactory::DisplayAvailableCars(std::vector<Car> cars, int displayedCarsPe
         std::cout << cars[i] << "\n";
     }
 
-    display.PressAnyKey();
-    mainClass.MenuOptions();
+    Display::PressAnyKey();
+    MainClass::MenuOptions();
 }
-
 
 void CarFactory::AddCar(int addingChoice, std::vector<Car>& carVectorToBeAdded)
 {
@@ -296,28 +233,6 @@ void CarFactory::AddCar(int addingChoice, std::vector<Car>& carVectorToBeAdded)
     }
 }
 
-void CarFactory::DisplayCarsForRentOrLease(std::vector<Car> carVector, int displayedCars, int option)
-{
-    display.ResetScreen();
-    int maxCarsPerPage = 10;
-
-    // Option = 0 => renting cars, Option = 1 => leasing cars
-    std::cout << "These are all the cars that can be ";
-    option == 0 ? std::cout << "rented " : std::cout << "leased ";
-    std::cout << "from Checheci Leasing Automobile\n\n";
-
-    display.DisplayWithColor("----------------------------------------------\n\n", 2);
-
-    std::string carInformation;
-    for(int i = 0; i < carVector.size(); i++)
-    {
-        std::cout << carVector[i] << "\n";
-    }
-
-    display.PressAnyKey();
-    mainClass.MenuOptions();
-}
-
 void CarFactory::DeleteCarFromFile(std::string fileName, int lineToBeDeleted)
 {
     std::ifstream inputFile(fileName);
@@ -360,10 +275,10 @@ void CarFactory::DeleteCarFromFile(std::string fileName, int lineToBeDeleted)
 
 void CarFactory::SearchForCar(std::vector<Car> cars, std::string personName)
 {
-    display.ResetScreen();
+    Display::ResetScreen();
 
-    display.DisplayWithColor("Welcome to our advanced car search engine!\n", 6);
-    display.DisplayWithColor("You will be asked to provide certain details about "
+    Display::DisplayWithColor("Welcome to our advanced car search engine!\n", 6);
+    Display::DisplayWithColor("You will be asked to provide certain details about "
                              "the car you are looking for!", 6);
     Sleep(2000);
 

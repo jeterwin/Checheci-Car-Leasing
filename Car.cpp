@@ -14,8 +14,6 @@
 #include "FileHandler.h"
 #include "Display.h"
 
-static Display display;
-
 Car::Car()
 {
     horsePower = carPrice = productionYear = kmsDriven = motorSize = 0;
@@ -23,7 +21,7 @@ Car::Car()
     transmissionType = Manual;
     bodyType = Coupe;
     drivetrain = AWD;
-    VIN = color = make = model = "";
+    carOwner = VIN = color = make = model = "";
 }
 
 Car::Car(std::string carOwner, std::string make, std::string model, int carPrice, enum BodyType bodyType, std::string color,
@@ -218,7 +216,7 @@ const std::string &color, const std::string& transmissionType, const std::string
 const std::string& drivetrainType, int maxKilometers, int motorSize, int horsePower, int maxPrice,
 int minYear)
 {
-    display.DisplayWithColor("\nThese are all the cars that fit in the criteria given:\n\n", 4);
+    Display::DisplayWithColor("\nThese are all the cars that fit in the criteria given:\n\n", 4);
     int currentCar = 0, interestedCars = 0;
     std::map<int, int> carDictionary = { };
 
@@ -241,7 +239,7 @@ int minYear)
     // There were no cars found
     if(interestedCars == 0)
     {
-        display.DisplayWithColor("There were no cars found given the parameters given by you, try"
+        Display::DisplayWithColor("There were no cars found given the parameters given by you, try"
                                  " a broader search!", 4);
 
         mainClass.MenuOptions();
@@ -249,7 +247,7 @@ int minYear)
     // At least one car was found
     else
     {
-        display.DisplayWithColor("\nPlease enter the index of the car you are interested in.\n", 4);
+        Display::DisplayWithColor("\nPlease enter the index of the car you are interested in.\n", 4);
         int ch;
         // What if he introduces a character? xd
         std::cin >> ch;
@@ -259,10 +257,10 @@ int minYear)
             std::cin >> ch;
         }
 
-        display.DisplayWithColor("You have successfully chosen car number ", 2);
-        display.DisplayWithColor(ch, 2);
+        Display::DisplayWithColor("You have successfully chosen car number ", 2);
+        Display::DisplayWithColor(ch, 2);
         std::cout << "\n";
-        display.DisplayWithColor("Now, would you like to rent or lease the car? (type rent | lease)\n\n", 4);
+        Display::DisplayWithColor("Now, would you like to rent or lease the car? (type rent | lease)\n\n", 4);
 
         std::cin.ignore();
         std::string option;
@@ -367,6 +365,11 @@ void Car::ValidateChoiceDrivetrain(int &userChoice, int userTries)
         userChoice=-1;
 
     return ;
+}
+
+std::string Car::GetCarOwnerName()
+{
+    return this -> carOwner;
 }
 
 int Car::FindCarIndexInFile(const std::vector<Car>& cars, const std::string &make, const std::string &model, const std::string &color,

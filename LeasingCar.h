@@ -29,8 +29,10 @@ class LeasingCar : public Car {
         friend std::fstream& operator<< (std::fstream& os, const LeasingCar&);
 
         std::string getStatus();
+        std::string GetCarOwnerName() override;
 
-        friend std::vector<LeasingCar> UpdateLeasingCars(const std::string& filename);
+        friend std::vector<LeasingCar> UpdateLeasingCars();
+        friend std::vector<LeasingCar> UpdateLeasedCars();
 };
 
 

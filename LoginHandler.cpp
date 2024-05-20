@@ -12,7 +12,6 @@
 
 void LoginHandler::Login(std::string * userName)
 {
-    Display display;
     FileHandler fileHandler;
 
     std::fstream usersFile;
@@ -39,8 +38,8 @@ void LoginHandler::Login(std::string * userName)
         if(strlen(cString) == 0)
         {
             usersFile.close();
-            display.DisplayWithColor("You provided wrong login arguments!", 5);
-            display.ResetScreen();
+            Display::DisplayWithColor("You provided wrong login arguments!", 5);
+            Display::ResetScreen();
             Login(userName);
             return;
         }
@@ -59,9 +58,9 @@ void LoginHandler::Login(std::string * userName)
         if(wordsInName != 2)
         {
             usersFile.close();
-            display.DisplayError("You must insert two parameters in the following way:\n");
-            display.DisplayWithColor("<FIRST NAME> <LAST NAME>", 5);
-            display.ResetScreen();
+            Display::DisplayError("You must insert two parameters in the following way:\n");
+            Display::DisplayWithColor("<FIRST NAME> <LAST NAME>", 5);
+            Display::ResetScreen();
             Login(userName);
             return;
         }
@@ -74,7 +73,7 @@ void LoginHandler::Login(std::string * userName)
     else
     {
         // If the users file is not empty, let the human login normally
-        display.LoginDisplay();
+        Display::LoginDisplay();
 
         std::string parameters;
         getline(std::cin, parameters);
@@ -88,9 +87,9 @@ void LoginHandler::Login(std::string * userName)
         if(strlen(cString) == 0)
         {
             usersFile.close();
-            display.DisplayWithColor("You provided wrong login arguments!", 5);
-            display.DisplayError("");
-            display.ResetScreen();
+            Display::DisplayWithColor("You provided wrong login arguments!", 5);
+            Display::DisplayError("");
+            Display::ResetScreen();
             Login(userName);
             return;
         }
@@ -101,9 +100,9 @@ void LoginHandler::Login(std::string * userName)
         if(strcmp(p, "login") != 0)
         {
             std::cout << "You must input your first and last name as follows:\n";
-            display.DisplayWithColor("login <FIRST NAME> <LAST NAME>", 5);
-            display.DisplayError("");
-            display.ResetScreen();
+            Display::DisplayWithColor("login <FIRST NAME> <LAST NAME>", 5);
+            Display::DisplayError("");
+            Display::ResetScreen();
             Login(userName);
             return;
         }
@@ -120,9 +119,9 @@ void LoginHandler::Login(std::string * userName)
         if(wordsInName != 3)
         {
             std::cout << "You must input your first and last name as follows:\n";
-            display.DisplayWithColor("login <FIRST NAME> <LAST NAME>", 5);
-            display.DisplayError("");
-            display.ResetScreen();
+            Display::DisplayWithColor("login <FIRST NAME> <LAST NAME>", 5);
+            Display::DisplayError("");
+            Display::ResetScreen();
             Login(userName);
             return;
         }
@@ -139,8 +138,8 @@ void LoginHandler::Login(std::string * userName)
         }
 
         // We did not find such a user
-        display.DisplayError("There was no user found called " + parameters + ". Try again!\n");
-        display.ResetScreen();
+        Display::DisplayError("There was no user found called " + parameters + ". Try again!\n");
+        Display::ResetScreen();
         Login(userName);
         return;
     }

@@ -86,7 +86,7 @@ public:
     static void ValidateChoiceTransmissionType(int &userChoice, int userTries=0);
     static void ValidateChoiceDrivetrain(int &userChoice, int userTries=0);
 
-
+    virtual std::string GetCarOwnerName();
     static std::string stringFuelType(enum FuelType x);
     static std::string stringTransmissionType(enum TransmissionType x);
     static std::string stringBodyType(enum BodyType x);
@@ -110,7 +110,7 @@ public:
     const std::string& drivetrainType, int maxKilometers, int motorSize, int horsePower, int maxPrice,
     int minYear);
 
-    friend std::vector<Car> UpdateAvailableCars(const std::string& filename);;
+    friend std::vector<Car> UpdateAvailableCars();
 };
 
 #endif //CHECHECI_CAR_LEASING_CAR_H

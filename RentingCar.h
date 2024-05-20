@@ -22,12 +22,16 @@ public:
     enum BodyType, std::string color, int productionYear, std::string VIN, int kmsDriven, enum FuelType,
     enum TransmissionType, enum Drivetrain, int motorSize, int horsePower);
 
-
     void writeToFile(std::string carOwner) override;
 
     std::string getStatus();
+    std::string GetCarOwnerName() override;
 
-    friend std::vector<RentingCar> UpdateRentingCars(const std::string& filename);
+    friend std::ostream& operator<< (std::ostream& os, const RentingCar&);
+    friend std::fstream& operator<< (std::fstream& os, const RentingCar&);
+
+    friend std::vector<RentingCar> UpdateRentingCars();
+    friend std::vector<RentingCar> UpdateRentedCars();
 };
 
 #endif //CHECHECI_CAR_LEASING_RENTINGCAR_H

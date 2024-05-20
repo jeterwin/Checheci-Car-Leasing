@@ -8,25 +8,25 @@
 
 class Display {
 public:
-    void LoginDisplay();
-    void Logo();
-    void MainPage();
+    static void LoginDisplay();
+    static void Logo();
+    static void MainPage();
     static void WelcomeProfile();
 
     char DisplayAccountPanel();
     char DisplayShopInterface();
 
-    void DisplayWithColor(std::string, int colorCode);
-    void DisplayWithColor(int, int colorCode);
+    static void DisplayWithColor(std::string, int colorCode);
+    static void DisplayWithColor(int, int colorCode);
 
     static void PrintBodyTypes();
     static void PrintFuelTypes();
     static void PrintTransmissionTypes();
     static void PrintDrivetrains();
 
-    void PressAnyKey();
-    void ResetScreen();
-    void DisplayError(const std::string& errorMessage);
+    static void PressAnyKey();
+    static void ResetScreen();
+    static void DisplayError(const std::string& errorMessage);
 };
 
 

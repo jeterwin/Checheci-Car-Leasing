@@ -22,7 +22,7 @@ LeasingCar::LeasingCar(int leasingPrice, int leasingPeriod)
 LeasingCar::LeasingCar(int leasingPrice, int leasingPeriod, std::string make, std::string model, int carPrice, enum BodyType bodyType, std::string color,
 int productionYear, std::string VIN, int kmsDriven, enum FuelType fuelType,
 enum TransmissionType transmissionType, enum Drivetrain drivetrain, int motorSize, int horsePower)
-: Car(make, model, carPrice, bodyType, color, productionYear, VIN, kmsDriven,
+: Car(carOwner, make, model, carPrice, bodyType, color, productionYear, VIN, kmsDriven,
 fuelType, transmissionType, drivetrain, motorSize, horsePower), leasingPrice(leasingPrice), leasingPeriod(leasingPeriod) {}
 
 std::fstream& operator<<(std::fstream& file, const LeasingCar& car)
@@ -45,6 +45,24 @@ std::fstream& operator<<(std::fstream& file, const LeasingCar& car)
     return file;
 }
 
+std::ostream& operator<<(std::ostream& os, const LeasingCar& car)
+{
+    os << "Make: "<< car.make << "\n";
+    os << "Model: "<< car.model << "\n";
+    os << "Price: "<< car.carPrice << "\n";
+    os << "Body Type: "<< Car::stringBodyType(car.bodyType) << "\n";
+    os << "Color: "<< car.color << "\n";
+    os << "Year of Fabrication: " << car.productionYear << "\n";
+    os << "VIN: " << car.VIN << "\n";
+    os << "Mileage: " << car.kmsDriven << "\n";
+    os << "Fuel Type: " << Car::stringFuelType(car.fuelType) << "\n";
+    os << "Transmission: " << Car::stringTransmissionType(car.transmissionType) << "\n";
+    os << "Drivetrain: " << Car::stringDrivetrain(car.drivetrain) << "\n";
+    os << "Capacity: " << car.motorSize << "\n";
+    os << "Horse Power: " << car.horsePower;
+
+    return os;
+}
 
 void LeasingCar::writeToFile(std::string carOwner)
 {
