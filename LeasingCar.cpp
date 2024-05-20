@@ -20,26 +20,40 @@ LeasingCar::LeasingCar(int leasingPrice, int leasingPeriod)
 }
 
 LeasingCar::LeasingCar(int leasingPrice, int leasingPeriod, std::string make, std::string model, int carPrice, enum BodyType bodyType, std::string color,
-                       int productionYear, std::string VIN, int kmsDriven, enum FuelType fuelType,
-                       enum TransmissionType transmissionType, enum Drivetrain drivetrain, int motorSize, int horsePower)
-                       : Car(make, model, carPrice, bodyType, color, productionYear, VIN, kmsDriven,
-                             fuelType, transmissionType, drivetrain, motorSize, horsePower), leasingPrice(leasingPrice), leasingPeriod(leasingPeriod) {}
+int productionYear, std::string VIN, int kmsDriven, enum FuelType fuelType,
+enum TransmissionType transmissionType, enum Drivetrain drivetrain, int motorSize, int horsePower)
+: Car(make, model, carPrice, bodyType, color, productionYear, VIN, kmsDriven,
+fuelType, transmissionType, drivetrain, motorSize, horsePower), leasingPrice(leasingPrice), leasingPeriod(leasingPeriod) {}
 
-void LeasingCar::print() {
-    std::cout << "Leasing Price: " << leasingPrice << "\n";
-    std::cout << "Leasing Period: " << leasingPeriod << "\n";
-    std::cout << *this;
+std::fstream& operator<<(std::fstream& file, const LeasingCar& car)
+{
+    file << car.make << ",";
+    file << car.model << ",";
+    file << car.carPrice << ",";
+    file << Car::stringBodyType(car.bodyType) << ",";
+    file << car.color << ",";
+    file << car.productionYear << ",";
+    file << car.VIN << ",";
+    file << car.kmsDriven << ",";
+    file << Car::stringFuelType(car.fuelType) << ",";
+    file << Car::stringTransmissionType(car.transmissionType) << ",";
+    file << Car::stringDrivetrain(car.drivetrain) << ",";
+    file << car.motorSize << ",";
+    file << car.horsePower;
+    file << "\n";
+
+    return file;
 }
 
-void LeasingCar::writeToFile()
-{
-    FileHandler handler;
-    std::string filePath = handler.GetLeasedCars();
 
+void LeasingCar::writeToFile(std::string carOwner)
+{
+    std::string filePath = FileHandler::GetLeasedCarsFileName();
     std::fstream myFile (filePath, std::ios_base::app);
+
     if (myFile.is_open())
     {
-        myFile << leasingPrice << " " << leasingPeriod << " ";
+        myFile << leasingPrice << "," << leasingPeriod << ",";
         myFile << *this;
         myFile.close();
     }
@@ -50,5 +64,10 @@ void LeasingCar::writeToFile()
 std::string LeasingCar::getStatus()
 {
     return "Leasing";
+}
+
+void LeasingCar::deleteFromFile()
+{
+    //Car::deleteFromFile();
 }
 

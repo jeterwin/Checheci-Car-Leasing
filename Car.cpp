@@ -6,6 +6,7 @@
 #include <fstream>
 #include <map>
 #include <regex>
+#include <windows.h>
 
 #include "CarFactory.h"
 #include "Car.h"
@@ -25,10 +26,10 @@ Car::Car()
     VIN = color = make = model = "";
 }
 
-Car::Car(std::string make, std::string model, int carPrice, enum BodyType bodyType, std::string color,
+Car::Car(std::string carOwner, std::string make, std::string model, int carPrice, enum BodyType bodyType, std::string color,
             int productionYear, std::string VIN, int kmsDriven, enum FuelType fuelType,
             enum TransmissionType transmissionType, enum Drivetrain drivetrain, int motorSize, int horsePower)
-                    : make(make), model(model), carPrice(carPrice), bodyType(bodyType), color(color), productionYear(productionYear),
+                    : carOwner(carOwner), make(make), model(model), carPrice(carPrice), bodyType(bodyType), color(color), productionYear(productionYear),
                       VIN(VIN), kmsDriven(kmsDriven), fuelType(fuelType), transmissionType(transmissionType), drivetrain(drivetrain),
                       motorSize(motorSize), horsePower(horsePower) {}
 
@@ -71,9 +72,9 @@ std::fstream& operator<<(std::fstream& file, const Car& car)
     return file;
 }
 
-void Car::writeToFile(std::string fileToWriteInto, std::string carOwner)
+void Car::writeToFile(std::string carOwner)
 {
-    std::fstream myFile (fileToWriteInto, std::ios_base::app);
+    std::fstream myFile (FileHandler::GetAvailableCarsFileName(), std::ios_base::app);
 
     if(!carOwner.empty())
     {
@@ -92,21 +93,12 @@ void Car::writeToFile(std::string fileToWriteInto, std::string carOwner)
         return;
 }
 
-void Car::deleteFromFile()
-{
-    std::string filePath = FileHandler::GetAvailableCars();
-}
+void Car::deleteFromFile() { }
 
 std::string Car::getStatus()
 {
     return "Available";
 }
-
-int Car::GetHP()
-{
-    return this -> horsePower;
-}
-
 
 
 std::string Car::stringTransmissionType(enum TransmissionType x)
@@ -221,74 +213,6 @@ std::string Car::stringDrivetrain(enum Drivetrain x)
     }
 }
 
-//TODO: CHANGE THIS FUNCTION SUCH THAT IT RETURNS A VECTOR WITH THE CARS AN OWNER HAS, ADD A NEW PARAMETER FOR USERNAME
-std::vector<Car> Car::readCarsFromFile(const std::string& filename, const std::string& loggedUser)
-{
-    std::vector<Car> cars;
-    std::ifstream file(filename);
-
-    if (!file.is_open())
-    {
-        std::cerr << "Error opening file " << filename << std::endl;
-        return cars;
-    }
-
-    std::string line;
-    while (std::getline(file, line))
-    {
-        std::string ownerName;
-        std::istringstream iss(line);
-        std::string token;
-        Car car;
-        FuelType fuelType;
-        BodyType bodyType;
-        TransmissionType transmissionType;
-        Drivetrain drivetrain;
-
-        std::getline(iss, ownerName, ',');
-        if ( ownerName == loggedUser ) {
-            std::getline(iss, car.make, ',');
-            std::getline(iss, car.model, ',');
-
-            std::getline(iss, token, ',');
-            car.carPrice = std::stoi(token);
-
-            std::getline(iss, token, ',');
-            car.bodyType = static_cast<BodyType>(Car::stringToIntBodyType(token));
-
-            std::getline(iss, car.color, ',');
-
-            std::getline(iss, token, ',');
-            car.productionYear = std::stoi(token);
-
-            std::getline(iss, car.VIN, ',');
-
-            std::getline(iss, token, ',');
-            car.kmsDriven = std::stoi(token);
-
-            std::getline(iss, token, ',');
-            car.fuelType = static_cast<FuelType>(Car::stringToIntFuelType(token));
-
-            std::getline(iss, token, ',');
-            car.transmissionType = static_cast<TransmissionType>(Car::stringToIntTransmissionType(token));
-
-            std::getline(iss, token, ',');
-            car.drivetrain = static_cast<Drivetrain>(Car::stringToIntDrivetrain(token));
-
-            std::getline(iss, token, ',');
-            car.motorSize = std::stoi(token);
-
-            std::getline(iss, token, ',');
-            car.horsePower = std::stoi(token);
-
-            cars.push_back(car);
-        }
-    }
-
-    file.close();
-    return cars;
-}
-
 void Car::searchCars(std::vector<Car> cars, const std::string &make, const std::string &model,
 const std::string &color, const std::string& transmissionType, const std::string& fuelType,
 const std::string& drivetrainType, int maxKilometers, int motorSize, int horsePower, int maxPrice,
@@ -296,7 +220,6 @@ int minYear)
 {
     display.DisplayWithColor("\nThese are all the cars that fit in the criteria given:\n\n", 4);
     int currentCar = 0, interestedCars = 0;
-    //std::vector<Car> foundCars;
     std::map<int, int> carDictionary = { };
 
     for (const auto& car: cars)
@@ -356,50 +279,14 @@ int minYear)
 
         // Write in rent or lease file depending on our option
         //cars[0].writeToFile(std::regex_match(option, rentPattern)
-        //? FileHandler::GetRentedCars() : FileHandler::GetLeasedCars());
-        cars[carDictionary[ch - 1]].writeToFile(option == "rent"
-        ? FileHandler::GetRentedCars() : FileHandler::GetLeasedCars(), MainClass::GetUsername());
+        //? FileHandler::GetRentedCarsFileName() : FileHandler::GetLeasedCarsFileName());
+        cars[carDictionary[ch - 1]].writeToFile(MainClass::GetUsername());
 
-        CarFactory::DeleteCarFromFile(FileHandler::GetAvailableCars(), carDictionary[ch - 1]);
+        CarFactory::DeleteCarFromFile(FileHandler::GetAvailableCarsFileName(), carDictionary[ch - 1]);
 
-        display.DisplayError("");
+        Sleep(2000);
         mainClass.MenuOptions();
     }
-}
-
-void Car::PrintBodyTypes()
-{
-    std::cout << "0. SUV\n";
-    std::cout << "1. Coupe\n";
-    std::cout << "2. Compact\n";
-    std::cout << "3. Convertible\n";
-    std::cout << "4. Wagon\n";
-    std::cout << "5. Sedan\n";
-    std::cout << "6. Van\n";
-    std::cout << "7. Transporter\n";
-}
-
-void Car::PrintFuelTypes()
-{
-    std::cout << "0. Diesel\n";
-    std::cout << "1. Electric\n";
-    std::cout << "2. Hybrid\n";
-    std::cout << "3. Gasoline\n";
-    std::cout << "4. LPG\n";
-}
-
-void Car::PrintTransmissionTypes()
-{
-    std::cout << "0.Automatic\n";
-    std::cout << "1.Manual\n";
-}
-
-void Car::PrintDrivetrains()
-{
-    std::cout << "0.AWD\n";
-    std::cout << "1.4WD\n";
-    std::cout << "2.RWD\n";
-    std::cout << "3.FWD\n";
 }
 
 void Car::ValidateChoiceBodyType(int &userChoice, int userTries)
@@ -456,7 +343,7 @@ void Car::ValidateChoiceTransmissionType(int &userChoice, int userTries)
         userTries++;
     }
 
-    if ( userTries > 5)
+    if (userTries > 5)
         userChoice=-1;
 
     return ;
@@ -480,6 +367,27 @@ void Car::ValidateChoiceDrivetrain(int &userChoice, int userTries)
         userChoice=-1;
 
     return ;
+}
+
+int Car::FindCarIndexInFile(const std::vector<Car>& cars, const std::string &make, const std::string &model, const std::string &color,
+const std::string &transmissionType, const std::string &fuelType, const std::string &drivetrainType,
+int maxKilometers, int motorSize, int horsePower, int maxPrice, int minYear)
+{
+    int currentCarLine = 0;
+
+    for (const auto& car: cars)
+    {
+        if ((car.make == make || make.empty()) && (model.empty() || car.model == model)
+            && (color.empty() || car.color == color)
+            && car.carPrice <= maxPrice && car.productionYear >= minYear
+            && car.kmsDriven <= maxKilometers)
+        {
+            return currentCarLine;
+        }
+        currentCarLine++;
+    }
+
+    return -1;
 }
 
 int Car::stringToIntTransmissionType(const std::string& transmissionType)

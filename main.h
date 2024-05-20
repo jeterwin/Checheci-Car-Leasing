@@ -5,6 +5,10 @@
 #ifndef CHECHECI_CAR_LEASING_MAIN_H
 #define CHECHECI_CAR_LEASING_MAIN_H
 
+#include "Car.h"
+#include "RentingCar.h"
+#include "LeasingCar.h"
+
 class MainClass
 {
 public:

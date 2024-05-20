@@ -18,12 +18,9 @@
 #include "FileHandler.h"
 #include "main.h"
 
-void UpdatePersonalInformation();
-
 std::string loggedUserName;
 
 static Display display;
-static FileHandler fileHandler;
 static LoginHandler loginHandler;
 static CarFactory carFactory;
 static MainClass mainClass;
@@ -32,6 +29,229 @@ std::vector<Car> userAvailableCars;
 std::vector<RentingCar> userRentingCars;
 std::vector<LeasingCar> userLeasingCars;
 
+std::vector<Car> UpdateAvailableCars(const std::string& filename);
+std::vector<LeasingCar> UpdateLeasingCars(const std::string& filename);
+std::vector<RentingCar> UpdateRentingCars(const std::string& filename);
+
+std::vector<Car> UpdateAvailableCars(const std::string &filename)
+{
+    std::vector<Car> cars;
+    std::ifstream file(filename);
+
+    if (!file.is_open())
+    {
+        std::cerr << "Error opening file " << filename << std::endl;
+        return cars;
+    }
+
+    std::string line;
+    while (std::getline(file, line))
+    {
+        std::string ownerName;
+        std::istringstream iss(line);
+        std::string token;
+        Car car;
+        FuelType fuelType;
+        BodyType bodyType;
+        TransmissionType transmissionType;
+        Drivetrain drivetrain;
+
+        std::getline(iss, ownerName, ',');
+        if (ownerName == MainClass::GetUsername() ) {
+            std::getline(iss, car.make, ',');
+            std::getline(iss, car.model, ',');
+
+            std::getline(iss, token, ',');
+            car.carPrice = std::stoi(token);
+
+            std::getline(iss, token, ',');
+            car.bodyType = static_cast<BodyType>(Car::stringToIntBodyType(token));
+
+            std::getline(iss, car.color, ',');
+
+            std::getline(iss, token, ',');
+            car.productionYear = std::stoi(token);
+
+            std::getline(iss, car.VIN, ',');
+
+            std::getline(iss, token, ',');
+            car.kmsDriven = std::stoi(token);
+
+            std::getline(iss, token, ',');
+            car.fuelType = static_cast<FuelType>(Car::stringToIntFuelType(token));
+
+            std::getline(iss, token, ',');
+            car.transmissionType = static_cast<TransmissionType>(Car::stringToIntTransmissionType(token));
+
+            std::getline(iss, token, ',');
+            car.drivetrain = static_cast<Drivetrain>(Car::stringToIntDrivetrain(token));
+
+            std::getline(iss, token, ',');
+            car.motorSize = std::stoi(token);
+
+            std::getline(iss, token, ',');
+            car.horsePower = std::stoi(token);
+
+            cars.push_back(car);
+        }
+    }
+
+    file.close();
+    return cars;
+}
+
+std::vector<LeasingCar> UpdateLeasingCars(const std::string &filename)
+{
+    // Renter name, Car owner name, car specs, last 2 data will be renting amount and renting time
+    std::vector<LeasingCar> cars;
+    std::ifstream file(filename);
+
+    if (!file.is_open())
+    {
+        std::cerr << "Error opening file " << filename << std::endl;
+        return cars;
+    }
+
+    std::string line;
+    while (std::getline(file, line))
+    {
+        std::string ownerName, renterName;
+        std::string token;
+        std::istringstream iss(line);
+        LeasingCar car;
+        FuelType fuelType;
+        BodyType bodyType;
+        TransmissionType transmissionType;
+        Drivetrain drivetrain;
+
+        std::getline(iss, renterName, ',');
+        if (renterName == MainClass::GetUsername())
+        {
+            std::getline(iss, ownerName, ',');
+
+            std::getline(iss, car.make, ',');
+            std::getline(iss, car.model, ',');
+
+            std::getline(iss, token, ',');
+            car.carPrice = std::stoi(token);
+
+            std::getline(iss, token, ',');
+            car.bodyType = static_cast<BodyType>(Car::stringToIntBodyType(token));
+
+            std::getline(iss, car.color, ',');
+
+            std::getline(iss, token, ',');
+            car.productionYear = std::stoi(token);
+
+            std::getline(iss, car.VIN, ',');
+
+            std::getline(iss, token, ',');
+            car.kmsDriven = std::stoi(token);
+
+            std::getline(iss, token, ',');
+            car.fuelType = static_cast<FuelType>(Car::stringToIntFuelType(token));
+
+            std::getline(iss, token, ',');
+            car.transmissionType = static_cast<TransmissionType>(Car::stringToIntTransmissionType(token));
+
+            std::getline(iss, token, ',');
+            car.drivetrain = static_cast<Drivetrain>(Car::stringToIntDrivetrain(token));
+
+            std::getline(iss, token, ',');
+            car.motorSize = std::stoi(token);
+
+            std::getline(iss, token, ',');
+            car.horsePower = std::stoi(token);
+
+            std::getline(iss, token, ',');
+            car.leasingPeriod = std::stoi(token);
+
+            std::getline(iss, token, ',');
+            car.leasingPrice = std::stoi(token);
+
+            cars.push_back(car);
+        }
+    }
+
+    file.close();
+    return cars;
+}
+
+std::vector<RentingCar> UpdateRentingCars(const std::string &filename)
+{
+    // Renter name, Car owner name, car specs, last 2 data will be renting amount and renting time
+    std::vector<RentingCar> cars;
+    std::ifstream file(filename);
+
+    if (!file.is_open())
+    {
+        std::cerr << "Error opening file " << filename << std::endl;
+        return cars;
+    }
+
+    std::string line;
+    while (std::getline(file, line))
+    {
+        std::string renterName, ownerName;
+        std::istringstream iss(line);
+        std::string token;
+        RentingCar car;
+        FuelType fuelType;
+        BodyType bodyType;
+        TransmissionType transmissionType;
+        Drivetrain drivetrain;
+
+        std::getline(iss, renterName, ',');
+        if (renterName == MainClass::GetUsername())
+        {
+            std::getline(iss, ownerName, ',');
+
+            std::getline(iss, car.make, ',');
+            std::getline(iss, car.model, ',');
+
+            std::getline(iss, token, ',');
+            car.carPrice = std::stoi(token);
+
+            std::getline(iss, token, ',');
+            car.bodyType = static_cast<BodyType>(Car::stringToIntBodyType(token));
+
+            std::getline(iss, car.color, ',');
+
+            std::getline(iss, token, ',');
+            car.productionYear = std::stoi(token);
+
+            std::getline(iss, car.VIN, ',');
+
+            std::getline(iss, token, ',');
+            car.kmsDriven = std::stoi(token);
+
+            std::getline(iss, token, ',');
+            car.fuelType = static_cast<FuelType>(Car::stringToIntFuelType(token));
+
+            std::getline(iss, token, ',');
+            car.transmissionType = static_cast<TransmissionType>(Car::stringToIntTransmissionType(token));
+
+            std::getline(iss, token, ',');
+            car.drivetrain = static_cast<Drivetrain>(Car::stringToIntDrivetrain(token));
+
+            std::getline(iss, token, ',');
+            car.motorSize = std::stoi(token);
+
+            std::getline(iss, token, ',');
+            car.horsePower = std::stoi(token);
+
+            std::getline(iss, token, ',');
+            car.rentingPeriod = std::stoi(token);
+            std::getline(iss, token, ',');
+            car.rentingPrice = std::stoi(token);
+
+            cars.push_back(car);
+        }
+    }
+
+    file.close();
+    return cars;
+}
 void MenuOptions();
 
 int main()
@@ -39,134 +259,16 @@ int main()
     display.Logo();
 
     loginHandler.Login(&loggedUserName);
-    userAvailableCars = Car::readCarsFromFile(FileHandler::GetAvailableCars(),"debug marian");
-    for(int i = 0; i < userAvailableCars.size(); i++)
-        std::cout << userAvailableCars[i] << "\n\n\n";
+
+    // Get the cars owned by the logged in user
+    userAvailableCars = UpdateAvailableCars(FileHandler::GetAvailableCarsFileName());
+    userRentingCars = UpdateRentingCars(FileHandler::GetAvailableRentingCars());
+    userLeasingCars = UpdateLeasingCars(FileHandler::GetAvailableLeasingCars());
 
     std::cout << "Successfully logged in, welcome " << loggedUserName << "!" << std::endl;
-    std::cout << "DEBUG" << " LOGGED USER: " << loggedUserName << "\n";
-    CarFactory debugCarFactory{};
 
-    int choice;
-    std::cin >> choice;
-    switch (choice)
-    {
-        case 1: {
-
-            std::string make, model, color, VIN;
-            int carPrice, choiceBody = -1, kmsDriven, choiceFuel = -1, choiceTransmission=-1, choiceDrivetrain=-1,
-            productionYear, motorSize, horsePower;
-            // -1 IF USER RUNS OUT OF TRIES WHEN MAKING A CHOICE
-            BodyType bodyType;
-            FuelType fuelType;
-            TransmissionType transmissionType;
-            Drivetrain drivetrain;
-            std::cin.clear();
-            std::cin.sync();
-
-            std::cout << "ADD CAR TO AVAILABLE CARS\n";
-
-            std::cout << "What's the name of the car's make?: ";
-            std::getline(std::cin, make);
-
-            std::cout << "\nWhat's the name of the car's model?: ";
-            std::getline(std::cin, model);
-
-            std::cout << "\nFor how much does your car sell?: ";
-            std::cin >> carPrice;
-
-            std::cout << "\nPick the body type that matches your car:\n";
-            Car::PrintBodyTypes();
-            Car::ValidateChoiceBodyType(choiceBody);
-            if (choiceBody == -1) {
-                std::cout << "YOU RAN OUT OF TRIES!!!!!";
-                // RETURN; IN FUNCTION OR SMTH
-            } else {
-                bodyType = static_cast<BodyType>(choiceBody);
-                std::cout << "You chose: " << Car::stringBodyType(bodyType) << "\n";
-            }
-
-            std::cout << "\nWhat's the color of your car?: ";
-            std::getline(std::cin >> std::ws, color);
-
-            std::cout << "\nWhen was your car produced?: ";
-            std::cin >> productionYear;
-
-            //TODO: FUNCTION THAT CHECKS IF USER'S INPUT VIN IS ALREADY IN USE
-            std::cout << "\nWhat's your Vehicle Identification Number (VIN) ?: ";
-            std::getline(std::cin >> std::ws, VIN);
-
-            std::cout << "\nWhat's your car mileage (kilometers)?: ";
-            std::cin >> kmsDriven;
-
-            std::cout << "\nPick the fuel type that matches your car:\n";
-            Car::PrintFuelTypes();
-            Car::ValidateChoiceFuelType(choiceFuel);
-            if (choiceFuel == -1) {
-                std::cout << "YOU RAN OUT OF TRIES!!!!!";
-                // RETURN; IN FUNCTION OR SMTH
-            } else {
-                fuelType = static_cast<FuelType>(choiceFuel);
-                std::cout << "You chose: " << Car::stringFuelType(fuelType) << "\n";
-            }
-
-            std::cout << "\nPick the transmission type that matches your car:\n";
-            Car::PrintTransmissionTypes();
-            Car::ValidateChoiceTransmissionType(choiceTransmission);
-            if (choiceTransmission == -1) {
-                std::cout << "YOU RAN OUT OF TRIES!!!!!";
-                // RETURN; IN FUNCTION OR SMTH
-            } else {
-                transmissionType = static_cast<TransmissionType>(choiceTransmission);
-                std::cout << "You chose: " << Car::stringTransmissionType(transmissionType) << "\n";
-            }
-
-            std::cout << "\nPick the drivetrain that matches your car:\n";
-            Car::PrintDrivetrains();
-            Car::ValidateChoiceDrivetrain(choiceDrivetrain);
-            if (choiceDrivetrain == -1) {
-                std::cout << "YOU RAN OUT OF TRIES!!!!!";
-                // RETURN; IN FUNCTION OR SMTH
-            } else {
-                drivetrain = static_cast<Drivetrain>(choiceDrivetrain);
-                std::cout << "You chose: " << Car::stringDrivetrain(drivetrain) << "\n";
-            }
-
-            std::cout << "\nWhat's your car's engine size?: ";
-            std::cin >> motorSize;
-
-            std::cout << "\nWhat's your car's horsepower?: ";
-            std::cin >> horsePower;
-
-
-            std::cout << "\nUSER ENTRIES:\n";
-            std::cout << make << "\n" << model << "\n" << carPrice << "\n" << Car::stringBodyType(bodyType)
-                      << "\n" << color << "\n" << productionYear << "\n" << VIN << "\n" << kmsDriven << "\n"
-                      << Car::stringFuelType(fuelType) << "\n" << Car::stringTransmissionType(transmissionType) << "\n"
-                      << Car::stringDrivetrain(drivetrain) << "\n" << motorSize << "\n" << horsePower;
-
-            Car x{make, model, carPrice, bodyType, color, productionYear, VIN, kmsDriven, fuelType, transmissionType,
-                  drivetrain, motorSize, horsePower};
-            x.writeToFile(FileHandler::GetAvailableCars(), loggedUserName);
-            //add it to the vector
-            userAvailableCars.push_back(x);
-            break;
-        }
-
-        case 2: {
-            std::cout << "\nADD ONE OF USER'S CAR TO RENTING\n";
-//            std::vector<Car> cars=Car::readCarsFromFile(FileHandler::GetAvailableCars());
-//            for(int i=0;i<cars.size();i++)
-//                std::cout<<"\n\n\n"<<"CAR: "<<i<<"\n"<<cars[i]<< "\n\n\n";
-
-        }
-
-    }
-
-
-//    Sleep(2000);
-
-//    mainClass.MenuOptions();
+    Sleep(2000);
+    mainClass.MenuOptions();
 }
 
 void MainClass::MenuOptions()
@@ -214,7 +316,7 @@ void MainClass::MenuOptions()
                     carFactory.DisplayCarsForRentOrLease(5, 1);
                     break;
                 case '4':
-                    carFactory.SearchForCar(loggedUserName);
+                    carFactory.SearchForCar(userAvailableCars, loggedUserName);
                     break;
                 case '5':
                     mainClass.MenuOptions();
@@ -225,7 +327,7 @@ void MainClass::MenuOptions()
             break;
         default:
             display.DisplayWithColor("Goodbye and have a nice day!", 4);
-            display.DisplayError("");
+            Sleep(2000);
             return;
     }
 }

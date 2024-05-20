@@ -19,6 +19,11 @@ public:
     void DisplayWithColor(std::string, int colorCode);
     void DisplayWithColor(int, int colorCode);
 
+    static void PrintBodyTypes();
+    static void PrintFuelTypes();
+    static void PrintTransmissionTypes();
+    static void PrintDrivetrains();
+
     void PressAnyKey();
     void ResetScreen();
     void DisplayError(const std::string& errorMessage);

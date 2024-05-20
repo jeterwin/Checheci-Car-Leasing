@@ -15,13 +15,12 @@ protected:
 public:
     static std::string GetUsersFile();
 
-    static std::string GetRentedCars();
-    static std::string GetLeasedCars();
+    static std::string GetRentedCarsFileName();
+    static std::string GetLeasedCarsFileName();
 
-    static std::string GetAvailableCars();
+    static std::string GetAvailableCarsFileName();
     static std::string GetAvailableRentingCars();
     static std::string GetAvailableLeasingCars();
-
 
     static std::string GetSoldCars();
 

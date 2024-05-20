@@ -1,5 +1,5 @@
 //
-// Created by Erwin on 5/10/2024.
+// Created by Erwin on 5/19/2024.
 //
 
 #ifndef CHECHECI_CAR_LEASING_RENTINGCAR_H
@@ -10,21 +10,24 @@
 
 class RentingCar : public Car {
 
-    protected:
-        int rentingPrice;
-        int rentingPeriod; // In days
+protected:
+    int rentingPrice;
+    int rentingPeriod; // In days
 
-    public:
-        void print();
-        RentingCar();
-        ~RentingCar() = default;
-        RentingCar(int rentingPrice, int rentingPeriod, std::string make, std::string model, int carPrice, enum BodyType, std::string color,
-                int productionYear, std::string VIN, int kmsDriven, enum FuelType,
-                enum TransmissionType, enum Drivetrain, int motorSize, int horsePower);
-        void writeToFile();
+public:
+    void print();
+    RentingCar();
+    ~RentingCar() = default;
+    RentingCar(int rentingPrice, int rentingPeriod, std::string make, std::string model, int carPrice,
+    enum BodyType, std::string color, int productionYear, std::string VIN, int kmsDriven, enum FuelType,
+    enum TransmissionType, enum Drivetrain, int motorSize, int horsePower);
 
-        std::string getStatus();
+
+    void writeToFile(std::string carOwner) override;
+
+    std::string getStatus();
+
+    friend std::vector<RentingCar> UpdateRentingCars(const std::string& filename);
 };
-
 
 #endif //CHECHECI_CAR_LEASING_RENTINGCAR_H

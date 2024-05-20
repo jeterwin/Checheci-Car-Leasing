@@ -6,6 +6,7 @@
 #define CHECHECI_CAR_LEASING_CARFACTORY_H
 
 #include <map>
+#include <vector>
 
 #include "LeasingCar.h"
 #include "RentingCar.h"
@@ -25,23 +26,17 @@ public:
     CarFactory();
     CarFactory(Car * leasingCar);
 
-    void SearchForCar(std::string personName);
+    void SearchForCar(std::vector<Car>, std::string personName);
     static void DeleteCarFromFile(std::string fileName, int lineToBeDeleted);
 
-    void DisplayCarsForRentOrLease(int displayedCars, int option);
-    void DisplayRentedOrLeasedCars(std::string carOwner, int option);
-    void DisplayAvailableCars(int displayedCars);
-    void DisplaySoldCars(std::string carOwner);
+    void DisplayCarsForRentOrLease(std::vector<Car>, int displayedCars, int option);
+    void DisplayRentedOrLeasedCars(std::vector<Car>, std::string carOwner, int option);
+    void DisplayAvailableCars(std::vector<Car>, int displayedCars);
+    void DisplaySoldCars(std::vector<Car>, std::string carOwner);
 
     void UpdateCarListing(std::string carOwner);
 
-    void AddCar(Car *);
-
-    Car ** GetAvailableCars();
-    Car ** GetGivenCars();
-
-    int CurrentAvailableCarsNr();
-    int GivenCarsNr();
+    void AddCar(int addingChoice, std::vector<Car>& carVectorToBeAdded);
 };
 
 

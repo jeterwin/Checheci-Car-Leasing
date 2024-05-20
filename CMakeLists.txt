@@ -7,10 +7,8 @@ include_directories(.)
 
 add_executable(Checheci_Car_Leasing
         main.cpp
-        Car.h
         Car.cpp
         RentingCar.cpp
-        RentingCar.h
         LeasingCar.cpp
         LeasingCar.h
         CarFactory.cpp
@@ -21,4 +19,6 @@ add_executable(Checheci_Car_Leasing
         LoginHandler.h
         FileHandler.cpp
         FileHandler.h
+        RentingCar.h
+        Car.h
 )

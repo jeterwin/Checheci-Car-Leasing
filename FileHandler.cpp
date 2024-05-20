@@ -14,17 +14,17 @@ std::string FileHandler::GetUsersFile()
     return "Files/Users.txt";
 }
 
-std::string FileHandler::GetAvailableCars()
+std::string FileHandler::GetAvailableCarsFileName()
 {
     return "Files/AvailableCars.txt";
 }
 
-std::string FileHandler::GetLeasedCars()
+std::string FileHandler::GetLeasedCarsFileName()
 {
     return "Files/LeasedCars.txt";
 }
 
-std::string FileHandler::GetRentedCars()
+std::string FileHandler::GetRentedCarsFileName()
 {
     return "Files/RentedCars.txt";
 }
@@ -35,9 +35,9 @@ std::string FileHandler::GetSoldCars()
 }
 
 std::string FileHandler::GetAvailableRentingCars() {
-    return "Files/LeasingCars.txt";
+    return "Files/RentingCars.txt";
 }
 
 std::string FileHandler::GetAvailableLeasingCars() {
-    return "Files/RentingCars.txt";
+    return "Files/LeasingCars.txt";
 }

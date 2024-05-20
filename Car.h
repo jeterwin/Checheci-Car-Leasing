@@ -1,5 +1,5 @@
 //
-// Created by Erwin on 5/10/2024.
+// Created by Erwin on 5/19/2024.
 //
 
 #ifndef CHECHECI_CAR_LEASING_CAR_H
@@ -47,64 +47,70 @@ enum Drivetrain
 
 class Car
 {
-    protected:
-        int horsePower;
-        int carPrice;
-        int productionYear;
-        int kmsDriven;
-        int motorSize;
+protected:
+    int horsePower;
+    int carPrice;
+    int productionYear;
+    int kmsDriven;
+    int motorSize;
 
-        FuelType fuelType;
-        TransmissionType transmissionType;
-        BodyType bodyType;
-        Drivetrain drivetrain;
+    FuelType fuelType;
+    TransmissionType transmissionType;
+    BodyType bodyType;
+    Drivetrain drivetrain;
 
-        std::string VIN;
-        std::string color = "White";
-        std::string make;
-        std::string model;
+    std::string VIN;
+    std::string color = "White";
+    std::string make;
+    std::string model;
+    std::string carOwner;
 
-    public:
-        Car();
-        Car(std::string make, std::string model, int carPrice, enum BodyType, std::string color,
-                int productionYear, std::string VIN, int kmsDriven, enum FuelType,
-                        enum TransmissionType, enum Drivetrain, int motorSize, int horsePower);
+public:
+    Car();
+    Car(std::string carOwner, std::string make, std::string model, int carPrice, enum BodyType, std::string color,
+        int productionYear, std::string VIN, int kmsDriven, enum FuelType,
+        enum TransmissionType, enum Drivetrain, int motorSize, int horsePower);
 
-        int GetHP();
-        friend std::ostream& operator<< (std::ostream& os, const Car&);
-        friend std::fstream& operator<< (std::fstream& os, const Car&);
 
-        virtual std::string getStatus();
-        virtual void writeToFile(std::string fileToWriteInto, std::string carOwner);
-        virtual void deleteFromFile();
+    friend std::ostream& operator<< (std::ostream& os, const Car&);
+    friend std::fstream& operator<< (std::fstream& os, const Car&);
 
-        static void ValidateChoiceBodyType(int &userChoice, int userTries=0);
-        static void ValidateChoiceFuelType(int &userChoice, int userTries=0);
-        static void ValidateChoiceTransmissionType(int &userChoice, int userTries=0);
-        static void ValidateChoiceDrivetrain(int &userChoice, int userTries=0);
 
-        static std::string stringFuelType(enum FuelType x);
-        static std::string stringTransmissionType(enum TransmissionType x);
-        static std::string stringBodyType(enum BodyType x);
-        static std::string stringDrivetrain(enum Drivetrain x);
+    virtual std::string getStatus();
+    virtual void writeToFile(std::string carOwner);
+    virtual void deleteFromFile();
 
-        static int stringToIntTransmissionType(const std::string& transmissionType);
-        static int stringToIntFuelType(const std::string& fuelType);
-        static int stringToIntBodyType(const std::string& bodyType);
-        static int stringToIntDrivetrain(const std::string& drivetrain);
 
-        static void PrintBodyTypes();
-        static void PrintFuelTypes();
-        static void PrintTransmissionTypes();
-        static void PrintDrivetrains();
+    static void ValidateChoiceBodyType(int &userChoice, int userTries=0);
+    static void ValidateChoiceFuelType(int &userChoice, int userTries=0);
+    static void ValidateChoiceTransmissionType(int &userChoice, int userTries=0);
+    static void ValidateChoiceDrivetrain(int &userChoice, int userTries=0);
 
-        static std::vector<Car> readCarsFromFile(const std::string& filename, const std::string& loggedUser);
-        static void searchCars(std::vector<Car> cars, const std::string& make,
-        const std::string& model, const std::string& color, const std::string& transmissionType,
-        const std::string& fuelType, const std::string& drivetrainType, int maxKilometers, int motorSize,
-        int horsePower, int maxPrice, int minYear);
 
+    static std::string stringFuelType(enum FuelType x);
+    static std::string stringTransmissionType(enum TransmissionType x);
+    static std::string stringBodyType(enum BodyType x);
+    static std::string stringDrivetrain(enum Drivetrain x);
+
+
+    static int stringToIntTransmissionType(const std::string& transmissionType);
+    static int stringToIntFuelType(const std::string& fuelType);
+    static int stringToIntBodyType(const std::string& bodyType);
+    static int stringToIntDrivetrain(const std::string& drivetrain);
+
+
+    static void searchCars(std::vector<Car> cars, const std::string& make,
+    const std::string& model, const std::string& color, const std::string& transmissionType,
+    const std::string& fuelType, const std::string& drivetrainType, int maxKilometers, int motorSize,
+    int horsePower, int maxPrice, int minYear);
+
+
+    static int FindCarIndexInFile(const std::vector<Car>& cars, const std::string &make, const std::string &model,
+    const std::string &color, const std::string& transmissionType, const std::string& fuelType,
+    const std::string& drivetrainType, int maxKilometers, int motorSize, int horsePower, int maxPrice,
+    int minYear);
+
+    friend std::vector<Car> UpdateAvailableCars(const std::string& filename);;
 };
-
 
 #endif //CHECHECI_CAR_LEASING_CAR_H

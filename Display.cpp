@@ -100,11 +100,43 @@ char Display::DisplayShopInterface()
     return menuChoice;
 }
 
+void Display::PrintBodyTypes()
+{
+    std::cout << "0. SUV\n";
+    std::cout << "1. Coupe\n";
+    std::cout << "2. Compact\n";
+    std::cout << "3. Convertible\n";
+    std::cout << "4. Wagon\n";
+    std::cout << "5. Sedan\n";
+    std::cout << "6. Van\n";
+    std::cout << "7. Transporter\n";
+}
+
+void Display::PrintFuelTypes()
+{
+    std::cout << "0. Diesel\n";
+    std::cout << "1. Electric\n";
+    std::cout << "2. Hybrid\n";
+    std::cout << "3. Gasoline\n";
+    std::cout << "4. LPG\n";
+}
+
+void Display::PrintTransmissionTypes()
+{
+    std::cout << "0. Automatic\n";
+    std::cout << "1. Manual\n";
+}
+
+void Display::PrintDrivetrains()
+{
+    std::cout << "0. AWD\n";
+    std::cout << "1. 4WD\n";
+    std::cout << "2. RWD\n";
+    std::cout << "3. FWD\n";
+}
+
 void Display::PressAnyKey()
 {
-/*    std::cout << "Press any key to continue.\n";
-    char c;
-    std::cin >> c;*/
     system("pause");
 }
 

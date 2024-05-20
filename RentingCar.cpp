@@ -28,13 +28,12 @@ RentingCar::RentingCar(int rentingPrice, int rentingPeriod, std::string make, st
 
 void RentingCar::writeToFile()
 {
-    FileHandler handler;
-    std::string filePath = handler.GetRentedCars();
+    std::string filePath = FileHandler::GetRentedCarsFileName();
 
     std::fstream myFile (filePath, std::ios_base::app);
     if (myFile.is_open())
     {
-        myFile << rentingPrice << " " << rentingPeriod << " ";
+        myFile << rentingPrice << "," << rentingPeriod << ",";
         myFile << *this;
         myFile.close();
     }
@@ -45,4 +44,9 @@ void RentingCar::writeToFile()
 std::string RentingCar::getStatus()
 {
     return "Renting";
+}
+
+void RentingCar::writeToFile(std::string carOwner)
+{
+    //Car::writeToFile(fileToWriteInto, carOwner);
 }
