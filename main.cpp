@@ -28,17 +28,17 @@ static MainClass mainClass;
 std::vector<Car> AvailableCars;
 
 std::vector<RentingCar> AvailableRentingCars;
-std::vector<RentingCar> RentedCars;
+std::vector<RentingCar> UserRentedCars;
 
 std::vector<LeasingCar> AvailableLeasingCars;
-std::vector<LeasingCar> LeasedCars;
+std::vector<LeasingCar> UserLeasedCars;
 
 
 std::vector<Car> UpdateAvailableCars()
 {
     // Renter name, Car owner name, car specs, last 2 data will be renting amount and renting time
     std::vector<Car> cars;
-    std::string filename = FileHandler::GetAvailableLeasingCars();;
+    std::string filename = FileHandler::GetAvailableCarsFileName();;
     std::ifstream file(filename);
 
     if (!file.is_open())
@@ -55,44 +55,42 @@ std::vector<Car> UpdateAvailableCars()
         LeasingCar car;
 
         std::getline(iss, car.carOwner, ',');
-        if (car.carOwner == loggedUserName)
-        {
-            std::getline(iss, car.make, ',');
-            std::getline(iss, car.model, ',');
 
-            std::getline(iss, token, ',');
-            car.carPrice = std::stoi(token);
+        std::getline(iss, car.make, ',');
+        std::getline(iss, car.model, ',');
 
-            std::getline(iss, token, ',');
-            car.bodyType = static_cast<BodyType>(Car::stringToIntBodyType(token));
+        std::getline(iss, token, ',');
+        car.carPrice = std::stoi(token);
 
-            std::getline(iss, car.color, ',');
+        std::getline(iss, token, ',');
+        car.bodyType = static_cast<BodyType>(Car::stringToIntBodyType(token));
 
-            std::getline(iss, token, ',');
-            car.productionYear = std::stoi(token);
+        std::getline(iss, car.color, ',');
 
-            std::getline(iss, car.VIN, ',');
+        std::getline(iss, token, ',');
+        car.productionYear = std::stoi(token);
 
-            std::getline(iss, token, ',');
-            car.kmsDriven = std::stoi(token);
+        std::getline(iss, car.VIN, ',');
 
-            std::getline(iss, token, ',');
-            car.fuelType = static_cast<FuelType>(Car::stringToIntFuelType(token));
+        std::getline(iss, token, ',');
+        car.kmsDriven = std::stoi(token);
 
-            std::getline(iss, token, ',');
-            car.transmissionType = static_cast<TransmissionType>(Car::stringToIntTransmissionType(token));
+        std::getline(iss, token, ',');
+        car.fuelType = static_cast<FuelType>(Car::stringToIntFuelType(token));
 
-            std::getline(iss, token, ',');
-            car.drivetrain = static_cast<Drivetrain>(Car::stringToIntDrivetrain(token));
+        std::getline(iss, token, ',');
+        car.transmissionType = static_cast<TransmissionType>(Car::stringToIntTransmissionType(token));
 
-            std::getline(iss, token, ',');
-            car.motorSize = std::stoi(token);
+        std::getline(iss, token, ',');
+        car.drivetrain = static_cast<Drivetrain>(Car::stringToIntDrivetrain(token));
 
-            std::getline(iss, token, ',');
-            car.horsePower = std::stoi(token);
+        std::getline(iss, token, ',');
+        car.motorSize = std::stoi(token);
 
-            cars.push_back(car);
-        }
+        std::getline(iss, token, ',');
+        car.horsePower = std::stoi(token);
+
+        cars.push_back(car);
     }
 
     file.close();
@@ -406,10 +404,14 @@ int main()
     AvailableCars = UpdateAvailableCars();
     AvailableRentingCars = UpdateRentingCars();
     AvailableLeasingCars = UpdateLeasingCars();
-    RentedCars = UpdateRentedCars();
-    LeasedCars = UpdateLeasedCars();
 
-    std::cout << "Successfully logged in, welcome " << loggedUserName << "!" << std::endl;
+    UserRentedCars = UpdateRentedCars();
+    UserLeasedCars = UpdateLeasedCars();
+
+    Display::DisplayWithColor("Successfully logged in, welcome ", 8);
+    Display::DisplayWithColor(loggedUserName, 8);
+    Display::DisplayWithColor("!", 8);
+    std::cout << std::endl;
 
     Sleep(2000);
     MainClass::MenuOptions();
@@ -428,17 +430,16 @@ void MainClass::MenuOptions()
             switch (display.DisplayAccountPanel())
             {
                 case '1':
-                    carFactory.DisplayRentedOrLeasedCars(RentedCars);
+                    carFactory.DisplayRentedOrLeasedCars(UserRentedCars);
                     break;
                 case '2':
-                    carFactory.DisplayRentedOrLeasedCars(LeasedCars);
+                    carFactory.DisplayRentedOrLeasedCars(UserLeasedCars);
                     break;
                 case '3':
-                    // TODO this
-                    // carFactory.DisplaySoldCars(AvailableCars);
+                    carFactory.DisplaySoldCars(AvailableCars);
                     break;
                 case '4':
-                    carFactory.UpdateCarListing(loggedUserName);
+                    carFactory.UpdateCarListing(AvailableCars);
                     break;
                 case '5':
                     MainClass::MenuOptions();
@@ -461,7 +462,7 @@ void MainClass::MenuOptions()
                     carFactory.DisplayCarsForRentOrLease(AvailableLeasingCars);
                     break;
                 case '4':
-                    carFactory.SearchForCar(AvailableCars, loggedUserName);
+                    carFactory.SearchForCar(AvailableCars);
                     break;
                 case '5':
                     MainClass::MenuOptions();
@@ -481,4 +482,29 @@ std::string MainClass::GetUsername()
 {
     // Make sure it isn't null or something lmao
     return loggedUserName;
+}
+
+void MainClass::CallUpdAvailableCars()
+{
+    AvailableCars = UpdateAvailableCars();
+}
+
+void MainClass::CallUpdLeasingCars()
+{
+    AvailableLeasingCars = UpdateLeasingCars();
+}
+
+void MainClass::CallUpdRentingCars()
+{
+    AvailableRentingCars = UpdateRentingCars();
+}
+
+void MainClass::CallUpdLeasedCars()
+{
+    UserLeasedCars = UpdateLeasedCars();
+}
+
+void MainClass::CallUpdRentedCars()
+{
+    UserRentedCars = UpdateRentedCars();
 }

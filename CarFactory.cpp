@@ -90,147 +90,298 @@ void CarFactory::DisplaySoldCars(std::vector<Car> cars)
     MainClass::MenuOptions();
 }
 
-void CarFactory::UpdateCarListing(std::string carOwner)
+void CarFactory::UpdateExistingListing(std::vector<Car> carVector)
+{
+    Display::DisplayWithColor("Below will be presented all of the cars that are currently in your"
+                              " 'available' category. Please enter the index of the listing which you want to modify.", 6);
+
+    int displayedCarsPerPage = 5, multiplier = 1,i = 0,counter = 0,
+            numberOfPages = std::ceil((float)carVector.size() / (float)displayedCarsPerPage), chosenCar;
+    std::string ch;
+
+    while(1 == 1)
+    {
+        for(counter = (multiplier - 1) * displayedCarsPerPage; counter < multiplier * displayedCarsPerPage; i++)
+        {
+            if(counter >= carVector.size() || i >= carVector.size()) { break; }
+
+            // Then we own the listing created
+            if(carVector[i].GetCarOwnerName() == MainClass::GetUsername())
+            {
+                Display::DisplayWithColor(counter + 1, 4);
+                Display::DisplayWithColor(". ", 4);
+                std::cout << carVector[i] << "\n\n";
+                counter++;
+            }
+        }
+        std::cout << "Type 'next' if you wish to see the next page of cars and 'back' in order "
+                     "to go the the previous car page.\n\n";
+        Display::DisplayWithColor("You are currently viewing page ", 4);
+        Display::DisplayWithColor(multiplier, 4);
+        Display::DisplayWithColor("/", 4);
+        Display::DisplayWithColor(numberOfPages, 4);
+        std::cout << "\n\n";
+
+        std::cin >> ch;
+        chosenCar = std::stoi(ch);
+        if(ch == "Next" || ch == "next")
+        {
+            multiplier++;
+            if(multiplier > numberOfPages)
+                multiplier = numberOfPages;
+        }
+        else if(ch == "back" || ch == "Back")
+        {
+            multiplier++;
+            if(multiplier > numberOfPages)
+                multiplier = numberOfPages;
+        }
+        else if(chosenCar >= 0 && chosenCar < carVector.size())
+        {
+            chosenCar -= 1;
+            break;
+        }
+        Display::ResetScreen();
+    }
+
+    Display::DisplayWithColor("You have successfully chosen listing number: ", 8);
+    Display::DisplayWithColor(chosenCar, 8);
+    std::cout << "\n\nNow, type '1' if you wish to make the car available for rent and '2' "
+                 "in order to make the car available for leasing.";
+
+    while(ch != "1" && ch != "2")
+    {
+        Display::ResetScreen();
+        Display::DisplayError("Invalid input, you must enter 1 or 2.\n\n");
+        std::cout << "\n\nNow, type '1' if you wish to make the car available for rent and '2' "
+                     "in order to make the car available for leasing.";
+    }
+
+    std::string filename = ch == "1" ? FileHandler::GetRentedCarsFileName() : FileHandler::GetLeasedCarsFileName();
+    carVector[chosenCar].deleteFromFile();
+    carVector[chosenCar].writeToFile(filename);
+
+
+    Display::DisplayWithColor("Congratulations! Your car is now available for ", 4);
+    Display::DisplayWithColor(ch == "1" ? "renting!\n\n" : "leasing!\n\n", 4);
+
+    Sleep(2000);
+    MainClass::MenuOptions();
+}
+
+void CarFactory::UpdateCarListing(std::vector<Car> carVector)
 {
     Display::ResetScreen();
+
+    std::cout << "Welcome to the car listing update screen!\n";
+    std::cout << "Input your desired choice:\n\n";
+    Display::DisplayWithColor("1. Create a new listing, will be added in the 'available' category.\n"
+                              "2. Move an existing listing into the 'renting' or 'leasing' category.\n"
+                              "3. Update the info of an existing available listing.\n"
+                              "4. Remove an existing listing from any category.\n"
+                              "5. Go back.\n\n", 4);
+
+    char choice;
+    std::cin >> choice;
+
+    switch(choice)
+    {
+        case '1':
+            CreateAvailableListing();
+            break;
+        case '2':
+            UpdateExistingListing(carVector);
+            break;
+        case '3':
+            // TODO create this function
+            //RemoveExistingListing();
+            break;
+        case '4':
+            RemoveExistingListing();
+            break;
+        case '5':
+            MainClass::MenuOptions();
+            break;
+        default:
+            Display::DisplayError("Invalid menu choice!");
+            MainClass::MenuOptions();
+    }
 
     Display::PressAnyKey();
     MainClass::MenuOptions();
 }
 
-void CarFactory::DisplayAvailableCars(std::vector<Car> cars)
+void CarFactory::DisplayAvailableCars(std::vector<Car> carVector)
 {
     Display::ResetScreen();
-    int maxCarsPerPage = 10;
+    int displayedCarsPerPage = 5, multiplier = 1, i = 0,
+    numberOfPages = std::ceil((float)carVector.size() / (float)displayedCarsPerPage);;
 
     std::cout << "These are all the available cars in Checheci Leasing Automobile:\n\n";
     Display::DisplayWithColor("----------------------------------------------\n\n", 2);
 
-    std::string carInformation;
-    for(int i = 0; i < cars.size(); i++)
+    std::string carInformation, ch;
+    while(1 == 1)
     {
-        std::cout << cars[i] << "\n";
+        for(i = (multiplier - 1) * displayedCarsPerPage; i < multiplier * displayedCarsPerPage; i++)
+        {
+            if(i >= carVector.size()) { break; }
+
+            Display::DisplayWithColor(i + 1, 4);
+            Display::DisplayWithColor(". ", 4);
+            std::cout << carVector[i] << "\n\n";
+        }
+        std::cout << "Type 'Exit' if you wish to stop being displayed any cars, 'next' if you wish"
+         " to see the next page of cars and 'back' in order to go the the previous car page.\n\n";
+        Display::DisplayWithColor("You are currently viewing page ", 4);
+        Display::DisplayWithColor(multiplier, 4);
+        Display::DisplayWithColor("/", 4);
+        Display::DisplayWithColor(numberOfPages, 4);
+        std::cout << "\n\n";
+
+        std::cin >> ch;
+        if(ch == "exit" || ch == "Exit")
+        {
+            break;
+        }
+        else if(ch == "Next" || ch == "next")
+        {
+            multiplier++;
+            if(multiplier > numberOfPages)
+                multiplier = numberOfPages;
+        }
+        else
+        {
+            multiplier--;
+            if(multiplier < 1)
+                multiplier = 1;
+        }
+        Display::ResetScreen();
     }
 
     Display::PressAnyKey();
     MainClass::MenuOptions();
 }
 
-void CarFactory::AddCar(int addingChoice, std::vector<Car>& carVectorToBeAdded)
+void CarFactory::CreateAvailableListing()
 {
-    // 0 = Add to available, 1 = Add to rent, 2 = Add to lease
-    FileHandler::GetAvailableCarsFileName();
-    switch (addingChoice)
+    Display::ResetScreen();
+
+    std::string make, model, color, VIN;
+    int carPrice, choiceBody = -1, kmsDriven, choiceFuel = -1, choiceTransmission = -1, choiceDrivetrain = -1,
+            productionYear, motorSize, horsePower;
+    // -1 IF USER RUNS OUT OF TRIES WHEN MAKING A CHOICE
+    BodyType bodyType;
+    FuelType fuelType;
+    TransmissionType transmissionType;
+    Drivetrain drivetrain;
+    //std::cin.clear();
+    //std::cin.sync();
+    std::cin.ignore();
+    std::cout << "What's the name of the car's make?: ";
+    std::getline(std::cin, make);
+
+    std::cout << "\nWhat's the name of the car's model?: ";
+    std::getline(std::cin, model);
+
+    std::cout << "\nFor how much does your car sell?: ";
+    std::cin >> carPrice;
+
+    std::cout << "\nPick the body type that matches your car:\n";
+    Display::PrintBodyTypes();
+    Car::ValidateChoiceBodyType(choiceBody);
+    if (choiceBody == -1)
     {
-        case 1: {
-            std::string make, model, color, VIN;
-            int carPrice, choiceBody = -1, kmsDriven, choiceFuel = -1, choiceTransmission = -1, choiceDrivetrain = -1,
-                    productionYear, motorSize, horsePower;
-            // -1 IF USER RUNS OUT OF TRIES WHEN MAKING A CHOICE
-            BodyType bodyType;
-            FuelType fuelType;
-            TransmissionType transmissionType;
-            Drivetrain drivetrain;
-            std::cin.clear();
-            std::cin.sync();
-
-            std::cout << "ADD CAR TO AVAILABLE CARS\n";
-
-            std::cout << "What's the name of the car's make?: ";
-            std::getline(std::cin, make);
-
-            std::cout << "\nWhat's the name of the car's model?: ";
-            std::getline(std::cin, model);
-
-            std::cout << "\nFor how much does your car sell?: ";
-            std::cin >> carPrice;
-
-            std::cout << "\nPick the body type that matches your car:\n";
-            Display::PrintBodyTypes();
-            Car::ValidateChoiceBodyType(choiceBody);
-            if (choiceBody == -1) {
-                std::cout << "YOU RAN OUT OF TRIES!!!!!";
-                // RETURN; IN FUNCTION OR SMTH
-            } else {
-                bodyType = static_cast<BodyType>(choiceBody);
-                std::cout << "You chose: " << Car::stringBodyType(bodyType) << "\n";
-            }
-
-            std::cout << "\nWhat's the color of your car?: ";
-            std::getline(std::cin >> std::ws, color);
-
-            std::cout << "\nWhen was your car produced?: ";
-            std::cin >> productionYear;
-
-            //TODO: FUNCTION THAT CHECKS IF USER'S INPUT VIN IS ALREADY IN USE
-            std::cout << "\nWhat's your Vehicle Identification Number (VIN) ?: ";
-            std::getline(std::cin >> std::ws, VIN);
-
-            std::cout << "\nWhat's your car mileage (kilometers)?: ";
-            std::cin >> kmsDriven;
-
-            std::cout << "\nPick the fuel type that matches your car:\n";
-            Display::PrintFuelTypes();
-            Car::ValidateChoiceFuelType(choiceFuel);
-            if (choiceFuel == -1) {
-                std::cout << "YOU RAN OUT OF TRIES!!!!!";
-                // RETURN; IN FUNCTION OR SMTH
-            } else {
-                fuelType = static_cast<FuelType>(choiceFuel);
-                std::cout << "You chose: " << Car::stringFuelType(fuelType) << "\n";
-            }
-
-            std::cout << "\nPick the transmission type that matches your car:\n";
-            Display::PrintTransmissionTypes();
-            Car::ValidateChoiceTransmissionType(choiceTransmission);
-            if (choiceTransmission == -1) {
-                std::cout << "YOU RAN OUT OF TRIES!!!!!";
-                // RETURN; IN FUNCTION OR SMTH
-            } else {
-                transmissionType = static_cast<TransmissionType>(choiceTransmission);
-                std::cout << "You chose: " << Car::stringTransmissionType(transmissionType) << "\n";
-            }
-
-            std::cout << "\nPick the drivetrain that matches your car:\n";
-            Display::PrintDrivetrains();
-            Car::ValidateChoiceDrivetrain(choiceDrivetrain);
-            if (choiceDrivetrain == -1) {
-                std::cout << "YOU RAN OUT OF TRIES!!!!!";
-                // RETURN; IN FUNCTION OR SMTH
-            } else {
-                drivetrain = static_cast<Drivetrain>(choiceDrivetrain);
-                std::cout << "You chose: " << Car::stringDrivetrain(drivetrain) << "\n";
-            }
-
-            std::cout << "\nWhat's your car's engine size?: ";
-            std::cin >> motorSize;
-
-            std::cout << "\nWhat's your car's horsepower?: ";
-            std::cin >> horsePower;
-
-
-            std::cout << "\nUSER ENTRIES:\n";
-            std::cout << make << "\n" << model << "\n" << carPrice << "\n" << Car::stringBodyType(bodyType)
-                      << "\n" << color << "\n" << productionYear << "\n" << VIN << "\n" << kmsDriven << "\n"
-                      << Car::stringFuelType(fuelType) << "\n" << Car::stringTransmissionType(transmissionType) << "\n"
-                      << Car::stringDrivetrain(drivetrain) << "\n" << motorSize << "\n" << horsePower;
-
-            Car x{MainClass::GetUsername(),make, model, carPrice, bodyType, color, productionYear, VIN, kmsDriven, fuelType, transmissionType,
-                  drivetrain, motorSize, horsePower};
-            x.writeToFile(MainClass::GetUsername());
-            //add it to the vector
-            carVectorToBeAdded.push_back(x);
-            break;
-        }
-
-        case 2: {
-            std::cout << "\nADD ONE OF USER'S CAR TO RENTING\n";
-//            std::vector<Car> cars=Car::readCarsFromFile(FileHandler::GetAvailableCarsFileName());
-//            for(int i=0;i<cars.size();i++)
-//                std::cout<<"\n\n\n"<<"CAR: "<<i<<"\n"<<cars[i]<< "\n\n\n";
-
-        }
+        std::cout << "YOU RAN OUT OF TRIES!!!!!";
+        // RETURN; IN FUNCTION OR SMTH
     }
+    else
+    {
+        bodyType = static_cast<BodyType>(choiceBody);
+        std::cout << "You chose: " << Car::stringBodyType(bodyType) << "\n";
+    }
+
+    std::cout << "\nWhat's the color of your car?: ";
+    std::getline(std::cin >> std::ws, color);
+
+    std::cout << "\nWhen was your car produced?: ";
+    std::cin >> productionYear;
+
+    //TODO: FUNCTION THAT CHECKS IF USER'S INPUT VIN IS ALREADY IN USE
+    std::cout << "\nWhat's your Vehicle Identification Number (VIN) ?: ";
+    std::getline(std::cin >> std::ws, VIN);
+
+    std::cout << "\nWhat's your car mileage (kilometers)?: ";
+    std::cin >> kmsDriven;
+
+    std::cout << "\nPick the fuel type that matches your car:\n";
+    Display::PrintFuelTypes();
+    Car::ValidateChoiceFuelType(choiceFuel);
+
+    if (choiceFuel == -1)
+    {
+        std::cout << "YOU RAN OUT OF TRIES!!!!!";
+        // RETURN; IN FUNCTION OR SMTH
+    }
+    else
+    {
+        fuelType = static_cast<FuelType>(choiceFuel);
+        std::cout << "You chose: " << Car::stringFuelType(fuelType) << "\n";
+    }
+
+    std::cout << "\nPick the transmission type that matches your car:\n";
+    Display::PrintTransmissionTypes();
+    Car::ValidateChoiceTransmissionType(choiceTransmission);
+
+    if (choiceTransmission == -1)
+    {
+        std::cout << "YOU RAN OUT OF TRIES!!!!!";
+        // RETURN; IN FUNCTION OR SMTH
+    }
+    else
+    {
+        transmissionType = static_cast<TransmissionType>(choiceTransmission);
+        std::cout << "You chose: " << Car::stringTransmissionType(transmissionType) << "\n";
+    }
+
+    std::cout << "\nPick the drivetrain that matches your car:\n";
+    Display::PrintDrivetrains();
+    Car::ValidateChoiceDrivetrain(choiceDrivetrain);
+
+    if (choiceDrivetrain == -1)
+    {
+        std::cout << "YOU RAN OUT OF TRIES!!!!!";
+        // RETURN; IN FUNCTION OR SMTH
+    }
+    else
+    {
+        drivetrain = static_cast<Drivetrain>(choiceDrivetrain);
+        std::cout << "You chose: " << Car::stringDrivetrain(drivetrain) << "\n";
+    }
+
+    std::cout << "\nWhat's your car's engine size?: ";
+    std::cin >> motorSize;
+
+    std::cout << "\nWhat's your car's horsepower?: ";
+    std::cin >> horsePower;
+
+    std::cout << "\nUSER ENTRIES:\n";
+    std::cout << make << "\n" << model << "\n" << carPrice << "\n" << Car::stringBodyType(bodyType)
+              << "\n" << color << "\n" << productionYear << "\n" << VIN << "\n" << kmsDriven << "\n"
+              << Car::stringFuelType(fuelType) << "\n" << Car::stringTransmissionType(transmissionType) << "\n"
+              << Car::stringDrivetrain(drivetrain) << "\n" << motorSize << "\n" << horsePower;
+
+    Car x{MainClass::GetUsername(), make, model, carPrice, bodyType, color, productionYear, VIN, kmsDriven, fuelType, transmissionType,
+          drivetrain, motorSize, horsePower};
+    x.writeToFile(FileHandler::GetAvailableCarsFileName());
+
+    // Update the car vector afterward
+    MainClass::CallUpdAvailableCars();
+}
+
+void CarFactory::RemoveExistingListing()
+{
+
 }
 
 void CarFactory::DeleteCarFromFile(std::string fileName, int lineToBeDeleted)
@@ -273,7 +424,7 @@ void CarFactory::DeleteCarFromFile(std::string fileName, int lineToBeDeleted)
     outputFile.close();
 }
 
-void CarFactory::SearchForCar(std::vector<Car> cars, std::string personName)
+void CarFactory::SearchForCar(std::vector<Car> cars)
 {
     Display::ResetScreen();
 
@@ -336,7 +487,7 @@ void CarFactory::SearchForCar(std::vector<Car> cars, std::string personName)
     std::cout << "How many maximum driven kilometers do you wish the car to have? (leave blank to not specify)\n";
     std::cin >> kmsDriven;
 
-    Car::searchCars(cars, make, model, color, Car::stringTransmissionType(transmissionType),
-                    Car::stringFuelType(fuelType), Car::stringDrivetrain(driveTrain),
-                    kmsDriven, motorSize, horsePower, carPrice, productionYear);
+    Car::displayCars(cars, make, model, color, Car::stringTransmissionType(transmissionType),
+Car::stringFuelType(fuelType), Car::stringDrivetrain(driveTrain),
+kmsDriven, motorSize, horsePower, carPrice, productionYear);
 }

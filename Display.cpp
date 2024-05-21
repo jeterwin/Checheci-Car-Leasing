@@ -165,6 +165,9 @@ void Display::DisplayWithColor(int string, int colorCode)
         case 7:
             std::cout << dye::black_on_white(string);
             break;
+        case 8:
+            std::cout << dye::light_green(string);
+            break;
         default:
             std::cout << dye::green(string);
             break;
@@ -195,6 +198,9 @@ void Display::DisplayWithColor(std::string string, int colorCode)
             break;
         case 7:
             std::cout << dye::black_on_white(string);
+            break;
+        case 8:
+            std::cout << dye::light_green(string);
             break;
         default:
             std::cout << dye::green(string);

@@ -70,9 +70,9 @@ std::fstream& operator<<(std::fstream& file, const Car& car)
     return file;
 }
 
-void Car::writeToFile(std::string carOwner)
+void Car::writeToFile(std::string filename)
 {
-    std::fstream myFile (FileHandler::GetAvailableCarsFileName(), std::ios_base::app);
+    std::fstream myFile (filename, std::ios_base::app);
 
     if(!carOwner.empty())
     {
@@ -211,7 +211,7 @@ std::string Car::stringDrivetrain(enum Drivetrain x)
     }
 }
 
-void Car::searchCars(std::vector<Car> cars, const std::string &make, const std::string &model,
+void Car::searchCars(std::string filename, std::vector<Car> cars, const std::string &make, const std::string &model,
 const std::string &color, const std::string& transmissionType, const std::string& fuelType,
 const std::string& drivetrainType, int maxKilometers, int motorSize, int horsePower, int maxPrice,
 int minYear)
@@ -235,14 +235,13 @@ int minYear)
         }
         currentCar++;
     }
-    MainClass mainClass;
     // There were no cars found
     if(interestedCars == 0)
     {
         Display::DisplayWithColor("There were no cars found given the parameters given by you, try"
                                  " a broader search!", 4);
 
-        mainClass.MenuOptions();
+        MainClass::MenuOptions();
     }
     // At least one car was found
     else
@@ -278,13 +277,46 @@ int minYear)
         // Write in rent or lease file depending on our option
         //cars[0].writeToFile(std::regex_match(option, rentPattern)
         //? FileHandler::GetRentedCarsFileName() : FileHandler::GetLeasedCarsFileName());
-        cars[carDictionary[ch - 1]].writeToFile(MainClass::GetUsername());
+
+        cars[carDictionary[ch - 1]].writeToFile(filename);
 
         CarFactory::DeleteCarFromFile(FileHandler::GetAvailableCarsFileName(), carDictionary[ch - 1]);
 
         Sleep(2000);
-        mainClass.MenuOptions();
+        MainClass::MenuOptions();
     }
+}
+
+void Car::displayCars(std::vector<Car> cars, const std::string &make, const std::string &model,
+                     const std::string &color, const std::string& transmissionType, const std::string& fuelType,
+                     const std::string& drivetrainType, int maxKilometers, int motorSize, int horsePower, int maxPrice,
+                     int minYear)
+{
+    Display::DisplayWithColor("\nThese are all the cars that fit in the criteria given:\n\n", 4);
+    int interestedCars = 0;
+
+    for (const auto& car: cars)
+    {
+        if ((car.make == make || make.empty()) && (model.empty() || car.model == model)
+            && (color.empty() || car.color == color)
+            && car.carPrice <= maxPrice && car.productionYear >= minYear
+            && car.kmsDriven <= maxKilometers)
+        {
+            //foundCars[currentCar] = car;
+            std::cout << interestedCars + 1 <<". Make: " << car.make << ", Model: " << car.model <<
+                      ", Price: " << car.carPrice << ", Production Year: " << car.productionYear << std::endl;
+            interestedCars++;
+        }
+    }
+    // There were no cars found
+    if(interestedCars == 0)
+    {
+        Display::DisplayWithColor("There were no cars found given the parameters given by you, try"
+                                  " a broader search!", 4);
+    }
+
+    Display::PressAnyKey();
+    MainClass::MenuOptions();
 }
 
 void Car::ValidateChoiceBodyType(int &userChoice, int userTries)

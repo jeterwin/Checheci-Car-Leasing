@@ -7,6 +7,7 @@
 
 #include <map>
 #include <vector>
+#include <cmath>
 
 #include "LeasingCar.h"
 #include "RentingCar.h"
@@ -27,7 +28,7 @@ public:
     CarFactory();
     CarFactory(Car * leasingCar);
 
-    void SearchForCar(std::vector<Car>, std::string personName);
+    void SearchForCar(std::vector<Car>);
     static void DeleteCarFromFile(std::string fileName, int lineToBeDeleted);
 
     template<class T>
@@ -39,9 +40,12 @@ public:
     void DisplayAvailableCars(std::vector<Car>);
     void DisplaySoldCars(std::vector<Car>);
 
-    void UpdateCarListing(std::string carOwner);
+    void UpdateCarListing(std::vector<Car> carVector);
 
-    void AddCar(int addingChoice, std::vector<Car>& carVectorToBeAdded);
+    void UpdateExistingListing(std::vector<Car> carVector);
+    void RemoveExistingListing();
+
+    void CreateAvailableListing();
 };
 
 template<class T>
@@ -49,7 +53,8 @@ void CarFactory::DisplayRentedOrLeasedCars(std::vector<T> carVector)
 {
     Display::ResetScreen();
     // We need to initialize two strings in order to compare it to the user we're logged in
-    int displayedCarsPerPage = 5, multiplier = 1, i = 0, counter = 1;
+    int displayedCarsPerPage = 5, multiplier = 1,i,
+    numberOfPages = std::ceil((float)carVector.size() / (float)displayedCarsPerPage);
     std::string ch;
 
     std::cout << "These are all the cars you have ";
@@ -59,19 +64,24 @@ void CarFactory::DisplayRentedOrLeasedCars(std::vector<T> carVector)
 
     while(1 == 1)
     {
-        for(i = 0; i < multiplier * displayedCarsPerPage; i++)
+        for(i = (multiplier - 1) * displayedCarsPerPage; i < multiplier * displayedCarsPerPage; i++)
         {
-            // Then we found our car
-            if(i > carVector.size()) { break; }
-            std::cout << counter << ". " << carVector[i] << "\n\n";
-/*            if(carVector[i].GetCarOwnerName() == MainClass::GetUsername())
-            {
-                std::cout << counter << ". " << carVector[i] << "\n\n";
-                counter++;
-            }*/
+            if(i >= carVector.size()) { break; }
+
+            Display::DisplayWithColor(i + 1, 4);
+            Display::DisplayWithColor(". ", 4);
+            std::cout << carVector[i] << "\n\n";
         }
-        std::cout << "Type 'Exit' if you wish to stop being displayed any cars.\n\n";
+        std::cout << "Type 'Exit' if you wish to stop being displayed any cars, 'next' if you wish"
+                     " to see the next page of cars and 'back' in order to go the the previous car page.\n\n";
+        Display::DisplayWithColor("You are currently viewing page ", 4);
+        Display::DisplayWithColor(multiplier, 4);
+        Display::DisplayWithColor("/", 4);
+        Display::DisplayWithColor(numberOfPages, 4);
+        std::cout << "\n\n";
+
         std::cin >> ch;
+
         if(ch == "exit" || ch == "Exit")
         {
             break;
@@ -79,6 +89,8 @@ void CarFactory::DisplayRentedOrLeasedCars(std::vector<T> carVector)
         else if(ch == "Next" || ch == "next")
         {
             multiplier++;
+            if(multiplier > numberOfPages)
+                multiplier = numberOfPages;
         }
         else
         {
@@ -86,6 +98,7 @@ void CarFactory::DisplayRentedOrLeasedCars(std::vector<T> carVector)
             if(multiplier < 1)
                 multiplier = 1;
         }
+        Display::ResetScreen();
     }
 
     Display::PressAnyKey();
@@ -97,7 +110,8 @@ void CarFactory::DisplayCarsForRentOrLease(std::vector<T> carVector)
 {
     Display::ResetScreen();
     std::string ch;
-    int displayedCarsPerPage = 5, multiplier = 1, i = 0;
+    int displayedCarsPerPage = 5, multiplier = 1, i = 0,
+    numberOfPages = std::ceil((float)carVector.size() / (float)displayedCarsPerPage);
 
     // Option = 0 => renting cars, Option = 1 => leasing cars
     std::cout << "These are all the cars that can be ";
@@ -110,17 +124,25 @@ void CarFactory::DisplayCarsForRentOrLease(std::vector<T> carVector)
 
     while(1 == 1)
     {
-        std::cout << ch;
-        for(i = 0; i < multiplier * displayedCarsPerPage; i++)
+        Display::ResetScreen();
+        for(i = (multiplier - 1) * displayedCarsPerPage; i < multiplier * displayedCarsPerPage; i++)
         {
-            // Then we ok
-            if(i < carVector.size())
-            {
-                std::cout << i + 1 << ". " << carVector[i] << "\n\n";
-            }
+            if(i >= carVector.size()) { break; }
+
+            Display::DisplayWithColor(i + 1, 4);
+            Display::DisplayWithColor(". ", 4);
+            std::cout << carVector[i] << "\n\n";
         }
-        std::cout << "Type 'Exit' if you wish to stop being displayed any cars.\n\n";
+        std::cout << "Type 'Exit' if you wish to stop being displayed any cars, 'next' if you wish"
+                     " to see the next page of cars and 'back' in order to go the the previous car page.\n\n";
+        Display::DisplayWithColor("You are currently viewing page ", 4);
+        Display::DisplayWithColor(multiplier, 4);
+        Display::DisplayWithColor("/", 4);
+        Display::DisplayWithColor(numberOfPages, 4);
+        std::cout << "\n\n";
+
         std::cin >> ch;
+
         if(ch == "exit" || ch == "Exit")
         {
             break;
@@ -128,6 +150,8 @@ void CarFactory::DisplayCarsForRentOrLease(std::vector<T> carVector)
         else if(ch == "Next" || ch == "next")
         {
             multiplier++;
+            if(multiplier > numberOfPages)
+                multiplier = numberOfPages;
         }
         else
         {
@@ -135,6 +159,7 @@ void CarFactory::DisplayCarsForRentOrLease(std::vector<T> carVector)
              if(multiplier < 1)
                  multiplier = 1;
         }
+        Display::ResetScreen();
     }
 
     Display::PressAnyKey();

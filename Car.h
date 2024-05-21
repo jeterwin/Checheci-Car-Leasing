@@ -77,7 +77,7 @@ public:
 
 
     virtual std::string getStatus();
-    virtual void writeToFile(std::string carOwner);
+    virtual void writeToFile(std::string filename);
     virtual void deleteFromFile();
 
 
@@ -99,7 +99,12 @@ public:
     static int stringToIntDrivetrain(const std::string& drivetrain);
 
 
-    static void searchCars(std::vector<Car> cars, const std::string& make,
+    static void searchCars(std::string filename, std::vector<Car> cars, const std::string& make,
+    const std::string& model, const std::string& color, const std::string& transmissionType,
+    const std::string& fuelType, const std::string& drivetrainType, int maxKilometers, int motorSize,
+    int horsePower, int maxPrice, int minYear);
+
+    static void displayCars(std::vector<Car> cars, const std::string& make,
     const std::string& model, const std::string& color, const std::string& transmissionType,
     const std::string& fuelType, const std::string& drivetrainType, int maxKilometers, int motorSize,
     int horsePower, int maxPrice, int minYear);

@@ -14,6 +14,14 @@ class MainClass
 public:
     static void MenuOptions();
     static std::string GetUsername();
+
+    static void CallUpdRentedCars();
+    static void CallUpdLeasedCars();
+
+    static void CallUpdRentingCars();
+    static void CallUpdLeasingCars();
+
+    static void CallUpdAvailableCars();
 };
 
 #endif //CHECHECI_CAR_LEASING_MAIN_H
