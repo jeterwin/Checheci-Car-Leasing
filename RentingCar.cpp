@@ -76,7 +76,9 @@ std::ostream& operator<<(std::ostream& os, const RentingCar& car)
     os << "Transmission: " << Car::stringTransmissionType(car.transmissionType) << "\n";
     os << "Drivetrain: " << Car::stringDrivetrain(car.drivetrain) << "\n";
     os << "Capacity: " << car.motorSize << "\n";
-    os << "Horse Power: " << car.horsePower;
+    os << "Horse Power: " << car.horsePower << "\n";
+    os << "Renting Price: " << car.rentingPrice << "\n";
+    os << "Renting Period: " << car.rentingPeriod;
 
     return os;
 }

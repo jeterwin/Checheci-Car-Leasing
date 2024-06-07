@@ -1,7 +1,1 @@
-K E,mertan,mcompetition de pe Germania,12012,Transporter,negru mat cu rugina,2012,nuamideevin123,500000,LPG,Manual,4WD,9000,20
-K E,LAMBURGURGUR,GAIARDO LP,1200,Coupe,GALBEN,2008,JFJAW812515,30000,Gasoline,Manual,AWD,5999,400
-K A,Ferrari,480,90000,Coupe,Red,2012,jfjaw8281412,40000,Gasoline,Manual,AWD,4000,500
-K E,Maserati,MC50,312,SUV,White,1233,12345,123,Diesel,Automatic,AWD,2999,300
-K B,opel,brec,1213,Wagon,Koka,2134,jjgfawj325,124,Hybrid,Manual,RWD,9214,21
-K E,Ferrari,480,90000,Coupe,Red,2012,jfjaw8281412,40000,Gasoline,Manual,AWD,4000,500
-K E,Dacia Cotet,Ultra Cotet,2000,Wagon,Black,2013,124213,21314,Diesel,Manual,4WD,3999,123
+K E,Chevroet,Corvette C8,200000,Coupe,Red,2018,IFAWIHFW32623,12300,Gasoline,Automatic,RWD,6000,400,200,6

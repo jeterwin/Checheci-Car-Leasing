@@ -271,6 +271,7 @@ std::string LeasingCar::GetCarOwnerName()
     return this -> carOwner;
 }
 
+
 std::vector<RentingCar> UpdateRentingCars()
 {
     UsersRentingCars.clear();
@@ -489,13 +490,13 @@ void MainClass::MenuOptions()
             switch(display.DisplayShopInterface())
             {
                 case '1':
-                    carFactory.DisplayAvailableCars(AvailableCars);
+                    carFactory.DisplayAvailableCars(UsersAvailableCars);
                     break;
                 case '2':
-                    carFactory.DisplayCarsForRentOrLease(AvailableRentingCars);
+                    carFactory.DisplayCarsForRentOrLease(UsersRentingCars);
                     break;
                 case '3':
-                    carFactory.DisplayCarsForRentOrLease(AvailableLeasingCars);
+                    carFactory.DisplayCarsForRentOrLease(UsersLeasingCars);
                     break;
                 case '4':
                     carFactory.SearchForCar(AvailableCars);

@@ -67,14 +67,17 @@ protected:
 
 public:
 
-    std::string getMake();
-    std::string getModel();
+    virtual std::string getMake();
+    virtual std::string getModel();
+    virtual
     int getPrice();
 
     Car();
     Car(std::string carOwner, std::string make, std::string model, int carPrice, enum BodyType, std::string color,
         int productionYear, std::string VIN, int kmsDriven, enum FuelType,
         enum TransmissionType, enum Drivetrain, int motorSize, int horsePower);
+
+
 
 
     friend std::ostream& operator<< (std::ostream& os, const Car&);

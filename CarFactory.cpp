@@ -299,8 +299,8 @@ void CarFactory::UpdateExistingListing(std::vector<Car> carVector)
         int rentPrice = carVector[chosenCar].getPrice() * RENT_MULTIPLIER;
         int rentingPeriod=0;
         RentingPeriod(&rentingPeriod);
-        write_car+=std::to_string(rentPrice)+","+std::to_string(rentingPeriod)+",";
-        write_car+=string_car;
+        write_car+=string_car+",";
+        write_car+=std::to_string(rentPrice)+","+std::to_string(rentingPeriod);
         CarFactory::WriteCarStringInFile(filename,write_car);
     }
     else {
@@ -308,8 +308,8 @@ void CarFactory::UpdateExistingListing(std::vector<Car> carVector)
         int leasePrice = carVector[chosenCar].getPrice() * LEASE_MULTIPLIER;
         int leasingPeriod = 0;
         LeasingPeriod(&leasingPeriod);
-        write_car+=std::to_string(leasePrice)+","+std::to_string(leasingPeriod)+",";
-        write_car+=string_car;
+        write_car+=string_car+",";
+        write_car+=std::to_string(leasePrice)+","+std::to_string(leasingPeriod);
         CarFactory::WriteCarStringInFile(filename,write_car);
     }
 
@@ -459,7 +459,7 @@ void CarFactory::CreateAvailableListing()
     Drivetrain drivetrain;
     std::cin.clear();
     std::cin.sync();
-    std::cin.ignore();
+    //std::cin.ignore();
     std::cout << "What's the name of the car's make?: ";
     std::getline(std::cin, make);
 
@@ -492,6 +492,7 @@ void CarFactory::CreateAvailableListing()
     //TODO: FUNCTION THAT CHECKS IF USER'S INPUT VIN IS ALREADY IN USE
     std::cout << "\nWhat's your Vehicle Identification Number (VIN) ?: ";
     std::getline(std::cin >> std::ws, VIN);
+
 
     std::cout << "\nWhat's your car mileage (kilometers)?: ";
     std::cin >> kmsDriven;
@@ -621,26 +622,15 @@ void CarFactory::DeleteCarFromFile(std::string fileName, int lineToBeDeleted)
     outputFile.close();
 }
 
-void CarFactory::SearchForCar(std::vector<Car> cars)
+void CarFactory::SearchForCar(std::vector<RentingCar> cars)
 {
-
-    std::vector<Car> criteriaCars = cars;
 
     Display::ResetScreen();
 
-    // Remove cars that belong to the logged user
-    for (int index = criteriaCars.size()-1; index >= 0; index--)
-    {
-        if(criteriaCars[index].GetCarOwnerName()==MainClass::GetUsername()){
-            std::cout<< criteriaCars[index] << "\n\n\n";
-            criteriaCars.erase(criteriaCars.begin()+index);
-        }
-    }
-
-
     Display::DisplayWithColor("Welcome to our advanced car search engine!\n", 6);
     Display::DisplayWithColor("You will be asked to provide certain details about "
-                              "the car you are looking for!", 6);
+                              "the car you are looking for!\n", 6);
+
     Sleep(2000);
 
     int carPrice, choiceBody = -1, kmsDriven, choiceFuel = -1, choiceTransmission = -1, choiceDrivetrain = -1,
@@ -655,19 +645,8 @@ void CarFactory::SearchForCar(std::vector<Car> cars)
     std::cin.clear();
     std::cin.sync();
 
-    std::cout << "\nAvailable Cars: " << criteriaCars.size() <<"\n";
-
     std::cout << "Make of your desired car: ";
     std::getline(std::cin, make);
-
-    std::cout << "\n Before deleting cars that do not match the make:" << criteriaCars.size();
-    for (int index = criteriaCars.size()-1; index >= 0; index--)
-    {
-        if(criteriaCars[index].getMake()!=make)
-            criteriaCars.erase(criteriaCars.begin()+index);
-    }
-
-    std::cout << "\nCars matching your criterias:" << criteriaCars.size();
 
     std::cout << "\nModel of your desired car: ";
     std::getline(std::cin, model);

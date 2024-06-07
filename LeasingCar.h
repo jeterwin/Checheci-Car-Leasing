@@ -26,6 +26,7 @@ public:
     void deleteFromFile() override;
     void writeToFile(std::string carOwner) override;
 
+    void SearchByModel(std::vector<LeasingCar> *cars, std::string model);
 
     friend std::ostream& operator<< (std::ostream& os, const LeasingCar&);
     friend std::fstream& operator<< (std::fstream& os, const LeasingCar&);

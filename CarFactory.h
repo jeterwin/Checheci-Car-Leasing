@@ -37,7 +37,8 @@ public:
 
     void WriteCarStringInFile(std::string fileName, std::string car_string);
 
-    void SearchForCar(std::vector<Car>);
+    void SearchForCar(std::vector<RentingCar>);
+    void SearchForCar(std::vector<LeasingCar>);
     static void DeleteCarFromFile(std::string fileName, int lineToBeDeleted);
 
     template<class T>
