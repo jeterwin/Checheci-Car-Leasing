@@ -25,11 +25,26 @@ Car::Car()
 }
 
 Car::Car(std::string carOwner, std::string make, std::string model, int carPrice, enum BodyType bodyType, std::string color,
-            int productionYear, std::string VIN, int kmsDriven, enum FuelType fuelType,
-            enum TransmissionType transmissionType, enum Drivetrain drivetrain, int motorSize, int horsePower)
-                    : carOwner(carOwner), make(make), model(model), carPrice(carPrice), bodyType(bodyType), color(color), productionYear(productionYear),
-                      VIN(VIN), kmsDriven(kmsDriven), fuelType(fuelType), transmissionType(transmissionType), drivetrain(drivetrain),
-                      motorSize(motorSize), horsePower(horsePower) {}
+         int productionYear, std::string VIN, int kmsDriven, enum FuelType fuelType,
+         enum TransmissionType transmissionType, enum Drivetrain drivetrain, int motorSize, int horsePower)
+        : carOwner(carOwner), make(make), model(model), carPrice(carPrice), bodyType(bodyType), color(color), productionYear(productionYear),
+          VIN(VIN), kmsDriven(kmsDriven), fuelType(fuelType), transmissionType(transmissionType), drivetrain(drivetrain),
+          motorSize(motorSize), horsePower(horsePower) {}
+
+std::string Car::getMake()
+{
+    return this->make;
+}
+
+std::string Car::getModel()
+{
+    return this->model;
+}
+
+int Car::getPrice()
+{
+    return this->carPrice;
+}
 
 std::ostream& operator<<(std::ostream& os, const Car& car)
 {
@@ -91,7 +106,20 @@ void Car::writeToFile(std::string filename)
         return;
 }
 
-void Car::deleteFromFile() { }
+void Car::deleteFromFile()
+{
+
+}
+
+std::string Car::ObjectToString()
+{
+    std::string str_object;
+    str_object+=carOwner+","+make+","+model+","+std::to_string(carPrice)+","+ stringBodyType(bodyType)+","+color+","+
+            std::to_string(productionYear)+","+VIN+","+std::to_string(kmsDriven)+","+stringFuelType(fuelType)+","+
+            stringTransmissionType(transmissionType)+","+ stringDrivetrain(drivetrain)+","+std::to_string(motorSize)+
+            +","+std::to_string(horsePower);
+    return str_object;
+}
 
 std::string Car::getStatus()
 {
@@ -212,9 +240,9 @@ std::string Car::stringDrivetrain(enum Drivetrain x)
 }
 
 void Car::searchCars(std::string filename, std::vector<Car> cars, const std::string &make, const std::string &model,
-const std::string &color, const std::string& transmissionType, const std::string& fuelType,
-const std::string& drivetrainType, int maxKilometers, int motorSize, int horsePower, int maxPrice,
-int minYear)
+                     const std::string &color, const std::string& transmissionType, const std::string& fuelType,
+                     const std::string& drivetrainType, int maxKilometers, int motorSize, int horsePower, int maxPrice,
+                     int minYear)
 {
     Display::DisplayWithColor("\nThese are all the cars that fit in the criteria given:\n\n", 4);
     int currentCar = 0, interestedCars = 0;
@@ -223,14 +251,14 @@ int minYear)
     for (const auto& car: cars)
     {
         if ((car.make == make || make.empty()) && (model.empty() || car.model == model)
-        && (color.empty() || car.color == color)
-        && car.carPrice <= maxPrice && car.productionYear >= minYear
-        && car.kmsDriven <= maxKilometers)
+            && (color.empty() || car.color == color)
+            && car.carPrice <= maxPrice && car.productionYear >= minYear
+            && car.kmsDriven <= maxKilometers)
         {
             carDictionary.insert(std::pair<int, int>(interestedCars, currentCar));
             //foundCars[currentCar] = car;
             std::cout << interestedCars + 1 <<". Make: " << car.make << ", Model: " << car.model <<
-            ", Price: " << car.carPrice << ", Production Year: " << car.productionYear << std::endl;
+                      ", Price: " << car.carPrice << ", Production Year: " << car.productionYear << std::endl;
             interestedCars++;
         }
         currentCar++;
@@ -239,11 +267,11 @@ int minYear)
     if(interestedCars == 0)
     {
         Display::DisplayWithColor("There were no cars found given the parameters given by you, try"
-                                 " a broader search!", 4);
+                                  " a broader search!", 4);
 
         MainClass::MenuOptions();
     }
-    // At least one car was found
+        // At least one car was found
     else
     {
         Display::DisplayWithColor("\nPlease enter the index of the car you are interested in.\n", 4);
@@ -270,8 +298,8 @@ int minYear)
 
         //while(!std::regex_match(option, rentPattern) || !std::regex_match(option, leasePattern))
         //{
-            //std::cout << "Bro can't you read, type rent or lease ffs.\n";
-            //std::getline(std::cin, option);
+        //std::cout << "Bro can't you read, type rent or lease ffs.\n";
+        //std::getline(std::cin, option);
         //}
 
         // Write in rent or lease file depending on our option
@@ -288,9 +316,9 @@ int minYear)
 }
 
 void Car::displayCars(std::vector<Car> cars, const std::string &make, const std::string &model,
-                     const std::string &color, const std::string& transmissionType, const std::string& fuelType,
-                     const std::string& drivetrainType, int maxKilometers, int motorSize, int horsePower, int maxPrice,
-                     int minYear)
+                      const std::string &color, const std::string& transmissionType, const std::string& fuelType,
+                      const std::string& drivetrainType, int maxKilometers, int motorSize, int horsePower, int maxPrice,
+                      int minYear)
 {
     Display::DisplayWithColor("\nThese are all the cars that fit in the criteria given:\n\n", 4);
     int interestedCars = 0;
@@ -405,8 +433,8 @@ std::string Car::GetCarOwnerName()
 }
 
 int Car::FindCarIndexInFile(const std::vector<Car>& cars, const std::string &make, const std::string &model, const std::string &color,
-const std::string &transmissionType, const std::string &fuelType, const std::string &drivetrainType,
-int maxKilometers, int motorSize, int horsePower, int maxPrice, int minYear)
+                            const std::string &transmissionType, const std::string &fuelType, const std::string &drivetrainType,
+                            int maxKilometers, int motorSize, int horsePower, int maxPrice, int minYear)
 {
     int currentCarLine = 0;
 

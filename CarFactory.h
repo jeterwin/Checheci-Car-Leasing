@@ -7,6 +7,7 @@
 
 #include <map>
 #include <vector>
+#include <typeinfo>
 #include <cmath>
 
 #include "LeasingCar.h"
@@ -41,6 +42,8 @@ public:
     void DisplaySoldCars(std::vector<Car>);
 
     void UpdateCarListing(std::vector<Car> carVector);
+
+    int SearchCarInFile(std::string fileName, std::string objectSearched);
 
     void UpdateExistingListing(std::vector<Car> carVector);
     void RemoveExistingListing();
@@ -116,7 +119,7 @@ void CarFactory::DisplayCarsForRentOrLease(std::vector<T> carVector)
     // Option = 0 => renting cars, Option = 1 => leasing cars
     std::cout << "These are all the cars that can be ";
 
-    std::strcmp(typeid(carVector).name(), "class std::vector<class RentingCar,class std::allocator<class RentingCar> >") == 0 ?
+    strcmp(typeid(carVector).name(), "class std::vector<class RentingCar,class std::allocator<class RentingCar> >") == 0 ?
     std::cout << "rented " : std::cout << "leased ";
     std::cout << "from Checheci Leasing Automobile\n\n";
 

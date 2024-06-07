@@ -19,8 +19,8 @@ public:
     RentingCar();
     ~RentingCar() = default;
     RentingCar(int rentingPrice, int rentingPeriod, std::string make, std::string model, int carPrice,
-    enum BodyType, std::string color, int productionYear, std::string VIN, int kmsDriven, enum FuelType,
-    enum TransmissionType, enum Drivetrain, int motorSize, int horsePower);
+               enum BodyType, std::string color, int productionYear, std::string VIN, int kmsDriven, enum FuelType,
+               enum TransmissionType, enum Drivetrain, int motorSize, int horsePower);
 
     void writeToFile(std::string carOwner) override;
 

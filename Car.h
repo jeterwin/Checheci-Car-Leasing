@@ -66,6 +66,11 @@ protected:
     std::string carOwner;
 
 public:
+
+    std::string getMake();
+    std::string getModel();
+    int getPrice();
+
     Car();
     Car(std::string carOwner, std::string make, std::string model, int carPrice, enum BodyType, std::string color,
         int productionYear, std::string VIN, int kmsDriven, enum FuelType,
@@ -76,7 +81,10 @@ public:
     friend std::fstream& operator<< (std::fstream& os, const Car&);
 
 
+    virtual std::string ObjectToString();
+
     virtual std::string getStatus();
+
     virtual void writeToFile(std::string filename);
     virtual void deleteFromFile();
 
@@ -100,20 +108,20 @@ public:
 
 
     static void searchCars(std::string filename, std::vector<Car> cars, const std::string& make,
-    const std::string& model, const std::string& color, const std::string& transmissionType,
-    const std::string& fuelType, const std::string& drivetrainType, int maxKilometers, int motorSize,
-    int horsePower, int maxPrice, int minYear);
+                           const std::string& model, const std::string& color, const std::string& transmissionType,
+                           const std::string& fuelType, const std::string& drivetrainType, int maxKilometers, int motorSize,
+                           int horsePower, int maxPrice, int minYear);
 
     static void displayCars(std::vector<Car> cars, const std::string& make,
-    const std::string& model, const std::string& color, const std::string& transmissionType,
-    const std::string& fuelType, const std::string& drivetrainType, int maxKilometers, int motorSize,
-    int horsePower, int maxPrice, int minYear);
+                            const std::string& model, const std::string& color, const std::string& transmissionType,
+                            const std::string& fuelType, const std::string& drivetrainType, int maxKilometers, int motorSize,
+                            int horsePower, int maxPrice, int minYear);
 
 
     static int FindCarIndexInFile(const std::vector<Car>& cars, const std::string &make, const std::string &model,
-    const std::string &color, const std::string& transmissionType, const std::string& fuelType,
-    const std::string& drivetrainType, int maxKilometers, int motorSize, int horsePower, int maxPrice,
-    int minYear);
+                                  const std::string &color, const std::string& transmissionType, const std::string& fuelType,
+                                  const std::string& drivetrainType, int maxKilometers, int motorSize, int horsePower, int maxPrice,
+                                  int minYear);
 
     friend std::vector<Car> UpdateAvailableCars();
 };

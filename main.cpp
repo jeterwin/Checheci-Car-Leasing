@@ -424,6 +424,14 @@ void MainClass::MenuOptions()
     char menuChoice;
     std::cin >> menuChoice;
 
+    // For updating vectors
+    AvailableCars = UpdateAvailableCars();
+    AvailableRentingCars = UpdateRentingCars();
+    AvailableLeasingCars = UpdateLeasingCars();
+
+    UserRentedCars = UpdateRentedCars();
+    UserLeasedCars = UpdateLeasedCars();
+
     switch(menuChoice)
     {
         case '1':
@@ -440,6 +448,7 @@ void MainClass::MenuOptions()
                     break;
                 case '4':
                     carFactory.UpdateCarListing(AvailableCars);
+
                     break;
                 case '5':
                     MainClass::MenuOptions();
