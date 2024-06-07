@@ -11,33 +11,33 @@ bool FileHandler::is_empty(std::fstream & pFile) const
 
 std::string FileHandler::GetUsersFile()
 {
-    return "Files/Users.txt";
+    return "Users.txt";
 }
 
 std::string FileHandler::GetAvailableCarsFileName()
 {
-    return "Files/AvailableCars.txt";
+    return "AvailableCars.txt";
 }
 
 std::string FileHandler::GetLeasedCarsFileName()
 {
-    return "Files/LeasedCars.txt";
+    return "LeasedCars.txt";
 }
 
 std::string FileHandler::GetRentedCarsFileName()
 {
-    return "Files/RentedCars.txt";
+    return "RentedCars.txt";
 }
 
 std::string FileHandler::GetSoldCars()
 {
-    return "Files/SoldCars.txt";
+    return "SoldCars.txt";
 }
 
 std::string FileHandler::GetAvailableRentingCars() {
-    return "Files/RentingCars.txt";
+    return "RentingCars.txt";
 }
 
 std::string FileHandler::GetAvailableLeasingCars() {
-    return "Files/LeasingCars.txt";
+    return "LeasingCars.txt";
 }

@@ -46,6 +46,7 @@ std::vector<Car> UpdateAvailableCars()
     // Renter name, Car owner name, car specs, last 2 data will be renting amount and renting time
     std::vector<Car> cars;
     std::string filename = FileHandler::GetAvailableCarsFileName();;
+
     std::ifstream file(filename);
 
     if (!file.is_open())

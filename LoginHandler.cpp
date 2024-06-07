@@ -5,6 +5,10 @@
 #include <fstream>
 #include <string>
 #include <cstring>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <direct.h>
+
 
 #include "LoginHandler.h"
 #include "FileHandler.h"
@@ -15,14 +19,17 @@ void LoginHandler::Login(std::string * userName)
     FileHandler fileHandler;
 
     std::fstream usersFile;
-    usersFile.open(FileHandler::GetUsersFile());
+
+    usersFile.open(FileHandler::GetUsersFile(), std::ios::out | std::ios::app);
+    usersFile.close();
+    usersFile.open(FileHandler::GetUsersFile(), std::ios::in | std::ios::out | std::ios::app);
+
 
     if(fileHandler.is_empty(usersFile))
     {
         // Create new user and set current user as that one
         // after returning the writing point to the start
         usersFile.seekg(0, std::ios::beg);
-
         std::cout << "It seems as there are no users created in Checheci Leasing Automobile!\n";
         std::cout << "Enter your first and last name below in order to become the first user.\n\n";
 
