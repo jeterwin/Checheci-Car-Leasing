@@ -25,17 +25,22 @@ static LoginHandler loginHandler;
 static CarFactory carFactory;
 static MainClass mainClass;
 
+// Withotu the logged in user's
+std::vector<Car> UserAvailableCars;
 std::vector<Car> AvailableCars;
 
+// Without the logged in user's
 std::vector<RentingCar> AvailableRentingCars;
 std::vector<RentingCar> UserRentedCars;
 
+// Without the logged in user's
 std::vector<LeasingCar> AvailableLeasingCars;
 std::vector<LeasingCar> UserLeasedCars;
 
 
 std::vector<Car> UpdateAvailableCars()
 {
+    UserAvailableCars.clear();
     // Renter name, Car owner name, car specs, last 2 data will be renting amount and renting time
     std::vector<Car> cars;
     std::string filename = FileHandler::GetAvailableCarsFileName();;
@@ -90,7 +95,15 @@ std::vector<Car> UpdateAvailableCars()
         std::getline(iss, token, ',');
         car.horsePower = std::stoi(token);
 
-        cars.push_back(car);
+        // This is our car
+        if(car.carOwner == loggedUserName)
+        {
+            cars.push_back(car);
+        }
+        else // Not our car, it is available for the user to borrow
+        {
+            UserAvailableCars.push_back(car);
+        }
     }
 
     file.close();
@@ -193,7 +206,8 @@ std::vector<LeasingCar> UpdateLeasingCars()
         LeasingCar car;
 
         std::getline(iss, ownerName, ',');
-        if (ownerName == loggedUserName)
+        car.carOwner = ownerName;
+        if (ownerName != loggedUserName)
         {
             std::getline(iss, car.make, ',');
             std::getline(iss, car.model, ',');
@@ -245,7 +259,6 @@ std::vector<LeasingCar> UpdateLeasingCars()
 
 std::string LeasingCar::GetCarOwnerName()
 {
-    //return Car::GetCarOwnerName();
     return this -> carOwner;
 }
 
@@ -271,7 +284,8 @@ std::vector<RentingCar> UpdateRentingCars()
         RentingCar car;
 
         std::getline(iss, ownerName, ',');
-        if (ownerName == loggedUserName)
+        car.carOwner = ownerName;
+        if (ownerName != loggedUserName)
         {
             std::getline(iss, car.make, ',');
             std::getline(iss, car.model, ',');

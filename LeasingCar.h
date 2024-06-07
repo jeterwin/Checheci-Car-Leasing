@@ -18,9 +18,10 @@ public:
     LeasingCar();
     ~LeasingCar() = default;
     LeasingCar(int leasingPrice, int leasingPeriod);
-    LeasingCar(int leasingPrice, int leasingPeriod, std::string make, std::string model, int carPrice,
-               enum BodyType, std::string color, int productionYear, std::string VIN, int kmsDriven, enum FuelType,
-               enum TransmissionType, enum Drivetrain, int motorSize, int horsePower);
+    LeasingCar(std::string carOwner, std::string make, std::string model, int carPrice, enum BodyType bodyType, std::string color,
+               int productionYear, std::string VIN, int kmsDriven, enum FuelType fuelType,
+               enum TransmissionType transmissionType, enum Drivetrain drivetrain, int motorSize, int horsePower,
+               int leasingPrice, int leasingPeriod);
 
     void deleteFromFile() override;
     void writeToFile(std::string carOwner) override;

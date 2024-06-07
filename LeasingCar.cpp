@@ -19,9 +19,9 @@ LeasingCar::LeasingCar(int leasingPrice, int leasingPeriod)
     this -> leasingPrice = leasingPrice;
 }
 
-LeasingCar::LeasingCar(int leasingPrice, int leasingPeriod, std::string make, std::string model, int carPrice, enum BodyType bodyType, std::string color,
+LeasingCar::LeasingCar(std::string carOwner, std::string make, std::string model, int carPrice, enum BodyType bodyType, std::string color,
 int productionYear, std::string VIN, int kmsDriven, enum FuelType fuelType,
-enum TransmissionType transmissionType, enum Drivetrain drivetrain, int motorSize, int horsePower)
+enum TransmissionType transmissionType, enum Drivetrain drivetrain, int motorSize, int horsePower, int leasingPrice, int leasingPeriod)
 : Car(carOwner, make, model, carPrice, bodyType, color, productionYear, VIN, kmsDriven,
 fuelType, transmissionType, drivetrain, motorSize, horsePower), leasingPrice(leasingPrice), leasingPeriod(leasingPeriod) {}
 
