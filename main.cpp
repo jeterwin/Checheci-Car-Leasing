@@ -173,10 +173,12 @@ std::vector<LeasingCar> UpdateLeasedCars()
             car.horsePower = std::stoi(token);
 
             std::getline(iss, token, ',');
-            car.leasingPeriod = std::stoi(token);
+            car.leasingPrice = std::stoi(token);
 
             std::getline(iss, token, ',');
-            car.leasingPrice = std::stoi(token);
+            car.leasingPeriod = std::stoi(token);
+
+
 
             cars.push_back(car);
         }
@@ -246,10 +248,12 @@ std::vector<LeasingCar> UpdateLeasingCars()
         car.horsePower = std::stoi(token);
 
         std::getline(iss, token, ',');
-        car.leasingPeriod = std::stoi(token);
+        car.leasingPrice = std::stoi(token);
 
         std::getline(iss, token, ',');
-        car.leasingPrice = std::stoi(token);
+        car.leasingPeriod = std::stoi(token);
+
+
 
         if (ownerName != loggedUserName)
         {
@@ -332,9 +336,11 @@ std::vector<RentingCar> UpdateRentingCars()
         car.horsePower = std::stoi(token);
 
         std::getline(iss, token, ',');
-        car.rentingPeriod = std::stoi(token);
-        std::getline(iss, token, ',');
         car.rentingPrice = std::stoi(token);
+
+        std::getline(iss, token, ',');
+        car.rentingPeriod = std::stoi(token);
+
 
 
         if (ownerName != loggedUserName)
@@ -413,9 +419,11 @@ std::vector<RentingCar> UpdateRentedCars()
             car.horsePower = std::stoi(token);
 
             std::getline(iss, token, ',');
-            car.rentingPeriod = std::stoi(token);
-            std::getline(iss, token, ',');
             car.rentingPrice = std::stoi(token);
+
+            std::getline(iss, token, ',');
+            car.rentingPeriod = std::stoi(token);
+
 
             cars.push_back(car);
         }
@@ -499,10 +507,14 @@ void MainClass::MenuOptions()
                     carFactory.DisplayCarsForRentOrLease(UsersLeasingCars);
                     break;
                 case '4':
-                    carFactory.SearchForCar(AvailableCars);
+                    carFactory.SearchForCar(AvailableRentingCars);
                     break;
                 case '5':
+                    carFactory.SearchForCar(AvailableLeasingCars);
+                    break;
+                case '6':
                     MainClass::MenuOptions();
+                    break;
                 default:
                     Display::DisplayError("Invalid menu choice!");
                     MainClass::MenuOptions();

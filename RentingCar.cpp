@@ -93,3 +93,12 @@ std::string RentingCar::GetCarOwnerName()
     //return Car::GetCarOwnerName();
     return this -> carOwner;
 }
+
+std::string RentingCar::ObjectToString() {
+    std::string str_object;
+    str_object+=carOwner+","+make+","+model+","+std::to_string(carPrice)+","+ stringBodyType(bodyType)+","+color+","+
+                std::to_string(productionYear)+","+VIN+","+std::to_string(kmsDriven)+","+stringFuelType(fuelType)+","+
+                stringTransmissionType(transmissionType)+","+ stringDrivetrain(drivetrain)+","+std::to_string(motorSize)+
+                +","+std::to_string(horsePower)+","+std::to_string(rentingPrice)+","+std::to_string(rentingPeriod);
+    return str_object;
+}

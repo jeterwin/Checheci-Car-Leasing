@@ -66,6 +66,16 @@ std::ostream& operator<<(std::ostream& os, const LeasingCar& car)
     return os;
 }
 
+std::string LeasingCar::ObjectToString()
+{
+    std::string str_object;
+    str_object+=carOwner+","+make+","+model+","+std::to_string(carPrice)+","+ stringBodyType(bodyType)+","+color+","+
+                std::to_string(productionYear)+","+VIN+","+std::to_string(kmsDriven)+","+stringFuelType(fuelType)+","+
+                stringTransmissionType(transmissionType)+","+ stringDrivetrain(drivetrain)+","+std::to_string(motorSize)+
+                +","+std::to_string(horsePower)+","+std::to_string(leasingPrice)+","+std::to_string(leasingPeriod);
+    return str_object;
+}
+
 void LeasingCar::writeToFile(std::string carOwner)
 {
     std::string filePath = FileHandler::GetLeasedCarsFileName();

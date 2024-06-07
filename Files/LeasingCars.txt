@@ -1,1 +1,3 @@
 K E,Chevrolt,Corvette C8,200000,Coupe,Red,2018,IFAWIHFW32623,12300,Gasoline,Automatic,RWD,6000,400,160,1090
+K E,mertan,mcompetition de pe jermania,12012,Transporter,negru mat cu rugina,2012,nuamideevin123,500000,LPG,Manual,4WD,9000,20,9,180
+Hugo Boss,mertan,mcompetition de pe jermania,12012,Transporter,negru mat cu rugina,2012,nuamideevin123,500000,LPG,Manual,4WD,9000,20,9,180

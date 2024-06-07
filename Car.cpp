@@ -514,3 +514,47 @@ int Car::stringToIntFuelType(const std::string &fuelType)
 
     return -1;
 }
+
+std::string Car::getColor() {
+    return color;
+}
+
+std::string Car::getVIN() {
+    return VIN;
+}
+
+Drivetrain Car::getDrivetrain() {
+    return drivetrain;
+}
+
+BodyType Car::getBodyType() {
+    return bodyType;
+}
+
+TransmissionType Car::getTransmissionType() {
+    return transmissionType;
+}
+
+FuelType Car::getFuelType() {
+    return fuelType;
+}
+
+int Car::getMotorSize() {
+    return motorSize;
+}
+
+int Car::getKmsDriven() {
+    return kmsDriven;
+}
+
+int Car::getProductionYear() {
+    return productionYear;
+}
+
+int Car::getCarPrice() {
+    return carPrice;
+}
+
+int Car::getHorsePower() {
+    return horsePower;
+}

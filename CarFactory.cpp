@@ -622,14 +622,113 @@ void CarFactory::DeleteCarFromFile(std::string fileName, int lineToBeDeleted)
     outputFile.close();
 }
 
+void CarFactory::displayCars(std::vector<RentingCar> cars, const std::string &make, const std::string &model, int maxPrice, const std::string &color, int minYear)
+{
+    Display::DisplayWithColor("\nThese are all the cars that fit in the criteria given:\n\n", 4);
+    int interestedCars = 0;
+
+    std::vector<RentingCar> criteriaCars;
+
+    criteriaCars=cars;
+
+    for(int i =0 ; i< cars.size();i++)
+        std::cout<<cars[i] << "\n";
+
+    for(int i =0 ; i<criteriaCars.size();i++)
+        std::cout<<criteriaCars[i] << "\n";
+
+    for (int index = criteriaCars.size()-1; index >= 0; index--)
+    {
+        if(criteriaCars[index].getMake() != make || criteriaCars[index].getModel() != model || criteriaCars[index].getPrice() > maxPrice ||
+                criteriaCars[index].getColor() != color || criteriaCars[index].getProductionYear() < minYear)
+        {
+            criteriaCars.erase(criteriaCars.begin()+index);
+        }
+    }
+
+    std::cout <<"These are the cars that fit in your criterias:\n";
+
+    int displayedCarsPerPage = 5, multiplier = 1,i = 0,counter = 0,
+            numberOfPages = std::ceil((float)criteriaCars.size() / (float)displayedCarsPerPage), chosenCar=-10;
+    std::string ch;
+
+
+    while(1 == 1)
+    {
+        for(i = (multiplier - 1) * displayedCarsPerPage; i < multiplier * displayedCarsPerPage; i++)
+        {
+            if(i >= criteriaCars.size() || i >= criteriaCars.size()) { break; }
+
+            Display::DisplayWithColor(i + 1, 4);
+            Display::DisplayWithColor(". ", 4);
+            std::cout << criteriaCars[i] << "\n\n";
+        }
+        std::cout << "Type 'next' if you wish to see the next page of cars and 'back' in order "
+                     "to go the the previous car page.\n\n";
+        Display::DisplayWithColor("You are currently viewing page ", 4);
+        Display::DisplayWithColor(multiplier, 4);
+        Display::DisplayWithColor("/", 4);
+        Display::DisplayWithColor(numberOfPages, 4);
+        std::cout << "\n\n";
+        std::cin.clear();
+        std::cin.sync();
+        std::cin >> ch;
+        try {
+            chosenCar = std::stoi(ch);
+        }
+        catch (const std::invalid_argument & e)
+        {
+            std::cout << e.what() << "\n";
+        }
+        std::cout << "Debug " << chosenCar << "\n";
+        if(ch == "Next" || ch == "next")
+        {
+            multiplier++;
+            if(multiplier > numberOfPages)
+                multiplier = numberOfPages;
+        }
+        else if(ch == "back" || ch == "Back")
+        {
+            multiplier--;
+            if(multiplier < 1)
+                multiplier = 1;
+        }
+        else if(chosenCar >= 1 && chosenCar <= criteriaCars.size())
+        {
+            chosenCar -= 1;
+            break;
+        }
+        Display::ResetScreen();
+    }
+
+    Display::DisplayWithColor("You have successfully chosen listing number: ", 8);
+    Display::DisplayWithColor(chosenCar + 1, 8);
+
+    std::string car_string = criteriaCars[chosenCar].ObjectToString();
+    std::cout<< "CAR: "<<car_string<<"\n\n";
+    int line=CarFactory::SearchCarInFile(FileHandler::GetAvailableRentingCars(),car_string);
+   std::cout <<"delete line: "<<line<<"\n";
+    CarFactory::DeleteCarFromFile(FileHandler::GetAvailableRentingCars(),line);
+
+    std::string insert_rented = MainClass::GetUsername() + "," + car_string;
+    CarFactory::WriteCarStringInFile(FileHandler::GetRentedCarsFileName(),insert_rented);
+
+    std::cout << "You succesfully rented the car!\n";
+
+    Display::PressAnyKey();
+    MainClass::MenuOptions();
+}
+
 void CarFactory::SearchForCar(std::vector<RentingCar> cars)
 {
 
     Display::ResetScreen();
 
+    for(int i =0 ; i< cars.size();i++)
+        std::cout<<cars[i] << "\n";
     Display::DisplayWithColor("Welcome to our advanced car search engine!\n", 6);
     Display::DisplayWithColor("You will be asked to provide certain details about "
-                              "the car you are looking for!\n", 6);
+                              "the renting car you are looking for!\n", 6);
 
     Sleep(2000);
 
@@ -651,75 +750,18 @@ void CarFactory::SearchForCar(std::vector<RentingCar> cars)
     std::cout << "\nModel of your desired car: ";
     std::getline(std::cin, model);
 
-    std::cout << "\n Before deleting cars that do not match the model:" << criteriaCars.size();
-    for (int index = criteriaCars.size()-1; index >= 0; index--)
-    {
-        if(criteriaCars[index].getModel()!=model)
-            criteriaCars.erase(criteriaCars.begin()+index);
-    }
-
-    std::cout << "\nCars matching your criterias:" << criteriaCars.size();
-
     std::cout << "\nMaximum price of your desired car: ";
     std::cin >> carPrice;
-
-    std::cout << "\nPick the body type of your desired car:\n";
-    Display::PrintBodyTypes();
-    Car::ValidateChoiceBodyType(choiceBody);
-    if (choiceBody == -1)
-    {
-        std::cout << "YOU RAN OUT OF TRIES!!!!!";
-        // RETURN; IN FUNCTION OR SMTH
-    }
-    else
-    {
-        bodyType = static_cast<BodyType>(choiceBody);
-        std::cout << "You chose: " << Car::stringBodyType(bodyType) << "\n";
-    }
 
     std::cout << "\nColor of your desired car: ";
     std::getline(std::cin >> std::ws, color);
 
-    // We could add a range (cool idea)
     std::cout << "What is the minimum production year of your desired car?\n";
     std::cin >> productionYear;
 
-    // Could add a range too
-    std::cout << "What is the horse power of your desired car? (leave blank to not specify)\n";
-    std::cin >> horsePower;
+    std::cout << " Make: " << make << " Model: " << model << " Maximum car price: " << carPrice << " Color: " << color << " Minimum Production Year: " << productionYear << "\n";
 
-    // Should add a range
-    std::cout << "What is the motor size (in cc) of your desired car? (leave blank to not specify)\n";
-    std::cin >> motorSize;
-
-    std::cout << "What is the transmission type of your desired car? (0 for Automatic, 1 for Manual)  (leave blank to not specify)\n";
-    int transmissionInput;
-
-    std::cin >> transmissionInput;
-    transmissionType = static_cast<TransmissionType>(transmissionInput);
-
-    std::cout << "What is the fuel type of your desired car? (0 for Diesel, 1 for Electric, 2 for Hybrid, 3 for Gasoline) (leave blank to not specify)\n";
-    int fuelInput;
-
-    std::cin >> fuelInput;
-    fuelType = static_cast<FuelType>(fuelInput);
-
-    std::cout << "What is the drivetrain type of your desired car? (0 for AWD, 1 for 4WD, 2 for RWD, 3 for FWD) (leave blank to not specify)\n";
-    int drivetrainInput;
-
-    std::cin >> drivetrainInput;
-    drivetrain = static_cast<Drivetrain>(drivetrainInput);
-    // Range
-    std::cout << "What is the maximum price of your desired car?\n";
-    std::cin >> carPrice;
-
-    // Range
-    std::cout << "How many maximum driven kilometers do you wish the car to have? (leave blank to not specify)\n";
-    std::cin >> kmsDriven;
-
-    Car::displayCars(cars, make, model, color, Car::stringTransmissionType(transmissionType),
-                     Car::stringFuelType(fuelType), Car::stringDrivetrain(drivetrain),
-                     kmsDriven, motorSize, horsePower, carPrice, productionYear);
+    CarFactory::displayCars(cars, make, model, carPrice, color,productionYear);
 }
 
 void CarFactory::DeleteAvailableCar()
@@ -927,4 +969,144 @@ void CarFactory::DeleteLeasingCar()
     Display::DisplayWithColor("Successfully deleted the chosen car!", 4);
     Sleep(2000);
     Display::ResetScreen();
+}
+
+void CarFactory::SearchForCar(std::vector<LeasingCar> cars) {
+    Display::ResetScreen();
+
+    for(int i =0 ; i< cars.size();i++)
+        std::cout<<cars[i] << "\n";
+    Display::DisplayWithColor("Welcome to our advanced car search engine!\n", 6);
+    Display::DisplayWithColor("You will be asked to provide certain details about "
+                              "the leasing car you are looking for!\n", 6);
+
+    Sleep(2000);
+
+    int carPrice, choiceBody = -1, kmsDriven, choiceFuel = -1, choiceTransmission = -1, choiceDrivetrain = -1,
+            productionYear, motorSize, horsePower;
+
+    BodyType bodyType;
+    FuelType fuelType;
+    TransmissionType transmissionType;
+    Drivetrain drivetrain;
+    std::string color, make, model;
+
+    std::cin.clear();
+    std::cin.sync();
+
+    std::cout << "Make of your desired car: ";
+    std::getline(std::cin, make);
+
+    std::cout << "\nModel of your desired car: ";
+    std::getline(std::cin, model);
+
+    std::cout << "\nMaximum price of your desired car: ";
+    std::cin >> carPrice;
+
+    std::cout << "\nColor of your desired car: ";
+    std::getline(std::cin >> std::ws, color);
+
+    std::cout << "What is the minimum production year of your desired car?\n";
+    std::cin >> productionYear;
+
+    std::cout << " Make: " << make << " Model: " << model << " Maximum car price: " << carPrice << " Color: " << color << " Minimum Production Year: " << productionYear << "\n";
+
+    CarFactory::displayCars(cars, make, model, carPrice, color,productionYear);
+}
+
+void CarFactory::displayCars(std::vector<LeasingCar> cars, const std::string &make, const std::string &model, int maxPrice,const std::string &color, int minYear)
+{
+    Display::DisplayWithColor("\nThese are all the cars that fit in the criteria given:\n\n", 4);
+    int interestedCars = 0;
+
+    std::vector<LeasingCar> criteriaCars;
+
+    criteriaCars=cars;
+
+    for(int i =0 ; i< cars.size();i++)
+        std::cout<<cars[i] << "\n";
+
+    for(int i =0 ; i<criteriaCars.size();i++)
+        std::cout<<criteriaCars[i] << "\n";
+
+    for (int index = criteriaCars.size()-1; index >= 0; index--)
+    {
+        if(criteriaCars[index].getMake() != make || criteriaCars[index].getModel() != model || criteriaCars[index].getPrice() > maxPrice ||
+           criteriaCars[index].getColor() != color || criteriaCars[index].getProductionYear() < minYear)
+        {
+            criteriaCars.erase(criteriaCars.begin()+index);
+        }
+    }
+
+    std::cout <<"These are the cars that fit in your criterias:\n";
+
+    int displayedCarsPerPage = 5, multiplier = 1,i = 0,counter = 0,
+            numberOfPages = std::ceil((float)criteriaCars.size() / (float)displayedCarsPerPage), chosenCar=-10;
+    std::string ch;
+
+
+    while(1 == 1)
+    {
+        for(i = (multiplier - 1) * displayedCarsPerPage; i < multiplier * displayedCarsPerPage; i++)
+        {
+            if(i >= criteriaCars.size() || i >= criteriaCars.size()) { break; }
+
+            Display::DisplayWithColor(i + 1, 4);
+            Display::DisplayWithColor(". ", 4);
+            std::cout << criteriaCars[i] << "\n\n";
+        }
+        std::cout << "Type 'next' if you wish to see the next page of cars and 'back' in order "
+                     "to go the the previous car page.\n\n";
+        Display::DisplayWithColor("You are currently viewing page ", 4);
+        Display::DisplayWithColor(multiplier, 4);
+        Display::DisplayWithColor("/", 4);
+        Display::DisplayWithColor(numberOfPages, 4);
+        std::cout << "\n\n";
+        std::cin.clear();
+        std::cin.sync();
+        std::cin >> ch;
+        try {
+            chosenCar = std::stoi(ch);
+        }
+        catch (const std::invalid_argument & e)
+        {
+            std::cout << e.what() << "\n";
+        }
+        std::cout << "Debug " << chosenCar << "\n";
+        if(ch == "Next" || ch == "next")
+        {
+            multiplier++;
+            if(multiplier > numberOfPages)
+                multiplier = numberOfPages;
+        }
+        else if(ch == "back" || ch == "Back")
+        {
+            multiplier--;
+            if(multiplier < 1)
+                multiplier = 1;
+        }
+        else if(chosenCar >= 1 && chosenCar <= criteriaCars.size())
+        {
+            chosenCar -= 1;
+            break;
+        }
+        Display::ResetScreen();
+    }
+
+    Display::DisplayWithColor("You have successfully chosen listing number: ", 8);
+    Display::DisplayWithColor(chosenCar + 1, 8);
+
+    std::string car_string = criteriaCars[chosenCar].ObjectToString();
+    std::cout<< "CAR: "<<car_string<<"\n\n";
+    int line=CarFactory::SearchCarInFile(FileHandler::GetAvailableLeasingCars(),car_string);
+    std::cout <<"delete line: "<<line<<"\n";
+    CarFactory::DeleteCarFromFile(FileHandler::GetAvailableLeasingCars(),line);
+
+    std::string insert_rented = MainClass::GetUsername() + "," + car_string;
+    CarFactory::WriteCarStringInFile(FileHandler::GetLeasedCarsFileName(),insert_rented);
+
+    std::cout << "You succesfully leased the car!\n";
+
+    Display::PressAnyKey();
+    MainClass::MenuOptions();
 }

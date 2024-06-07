@@ -67,9 +67,21 @@ protected:
 
 public:
 
+    virtual int getHorsePower();
+    virtual int getCarPrice();
+    virtual int getProductionYear();
+    virtual int getKmsDriven();
+    virtual int getMotorSize();
+
+    virtual FuelType getFuelType();
+    virtual TransmissionType getTransmissionType();
+    virtual BodyType getBodyType();
+    virtual Drivetrain getDrivetrain();
+
+    virtual std::string getVIN();
+    virtual std::string getColor();
     virtual std::string getMake();
     virtual std::string getModel();
-    virtual
     int getPrice();
 
     Car();

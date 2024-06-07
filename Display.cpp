@@ -90,8 +90,9 @@ char Display::DisplayShopInterface()
     std::cout << dye::light_aqua("1. Display all available cars.\n"
                                  "2. Display cars for rent.\n"
                                  "3. Display cars for lease.\n"
-                                 "4. Search for a car.\n"
-                                 "5. Go back.\n\n");
+                                 "4. Search for a renting car.\n"
+                                 "5. Search for a leasing car.\n"
+                                 "6. Go back.\n\n");
 
     char menuChoice;
     std::cin >> menuChoice;

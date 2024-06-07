@@ -24,6 +24,8 @@ public:
 
     void writeToFile(std::string carOwner) override;
 
+    std::string ObjectToString() override;
+
     std::string getStatus();
     std::string GetCarOwnerName() override;
 

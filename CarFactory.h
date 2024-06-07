@@ -39,6 +39,11 @@ public:
 
     void SearchForCar(std::vector<RentingCar>);
     void SearchForCar(std::vector<LeasingCar>);
+
+    void displayCars(std::vector<RentingCar> cars, const std::string &make, const std::string &model, int maxPrice, const std::string &color, int minYear);
+
+    void displayCars(std::vector<LeasingCar> cars, const std::string &make, const std::string &model, int maxPrice, const std::string &color, int minYear);
+
     static void DeleteCarFromFile(std::string fileName, int lineToBeDeleted);
 
     template<class T>
