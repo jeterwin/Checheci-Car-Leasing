@@ -22,6 +22,14 @@ public:
     static void CallUpdLeasingCars();
 
     static void CallUpdAvailableCars();
+
+    static std::vector<Car> GetAvailableCars();
+    static std::vector<LeasingCar> GetLeasingCars();
+    static std::vector<RentingCar> GetRentingCars();
+
+    static std::vector<Car> GetUsersAvailableCars();
+    static std::vector<LeasingCar> GetUsersLeasingCars();
+    static std::vector<RentingCar> GetUsersRentingCars();
 };
 
 #endif //CHECHECI_CAR_LEASING_MAIN_H

@@ -63,9 +63,8 @@ char Display::DisplayAccountPanel()
 
     std::cout << dye::light_aqua("1. View rented cars.\n"
                                  "2. View leased cars.\n"
-                                 "3. View sold cars.\n"
-                                 "4. Create, view or update car listings.\n"
-                                 "5. Go back.\n\n");
+                                 "3. Create, view or update car listings.\n"
+                                 "4. Go back.\n\n");
 
     char menuChoice;
     std::cin >> menuChoice;

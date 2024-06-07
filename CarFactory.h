@@ -15,6 +15,12 @@
 #include "Display.h"
 #include "main.h"
 
+#define RENT_MULTIPLIER 0.001
+#define LEASE_MULTIPLIER 0.00080
+
+void RentingPeriod (int *choice);
+void LeasingPeriod (int *choice);
+
 
 class CarFactory {
 
@@ -28,6 +34,8 @@ protected:
 public:
     CarFactory();
     CarFactory(Car * leasingCar);
+
+    void WriteCarStringInFile(std::string fileName, std::string car_string);
 
     void SearchForCar(std::vector<Car>);
     static void DeleteCarFromFile(std::string fileName, int lineToBeDeleted);
@@ -46,9 +54,14 @@ public:
     int SearchCarInFile(std::string fileName, std::string objectSearched);
 
     void UpdateExistingListing(std::vector<Car> carVector);
+
     void RemoveExistingListing();
 
     void CreateAvailableListing();
+
+    void DeleteAvailableCar();
+    void DeleteRentingCar();
+    void DeleteLeasingCar();
 };
 
 template<class T>
@@ -57,7 +70,7 @@ void CarFactory::DisplayRentedOrLeasedCars(std::vector<T> carVector)
     Display::ResetScreen();
     // We need to initialize two strings in order to compare it to the user we're logged in
     int displayedCarsPerPage = 5, multiplier = 1,i,
-    numberOfPages = std::ceil((float)carVector.size() / (float)displayedCarsPerPage);
+            numberOfPages = std::ceil((float)carVector.size() / (float)displayedCarsPerPage);
     std::string ch;
 
     std::cout << "These are all the cars you have ";
@@ -114,7 +127,7 @@ void CarFactory::DisplayCarsForRentOrLease(std::vector<T> carVector)
     Display::ResetScreen();
     std::string ch;
     int displayedCarsPerPage = 5, multiplier = 1, i = 0,
-    numberOfPages = std::ceil((float)carVector.size() / (float)displayedCarsPerPage);
+            numberOfPages = std::ceil((float)carVector.size() / (float)displayedCarsPerPage);
 
     // Option = 0 => renting cars, Option = 1 => leasing cars
     std::cout << "These are all the cars that can be ";
@@ -158,9 +171,9 @@ void CarFactory::DisplayCarsForRentOrLease(std::vector<T> carVector)
         }
         else
         {
-             multiplier--;
-             if(multiplier < 1)
-                 multiplier = 1;
+            multiplier--;
+            if(multiplier < 1)
+                multiplier = 1;
         }
         Display::ResetScreen();
     }

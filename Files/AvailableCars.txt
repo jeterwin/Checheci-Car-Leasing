@@ -7,5 +7,3 @@ debug marian,LAMBOGHINI,GALLARDO LP,120000,Coupe,YELLOW,2008,JFJAW812515,30000,G
 debug marian,FWF,LFWA FWAFAWGH,1235,Convertible,WHITE,92134,124GGEG,102,Gasoline,Manual,RWD,302,421
 debug marian,oel,brec,1213,Wagon,Koka,2134,jjgfawj325,124,Hybrid,Manual,RWD,9214,21
 K E,Maseratti,Levante,300000,Coupe,Black,2019,123123,30000,Diesel,Manual,AWD,3999,450
-K E,Maserati,MC20,34023,SUV,Yellow,1999,12309,1230,Diesel,Automatic,AWD,1999,250
-K E,Maserati,MC50,312,SUV,White,1233,12345,123,Diesel,Automatic,AWD,2999,300

@@ -23,24 +23,26 @@ std::string loggedUserName;
 static Display display;
 static LoginHandler loginHandler;
 static CarFactory carFactory;
-static MainClass mainClass;
 
-// Withotu the logged in user's
-std::vector<Car> UserAvailableCars;
+// Without the logged in user's
+std::vector<Car> UsersAvailableCars;
 std::vector<Car> AvailableCars;
 
 // Without the logged in user's
 std::vector<RentingCar> AvailableRentingCars;
+// ONLY CONTAINS THE USER'S RENTING CARS
+std::vector<RentingCar> UsersRentingCars;
 std::vector<RentingCar> UserRentedCars;
 
 // Without the logged in user's
 std::vector<LeasingCar> AvailableLeasingCars;
+std::vector<LeasingCar> UsersLeasingCars;
 std::vector<LeasingCar> UserLeasedCars;
 
 
 std::vector<Car> UpdateAvailableCars()
 {
-    UserAvailableCars.clear();
+    UsersAvailableCars.clear();
     // Renter name, Car owner name, car specs, last 2 data will be renting amount and renting time
     std::vector<Car> cars;
     std::string filename = FileHandler::GetAvailableCarsFileName();;
@@ -96,13 +98,13 @@ std::vector<Car> UpdateAvailableCars()
         car.horsePower = std::stoi(token);
 
         // This is our car
-        if(car.carOwner == loggedUserName)
+        if(car.carOwner != loggedUserName)
         {
             cars.push_back(car);
         }
         else // Not our car, it is available for the user to borrow
         {
-            UserAvailableCars.push_back(car);
+            UsersAvailableCars.push_back(car);
         }
     }
 
@@ -186,6 +188,7 @@ std::vector<LeasingCar> UpdateLeasedCars()
 
 std::vector<LeasingCar> UpdateLeasingCars()
 {
+    UsersLeasingCars.clear();
     // Renter name, Car owner name, car specs, last 2 data will be renting amount and renting time
     std::vector<LeasingCar> cars;
     std::string filename = FileHandler::GetAvailableLeasingCars();;
@@ -207,51 +210,57 @@ std::vector<LeasingCar> UpdateLeasingCars()
 
         std::getline(iss, ownerName, ',');
         car.carOwner = ownerName;
+
+        std::getline(iss, car.make, ',');
+        std::getline(iss, car.model, ',');
+
+        std::getline(iss, token, ',');
+        car.carPrice = std::stoi(token);
+
+        std::getline(iss, token, ',');
+        car.bodyType = static_cast<BodyType>(Car::stringToIntBodyType(token));
+
+        std::getline(iss, car.color, ',');
+
+        std::getline(iss, token, ',');
+        car.productionYear = std::stoi(token);
+
+        std::getline(iss, car.VIN, ',');
+
+        std::getline(iss, token, ',');
+        car.kmsDriven = std::stoi(token);
+
+        std::getline(iss, token, ',');
+        car.fuelType = static_cast<FuelType>(Car::stringToIntFuelType(token));
+
+        std::getline(iss, token, ',');
+        car.transmissionType = static_cast<TransmissionType>(Car::stringToIntTransmissionType(token));
+
+        std::getline(iss, token, ',');
+        car.drivetrain = static_cast<Drivetrain>(Car::stringToIntDrivetrain(token));
+
+        std::getline(iss, token, ',');
+        car.motorSize = std::stoi(token);
+
+        std::getline(iss, token, ',');
+        car.horsePower = std::stoi(token);
+
+        std::getline(iss, token, ',');
+        car.leasingPeriod = std::stoi(token);
+
+        std::getline(iss, token, ',');
+        car.leasingPrice = std::stoi(token);
+
         if (ownerName != loggedUserName)
         {
-            std::getline(iss, car.make, ',');
-            std::getline(iss, car.model, ',');
-
-            std::getline(iss, token, ',');
-            car.carPrice = std::stoi(token);
-
-            std::getline(iss, token, ',');
-            car.bodyType = static_cast<BodyType>(Car::stringToIntBodyType(token));
-
-            std::getline(iss, car.color, ',');
-
-            std::getline(iss, token, ',');
-            car.productionYear = std::stoi(token);
-
-            std::getline(iss, car.VIN, ',');
-
-            std::getline(iss, token, ',');
-            car.kmsDriven = std::stoi(token);
-
-            std::getline(iss, token, ',');
-            car.fuelType = static_cast<FuelType>(Car::stringToIntFuelType(token));
-
-            std::getline(iss, token, ',');
-            car.transmissionType = static_cast<TransmissionType>(Car::stringToIntTransmissionType(token));
-
-            std::getline(iss, token, ',');
-            car.drivetrain = static_cast<Drivetrain>(Car::stringToIntDrivetrain(token));
-
-            std::getline(iss, token, ',');
-            car.motorSize = std::stoi(token);
-
-            std::getline(iss, token, ',');
-            car.horsePower = std::stoi(token);
-
-            std::getline(iss, token, ',');
-            car.leasingPeriod = std::stoi(token);
-
-            std::getline(iss, token, ',');
-            car.leasingPrice = std::stoi(token);
-
             cars.push_back(car);
         }
+        else
+        {
+            UsersLeasingCars.push_back(car);
+        }
     }
+
 
     file.close();
     return cars;
@@ -264,6 +273,7 @@ std::string LeasingCar::GetCarOwnerName()
 
 std::vector<RentingCar> UpdateRentingCars()
 {
+    UsersRentingCars.clear();
     // Renter name, Car owner name, car specs, last 2 data will be renting amount and renting time
     std::vector<RentingCar> cars;
     std::string filename = FileHandler::GetAvailableRentingCars();
@@ -285,49 +295,56 @@ std::vector<RentingCar> UpdateRentingCars()
 
         std::getline(iss, ownerName, ',');
         car.carOwner = ownerName;
+
+        std::getline(iss, car.make, ',');
+        std::getline(iss, car.model, ',');
+
+        std::getline(iss, token, ',');
+        car.carPrice = std::stoi(token);
+
+        std::getline(iss, token, ',');
+        car.bodyType = static_cast<BodyType>(Car::stringToIntBodyType(token));
+
+        std::getline(iss, car.color, ',');
+
+        std::getline(iss, token, ',');
+        car.productionYear = std::stoi(token);
+
+        std::getline(iss, car.VIN, ',');
+
+        std::getline(iss, token, ',');
+        car.kmsDriven = std::stoi(token);
+
+        std::getline(iss, token, ',');
+        car.fuelType = static_cast<FuelType>(Car::stringToIntFuelType(token));
+
+        std::getline(iss, token, ',');
+        car.transmissionType = static_cast<TransmissionType>(Car::stringToIntTransmissionType(token));
+
+        std::getline(iss, token, ',');
+        car.drivetrain = static_cast<Drivetrain>(Car::stringToIntDrivetrain(token));
+
+        std::getline(iss, token, ',');
+        car.motorSize = std::stoi(token);
+
+        std::getline(iss, token, ',');
+        car.horsePower = std::stoi(token);
+
+        std::getline(iss, token, ',');
+        car.rentingPeriod = std::stoi(token);
+        std::getline(iss, token, ',');
+        car.rentingPrice = std::stoi(token);
+
+
         if (ownerName != loggedUserName)
         {
-            std::getline(iss, car.make, ',');
-            std::getline(iss, car.model, ',');
-
-            std::getline(iss, token, ',');
-            car.carPrice = std::stoi(token);
-
-            std::getline(iss, token, ',');
-            car.bodyType = static_cast<BodyType>(Car::stringToIntBodyType(token));
-
-            std::getline(iss, car.color, ',');
-
-            std::getline(iss, token, ',');
-            car.productionYear = std::stoi(token);
-
-            std::getline(iss, car.VIN, ',');
-
-            std::getline(iss, token, ',');
-            car.kmsDriven = std::stoi(token);
-
-            std::getline(iss, token, ',');
-            car.fuelType = static_cast<FuelType>(Car::stringToIntFuelType(token));
-
-            std::getline(iss, token, ',');
-            car.transmissionType = static_cast<TransmissionType>(Car::stringToIntTransmissionType(token));
-
-            std::getline(iss, token, ',');
-            car.drivetrain = static_cast<Drivetrain>(Car::stringToIntDrivetrain(token));
-
-            std::getline(iss, token, ',');
-            car.motorSize = std::stoi(token);
-
-            std::getline(iss, token, ',');
-            car.horsePower = std::stoi(token);
-
-            std::getline(iss, token, ',');
-            car.rentingPeriod = std::stoi(token);
-            std::getline(iss, token, ',');
-            car.rentingPrice = std::stoi(token);
-
             cars.push_back(car);
         }
+        else
+        {
+            UsersRentingCars.push_back(car);
+        }
+
     }
 
     file.close();
@@ -458,13 +475,9 @@ void MainClass::MenuOptions()
                     carFactory.DisplayRentedOrLeasedCars(UserLeasedCars);
                     break;
                 case '3':
-                    carFactory.DisplaySoldCars(AvailableCars);
+                    carFactory.UpdateCarListing(UsersAvailableCars);
                     break;
                 case '4':
-                    carFactory.UpdateCarListing(AvailableCars);
-
-                    break;
-                case '5':
                     MainClass::MenuOptions();
                     break;
                 default:
@@ -530,4 +543,31 @@ void MainClass::CallUpdLeasedCars()
 void MainClass::CallUpdRentedCars()
 {
     UserRentedCars = UpdateRentedCars();
+}
+
+std::vector<Car> MainClass::GetAvailableCars()
+{
+    return AvailableCars;
+}
+
+std::vector<LeasingCar> MainClass::GetLeasingCars()
+{
+    return AvailableLeasingCars;
+}
+
+std::vector<RentingCar> MainClass::GetRentingCars()
+{
+    return AvailableRentingCars;
+}
+
+std::vector<Car> MainClass::GetUsersAvailableCars() {
+    return UsersAvailableCars;
+}
+
+std::vector<LeasingCar> MainClass::GetUsersLeasingCars() {
+    return UsersLeasingCars;
+}
+
+std::vector<RentingCar> MainClass::GetUsersRentingCars() {
+    return UsersRentingCars;
 }

@@ -7,11 +7,127 @@
 #include <vector>
 #include <string>
 #include <windows.h>
+#include <stdexcept>
+#include <limits>
 
 #include "CarFactory.h"
 #include "Display.h"
 #include "main.h"
 #include "FileHandler.h"
+
+
+void CarFactory::WriteCarStringInFile(std::string fileName, std::string car_string) {
+    std::fstream myFile (fileName, std::ios_base::app);
+
+    if (myFile.is_open())
+    {
+        myFile << car_string << "\n";
+        myFile.close();
+    }
+    else
+        return;
+}
+
+void RentingPeriod (int*choice) {
+    //COLORS
+    Display::ResetScreen();
+
+    std::cout << "\n\nChoose how many days you want the car to be rented.\n";
+    std::cout << "1. One day\n";
+    std::cout << "2. Two days\n";
+    std::cout << "3. Three days\n";
+    std::cout << "4. Four days\n";
+    std::cout << "5. Five days\n";
+    std::cout << "6. Six days\n";
+    std::cout << "7. Seven days\n";
+
+    try {
+        std::cin >> *choice;
+
+        if (std::cin.fail()) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            throw std::invalid_argument("Input is not an integer.");
+        }
+        if (*choice < 1 || *choice > 7) {
+            throw std::out_of_range("Integer is not between 1 and 7.");
+        }
+        std::cout << "Your option: " << *choice;
+        Sleep(2000);
+    }
+    catch (const std::invalid_argument &e) {
+        std::cerr << "Invalid argument: " << e.what() << std::endl;
+        Sleep(2000);
+        RentingPeriod(choice);
+    }
+    catch (const std::out_of_range &e) {
+        std::cerr << "Out of range error: " << e.what() << std::endl;
+        Sleep(2000);
+        RentingPeriod(choice);
+    }
+}
+
+void LeasingPeriod (int*choice) {
+    //COLORS
+    Display::ResetScreen();
+
+    std::cout << "\n\nChoose how many days you want the car to be leased.\n";
+    std::cout << "1. 30 days\n";
+    std::cout << "2. 90 days\n";
+    std::cout << "3. 180 days\n";
+    std::cout << "4. 270 days\n";
+    std::cout << "5. 365 days\n";
+    std::cout << "6. 730 days ( approx. 2 years )\n";
+    std::cout << "7. 1090 days ( approx. 3 years )\n";
+
+    try {
+        std::cin >> *choice;
+        if (std::cin.fail()) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            throw std::invalid_argument("Input is not an integer.");
+        }
+        if (*choice < 1 || *choice > 7) {
+            throw std::out_of_range("Integer is not between 1 and 7.");
+        }
+
+        switch(*choice){
+            case 1:
+                *choice = 30;
+                break;
+            case 2:
+                *choice = 90;
+                break;
+            case 3:
+                *choice = 180;
+                break;
+            case 4:
+                *choice = 270;
+                break;
+            case 5:
+                *choice = 365;
+                break;
+            case 6:
+                *choice = 730;
+                break;
+            case 7:
+                *choice = 1090;
+        }
+
+        std::cout << "Your option: " << *choice;
+        Sleep(2000);
+    }
+    catch (const std::invalid_argument &e) {
+        std::cerr << "Invalid argument: " << e.what() << std::endl;
+        Sleep(2000);
+        LeasingPeriod(choice);
+    }
+    catch (const std::out_of_range &e) {
+        std::cerr << "Out of range error: " << e.what() << std::endl;
+        Sleep(2000);
+        LeasingPeriod(choice);
+    }
+}
 
 CarFactory::CarFactory()
 {
@@ -107,9 +223,9 @@ void CarFactory::UpdateExistingListing(std::vector<Car> carVector)
         {
             if(i >= carVector.size() || i >= carVector.size()) { break; }
 
-                Display::DisplayWithColor(i + 1, 4);
-                Display::DisplayWithColor(". ", 4);
-                std::cout << carVector[i] << "\n\n";
+            Display::DisplayWithColor(i + 1, 4);
+            Display::DisplayWithColor(". ", 4);
+            std::cout << carVector[i] << "\n\n";
         }
         std::cout << "Type 'next' if you wish to see the next page of cars and 'back' in order "
                      "to go the the previous car page.\n\n";
@@ -175,15 +291,35 @@ void CarFactory::UpdateExistingListing(std::vector<Car> carVector)
     // AFTER THIS FUNCTION UPDATE CAR VECTOR BY READING THE CARS FROM FILE
 
 
-    int generatedLeasePrice = carVector[chosenCar].getPrice() * 0.1;
+
+    std::string write_car;
+
+    if(ch=="1"){
+        // RENT
+        int rentPrice = carVector[chosenCar].getPrice() * RENT_MULTIPLIER;
+        int rentingPeriod=0;
+        RentingPeriod(&rentingPeriod);
+        write_car+=std::to_string(rentPrice)+","+std::to_string(rentingPeriod)+",";
+        write_car+=string_car;
+        CarFactory::WriteCarStringInFile(filename,write_car);
+    }
+    else {
+        // LEASE
+        int leasePrice = carVector[chosenCar].getPrice() * LEASE_MULTIPLIER;
+        int leasingPeriod = 0;
+        LeasingPeriod(&leasingPeriod);
+        write_car+=std::to_string(leasePrice)+","+std::to_string(leasingPeriod)+",";
+        write_car+=string_car;
+        CarFactory::WriteCarStringInFile(filename,write_car);
+    }
 
 
 
-    carVector[chosenCar].writeToFile(filename);
+    // carVector[chosenCar].writeToFile(filename);
 
 
 
-    std::cout<<carVector[chosenCar];
+    std::cout<<write_car<<"\n";
 
 
     Display::DisplayWithColor("Congratulations! Your car is now available for ", 4);
@@ -191,6 +327,33 @@ void CarFactory::UpdateExistingListing(std::vector<Car> carVector)
 
     Sleep(2000);
     MainClass::MenuOptions();
+}
+
+void CarFactory::RemoveExistingListing()
+{
+    Display::ResetScreen();
+    //std::cin.ignore();
+
+    std::cout << "Would you like to remove a listing from:\n1. Available\n2. Renting\n3. Leasing\n\n";
+    char ch;
+    std::cin >> ch;
+    switch(ch)
+    {
+        case '1':
+            CarFactory::DeleteAvailableCar();
+            break;
+        case '2':
+            CarFactory::DeleteRentingCar();
+            break;
+        case '3':
+            CarFactory::DeleteLeasingCar();
+            break;
+
+        default:
+            Display::DisplayError("Invalid choice!");
+            CarFactory::RemoveExistingListing();
+            break;
+    }
 }
 
 void CarFactory::UpdateCarListing(std::vector<Car> carVector)
@@ -216,7 +379,6 @@ void CarFactory::UpdateCarListing(std::vector<Car> carVector)
             UpdateExistingListing(carVector);
             break;
         case '3':
-            // TODO create this function
             RemoveExistingListing();
             break;
         case '4':
@@ -235,7 +397,7 @@ void CarFactory::DisplayAvailableCars(std::vector<Car> carVector)
 {
     Display::ResetScreen();
     int displayedCarsPerPage = 5, multiplier = 1, i = 0,
-    numberOfPages = std::ceil((float)carVector.size() / (float)displayedCarsPerPage);;
+            numberOfPages = std::ceil((float)carVector.size() / (float)displayedCarsPerPage);;
 
     std::cout << "These are all the available cars in Checheci Leasing Automobile:\n\n";
     Display::DisplayWithColor("----------------------------------------------\n\n", 2);
@@ -252,7 +414,7 @@ void CarFactory::DisplayAvailableCars(std::vector<Car> carVector)
             std::cout << carVector[i] << "\n\n";
         }
         std::cout << "Type 'Exit' if you wish to stop being displayed any cars, 'next' if you wish"
-         " to see the next page of cars and 'back' in order to go the the previous car page.\n\n";
+                     " to see the next page of cars and 'back' in order to go the the previous car page.\n\n";
         Display::DisplayWithColor("You are currently viewing page ", 4);
         Display::DisplayWithColor(multiplier, 4);
         Display::DisplayWithColor("/", 4);
@@ -395,11 +557,6 @@ void CarFactory::CreateAvailableListing()
     std::cout << "Successfully added the new car in the available category!";
 }
 
-void CarFactory::RemoveExistingListing()
-{
-
-}
-
 int CarFactory::SearchCarInFile(std::string fileName, std::string objectSearched)
 {
     std::ifstream inputFile(fileName);
@@ -483,11 +640,11 @@ void CarFactory::SearchForCar(std::vector<Car> cars)
 
     Display::DisplayWithColor("Welcome to our advanced car search engine!\n", 6);
     Display::DisplayWithColor("You will be asked to provide certain details about "
-                             "the car you are looking for!", 6);
+                              "the car you are looking for!", 6);
     Sleep(2000);
 
     int carPrice, choiceBody = -1, kmsDriven, choiceFuel = -1, choiceTransmission = -1, choiceDrivetrain = -1,
-        productionYear, motorSize, horsePower;
+            productionYear, motorSize, horsePower;
 
     BodyType bodyType;
     FuelType fuelType;
@@ -582,6 +739,213 @@ void CarFactory::SearchForCar(std::vector<Car> cars)
     std::cin >> kmsDriven;
 
     Car::displayCars(cars, make, model, color, Car::stringTransmissionType(transmissionType),
-Car::stringFuelType(fuelType), Car::stringDrivetrain(drivetrain),
-kmsDriven, motorSize, horsePower, carPrice, productionYear);
+                     Car::stringFuelType(fuelType), Car::stringDrivetrain(drivetrain),
+                     kmsDriven, motorSize, horsePower, carPrice, productionYear);
+}
+
+void CarFactory::DeleteAvailableCar()
+{
+    Display::ResetScreen();
+
+    std::vector<Car> carVector = MainClass::GetUsersAvailableCars();
+
+    int displayedCarsPerPage = 5, multiplier = 1,i = 0,counter = 0,
+            numberOfPages = std::ceil((float)carVector.size() / (float)displayedCarsPerPage), chosenCar=-10;
+    std::string ch;
+
+    while(1 == 1)
+    {
+        Display::ResetScreen();
+        i = (multiplier - 1) * displayedCarsPerPage;
+        for (i = (multiplier - 1) * displayedCarsPerPage; i < multiplier * displayedCarsPerPage; i++)
+        {
+            if (i >= carVector.size() || i >= carVector.size()) { break; }
+
+            Display::DisplayWithColor(i + 1, 4);
+            Display::DisplayWithColor(". ", 4);
+            std::cout << carVector[i] << "\n\n";
+        }
+        std::cout << "Type 'next' if you wish to see the next page of cars and 'back' in order "
+                     "to go the the previous car page.\n\n";
+        Display::DisplayWithColor("You are currently viewing page ", 4);
+        Display::DisplayWithColor(multiplier, 4);
+        Display::DisplayWithColor("/", 4);
+        Display::DisplayWithColor(numberOfPages, 4);
+        std::cout << "\n\n";
+        std::cin.clear();
+        std::cin.sync();
+        //std::cin.ignore();
+
+        std::cin >> ch;
+        try {
+            chosenCar = std::stoi(ch);
+        }
+        catch (const std::invalid_argument &e) {
+            std::cout << e.what() << "\n";
+        }
+
+        if (ch == "Next" || ch == "next") {
+            multiplier++;
+            if (multiplier > numberOfPages)
+                multiplier = numberOfPages;
+        } else if (ch == "back" || ch == "Back") {
+            multiplier--;
+            if (multiplier < 1)
+                multiplier = 1;
+        } else if(ch == "exit" || ch == "Exit")
+        {
+            MainClass::MenuOptions();
+            break;
+        }
+        else if (chosenCar >= 1 && chosenCar <= carVector.size()) {
+            chosenCar -= 1;
+            break;
+        }
+    }
+
+    std::string string_car = carVector[chosenCar].ObjectToString();
+    int line=CarFactory::SearchCarInFile(FileHandler::GetAvailableCarsFileName(),string_car);
+
+    CarFactory::DeleteCarFromFile(FileHandler::GetAvailableCarsFileName(),line);
+    Display::DisplayWithColor("Successfully deleted the chosen car!", 4);
+    Sleep(2000);
+    Display::ResetScreen();
+}
+
+void CarFactory::DeleteRentingCar()
+{
+    Display::ResetScreen();
+
+    std::vector<RentingCar> carVector = MainClass::GetUsersRentingCars();
+
+    int displayedCarsPerPage = 5, multiplier = 1,i = 0,counter = 0,
+            numberOfPages = std::ceil((float)carVector.size() / (float)displayedCarsPerPage), chosenCar=-10;
+    std::string ch;
+
+    while(1 == 1)
+    {
+        Display::ResetScreen();
+        for(i = (multiplier - 1) * displayedCarsPerPage; i < multiplier * displayedCarsPerPage; i++)
+        {
+            if(i >= carVector.size() || i >= carVector.size()) { break; }
+
+            Display::DisplayWithColor(i + 1, 4);
+            Display::DisplayWithColor(". ", 4);
+            std::cout << carVector[i] << "\n\n";
+        }
+        std::cout << "Type 'next' if you wish to see the next page of cars and 'back' in order "
+                     "to go the the previous car page.\n\n";
+        Display::DisplayWithColor("You are currently viewing page ", 4);
+        Display::DisplayWithColor(multiplier, 4);
+        Display::DisplayWithColor("/", 4);
+        Display::DisplayWithColor(numberOfPages, 4);
+        std::cout << "\n\n";
+        std::cin.clear();
+        std::cin.sync();
+        std::cin >> ch;
+        try {
+            chosenCar = std::stoi(ch);
+        }
+        catch (const std::invalid_argument & e)
+        {
+            std::cout << e.what() << "\n";
+        }
+
+        if(ch == "Next" || ch == "next")
+        {
+            multiplier++;
+            if(multiplier > numberOfPages)
+                multiplier = numberOfPages;
+        }
+        else if(ch == "back" || ch == "Back")
+        {
+            multiplier--;
+            if(multiplier < 1)
+                multiplier = 1;
+        }
+        else if(ch == "exit" || ch == "Exit")
+        {
+            MainClass::MenuOptions();
+            break;
+        }
+        else if(chosenCar >= 1 && chosenCar <= carVector.size())
+        {
+            chosenCar -= 1;
+            break;
+        }
+    }
+
+    std::string string_car = carVector[chosenCar].ObjectToString();
+    int line=CarFactory::SearchCarInFile(FileHandler::GetAvailableRentingCars(),string_car);
+
+    CarFactory::DeleteCarFromFile(FileHandler::GetAvailableRentingCars(),line);
+    Display::DisplayWithColor("Successfully deleted the chosen car!", 4);
+    Sleep(2000);
+    Display::ResetScreen();
+}
+
+void CarFactory::DeleteLeasingCar()
+{
+    Display::ResetScreen();
+
+    std::vector<LeasingCar> carVector = MainClass::GetUsersLeasingCars();
+
+    int displayedCarsPerPage = 5, multiplier = 1,i = 0,counter = 0,
+            numberOfPages = std::ceil((float)carVector.size() / (float)displayedCarsPerPage), chosenCar=-10;
+    std::string ch;
+
+    while(1 == 1) {
+        Display::ResetScreen();
+        for (i = (multiplier - 1) * displayedCarsPerPage; i < multiplier * displayedCarsPerPage; i++) {
+            if (i >= carVector.size() || i >= carVector.size()) { break; }
+
+            Display::DisplayWithColor(i + 1, 4);
+            Display::DisplayWithColor(". ", 4);
+            std::cout << carVector[i] << "\n\n";
+        }
+        std::cout << "Type 'next' if you wish to see the next page of cars and 'back' in order "
+                     "to go the the previous car page.\n\n";
+        Display::DisplayWithColor("You are currently viewing page ", 4);
+        Display::DisplayWithColor(multiplier, 4);
+        Display::DisplayWithColor("/", 4);
+        Display::DisplayWithColor(numberOfPages, 4);
+        std::cout << "\n\n";
+        std::cin.clear();
+        std::cin.sync();
+        std::cin >> ch;
+        try {
+            chosenCar = std::stoi(ch);
+        }
+        catch (const std::invalid_argument &e) {
+            std::cout << e.what() << "\n";
+        }
+
+        if (ch == "Next" || ch == "next") {
+            multiplier++;
+            if (multiplier > numberOfPages)
+                multiplier = numberOfPages;
+        } else if (ch == "back" || ch == "Back") {
+            multiplier--;
+            if (multiplier < 1)
+                multiplier = 1;
+        }
+        else if(ch == "exit" || ch == "Exit")
+        {
+            MainClass::MenuOptions();
+            break;
+        }
+        else if (chosenCar >= 1 && chosenCar <= carVector.size()) {
+            chosenCar -= 1;
+            break;
+        }
+    }
+
+
+    std::string string_car = carVector[chosenCar].ObjectToString();
+    int line=CarFactory::SearchCarInFile(FileHandler::GetAvailableLeasingCars(),string_car);
+
+    CarFactory::DeleteCarFromFile(FileHandler::GetAvailableLeasingCars(),line);
+    Display::DisplayWithColor("Successfully deleted the chosen car!", 4);
+    Sleep(2000);
+    Display::ResetScreen();
 }
