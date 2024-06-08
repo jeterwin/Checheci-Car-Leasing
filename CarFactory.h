@@ -53,7 +53,8 @@ public:
     void DisplayRentedOrLeasedCars(std::vector<T>);
 
     void DisplayAvailableCars(std::vector<Car>);
-    void DisplaySoldCars(std::vector<Car>);
+    void DisplayRentingCars();
+    void DisplayLeasingCars();
 
     void UpdateCarListing(std::vector<Car> carVector);
 
@@ -97,16 +98,25 @@ void CarFactory::DisplayRentedOrLeasedCars(std::vector<T> carVector)
         std::cout << "Type 'Exit' if you wish to stop being displayed any cars, 'next' if you wish"
                      " to see the next page of cars and 'back' in order to go the the previous car page.\n\n";
         Display::DisplayWithColor("You are currently viewing page ", 4);
-        Display::DisplayWithColor(multiplier, 4);
-        Display::DisplayWithColor("/", 4);
-        Display::DisplayWithColor(numberOfPages, 4);
+        if (numberOfPages == 0)
+        {
+            Display::DisplayWithColor(0, 4);
+            Display::DisplayWithColor("/", 4);
+            Display::DisplayWithColor(0, 4);
+        }
+        else
+        {
+            Display::DisplayWithColor(multiplier, 4);
+            Display::DisplayWithColor("/", 4);
+            Display::DisplayWithColor(numberOfPages, 4);
+        }
         std::cout << "\n\n";
 
         std::cin >> ch;
 
         if(ch == "exit" || ch == "Exit")
         {
-            break;
+            MainClass::MenuOptions();
         }
         else if(ch == "Next" || ch == "next")
         {
@@ -122,9 +132,6 @@ void CarFactory::DisplayRentedOrLeasedCars(std::vector<T> carVector)
         }
         Display::ResetScreen();
     }
-
-    Display::PressAnyKey();
-    MainClass::MenuOptions();
 }
 
 template<class T>
@@ -158,16 +165,25 @@ void CarFactory::DisplayCarsForRentOrLease(std::vector<T> carVector)
         std::cout << "Type 'Exit' if you wish to stop being displayed any cars, 'next' if you wish"
                      " to see the next page of cars and 'back' in order to go the the previous car page.\n\n";
         Display::DisplayWithColor("You are currently viewing page ", 4);
-        Display::DisplayWithColor(multiplier, 4);
-        Display::DisplayWithColor("/", 4);
-        Display::DisplayWithColor(numberOfPages, 4);
+        if (numberOfPages == 0)
+        {
+            Display::DisplayWithColor(0, 4);
+            Display::DisplayWithColor("/", 4);
+            Display::DisplayWithColor(0, 4);
+        }
+        else
+        {
+            Display::DisplayWithColor(multiplier, 4);
+            Display::DisplayWithColor("/", 4);
+            Display::DisplayWithColor(numberOfPages, 4);
+        }
         std::cout << "\n\n";
 
         std::cin >> ch;
 
         if(ch == "exit" || ch == "Exit")
         {
-            break;
+            MainClass::MenuOptions();
         }
         else if(ch == "Next" || ch == "next")
         {

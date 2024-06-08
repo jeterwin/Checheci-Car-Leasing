@@ -1,0 +1,26 @@
+﻿  LoginHandler.cpp
+C:\Users\Erwin\Desktop\Checheci-Car-Leasing\LoginHandler.cpp(34,30): warning C4267: 'initializing': conversion from 'size_t' to 'short', possible loss of data
+C:\Users\Erwin\Desktop\Checheci-Car-Leasing\LoginHandler.cpp(83,30): warning C4267: 'initializing': conversion from 'size_t' to 'short', possible loss of data
+C:\Users\Erwin\Desktop\Checheci-Car-Leasing\LoginHandler.cpp(38,9): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Erwin\Desktop\Checheci-Car-Leasing\LoginHandler.cpp(49,19): warning C4996: 'strtok': This function or variable may be unsafe. Consider using strtok_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Erwin\Desktop\Checheci-Car-Leasing\LoginHandler.cpp(56,17): warning C4996: 'strtok': This function or variable may be unsafe. Consider using strtok_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Erwin\Desktop\Checheci-Car-Leasing\LoginHandler.cpp(87,9): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Erwin\Desktop\Checheci-Car-Leasing\LoginHandler.cpp(99,19): warning C4996: 'strtok': This function or variable may be unsafe. Consider using strtok_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Erwin\Desktop\Checheci-Car-Leasing\LoginHandler.cpp(117,17): warning C4996: 'strtok': This function or variable may be unsafe. Consider using strtok_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  main.cpp
+C:\Users\Erwin\Desktop\Checheci-Car-Leasing\CarFactory.h(79,27): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+  (compiling source file 'main.cpp')
+  C:\Users\Erwin\Desktop\Checheci-Car-Leasing\CarFactory.h(79,27):
+  the template instantiation context (the oldest one first) is
+  	C:\Users\Erwin\Desktop\Checheci-Car-Leasing\main.cpp(491,31):
+  	see reference to function template instantiation 'void CarFactory::DisplayRentedOrLeasedCars<RentingCar>(std::vector<RentingCar,std::allocator<RentingCar>>)' being compiled
+  
+C:\Users\Erwin\Desktop\Checheci-Car-Leasing\CarFactory.h(136,27): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+  (compiling source file 'main.cpp')
+  C:\Users\Erwin\Desktop\Checheci-Car-Leasing\CarFactory.h(136,27):
+  the template instantiation context (the oldest one first) is
+  	C:\Users\Erwin\Desktop\Checheci-Car-Leasing\main.cpp(514,31):
+  	see reference to function template instantiation 'void CarFactory::DisplayCarsForRentOrLease<RentingCar>(std::vector<RentingCar,std::allocator<RentingCar>>)' being compiled
+  
+  Generating Code...
+  CCLA.vcxproj -> C:\Users\Erwin\Desktop\Checheci-Car-Leasing\x64\Debug\CCLA.exe

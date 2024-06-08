@@ -1,0 +1,1 @@
+K E,K A,D,B,1234,Coupe,Black,1990,49123,12346,Electric,Manual,4WD,999,450,0,365

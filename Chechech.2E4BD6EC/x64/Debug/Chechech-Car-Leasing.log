@@ -1,0 +1,29 @@
+﻿  CarFactory.cpp
+C:\Users\Erwin\Desktop\Checheci-Car-Leasing\CarFactory.cpp(156,27): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\Erwin\Desktop\Checheci-Car-Leasing\CarFactory.cpp(254,23): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Erwin\Desktop\Checheci-Car-Leasing\CarFactory.cpp(263,24): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Erwin\Desktop\Checheci-Car-Leasing\CarFactory.cpp(346,27): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\Erwin\Desktop\Checheci-Car-Leasing\CarFactory.cpp(410,23): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\Erwin\Desktop\Checheci-Car-Leasing\CarFactory.cpp(472,23): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\Erwin\Desktop\Checheci-Car-Leasing\CarFactory.cpp(716,20): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Erwin\Desktop\Checheci-Car-Leasing\CarFactory.cpp(736,27): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\Erwin\Desktop\Checheci-Car-Leasing\CarFactory.cpp(842,16): warning C4101: 'drivetrain': unreferenced local variable
+C:\Users\Erwin\Desktop\Checheci-Car-Leasing\CarFactory.cpp(839,14): warning C4101: 'bodyType': unreferenced local variable
+C:\Users\Erwin\Desktop\Checheci-Car-Leasing\CarFactory.cpp(841,22): warning C4101: 'transmissionType': unreferenced local variable
+C:\Users\Erwin\Desktop\Checheci-Car-Leasing\CarFactory.cpp(836,36): warning C4101: 'kmsDriven': unreferenced local variable
+C:\Users\Erwin\Desktop\Checheci-Car-Leasing\CarFactory.cpp(840,14): warning C4101: 'fuelType': unreferenced local variable
+C:\Users\Erwin\Desktop\Checheci-Car-Leasing\CarFactory.cpp(837,29): warning C4101: 'motorSize': unreferenced local variable
+C:\Users\Erwin\Desktop\Checheci-Car-Leasing\CarFactory.cpp(837,40): warning C4101: 'horsePower': unreferenced local variable
+C:\Users\Erwin\Desktop\Checheci-Car-Leasing\CarFactory.cpp(873,27): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\Erwin\Desktop\Checheci-Car-Leasing\CarFactory.cpp(959,27): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\Erwin\Desktop\Checheci-Car-Leasing\CarFactory.cpp(1034,27): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\Erwin\Desktop\Checheci-Car-Leasing\CarFactory.cpp(1124,16): warning C4101: 'drivetrain': unreferenced local variable
+C:\Users\Erwin\Desktop\Checheci-Car-Leasing\CarFactory.cpp(1121,14): warning C4101: 'bodyType': unreferenced local variable
+C:\Users\Erwin\Desktop\Checheci-Car-Leasing\CarFactory.cpp(1123,22): warning C4101: 'transmissionType': unreferenced local variable
+C:\Users\Erwin\Desktop\Checheci-Car-Leasing\CarFactory.cpp(1118,36): warning C4101: 'kmsDriven': unreferenced local variable
+C:\Users\Erwin\Desktop\Checheci-Car-Leasing\CarFactory.cpp(1122,14): warning C4101: 'fuelType': unreferenced local variable
+C:\Users\Erwin\Desktop\Checheci-Car-Leasing\CarFactory.cpp(1119,29): warning C4101: 'motorSize': unreferenced local variable
+C:\Users\Erwin\Desktop\Checheci-Car-Leasing\CarFactory.cpp(1119,40): warning C4101: 'horsePower': unreferenced local variable
+C:\Users\Erwin\Desktop\Checheci-Car-Leasing\CarFactory.cpp(1157,20): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Erwin\Desktop\Checheci-Car-Leasing\CarFactory.cpp(1176,31): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+  Chechech-Car-Leasing.vcxproj -> C:\Users\Erwin\Desktop\Checheci-Car-Leasing\x64\Debug\Chechech-Car-Leasing.exe
