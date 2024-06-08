@@ -8,6 +8,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <direct.h>
+#include<windows.h>
 
 
 #include "LoginHandler.h"
@@ -65,8 +66,9 @@ void LoginHandler::Login(std::string * userName)
         if(wordsInName != 2)
         {
             usersFile.close();
-            Display::DisplayError("You must insert two parameters in the following way:\n");
-            Display::DisplayWithColor("<FIRST NAME> <LAST NAME>", 5);
+            Display::DisplayWithColor("You must insert two parameters in the following way:\n", 5);
+            Display::DisplayWithColor("<FIRST NAME> <LAST NAME>\n", 5);
+            Sleep(2000);
             Display::ResetScreen();
             Login(userName);
             return;

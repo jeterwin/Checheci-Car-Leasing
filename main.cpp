@@ -45,9 +45,13 @@ std::vector<Car> UpdateAvailableCars()
     UsersAvailableCars.clear();
     // Renter name, Car owner name, car specs, last 2 data will be renting amount and renting time
     std::vector<Car> cars;
-    std::string filename = FileHandler::GetAvailableCarsFileName();;
 
-    std::ifstream file(filename);
+    std::string filename = FileHandler::GetAvailableCarsFileName();
+
+    std::fstream file;
+    file.open(filename, std::ios::out | std::ios::app);
+    file.close();
+    file.open(filename, std::ios::in | std::ios::out | std::ios::app);
 
     if (!file.is_open())
     {
@@ -118,7 +122,11 @@ std::vector<LeasingCar> UpdateLeasedCars()
     // Renter name, Car owner name, car specs, last 2 data will be renting amount and renting time
     std::vector<LeasingCar> cars;
     std::string filename = FileHandler::GetLeasedCarsFileName();;
-    std::ifstream file(filename);
+
+    std::fstream file;
+    file.open(filename, std::ios::out | std::ios::app);
+    file.close();
+    file.open(filename, std::ios::in | std::ios::out | std::ios::app);
 
     if (!file.is_open())
     {
@@ -195,7 +203,10 @@ std::vector<LeasingCar> UpdateLeasingCars()
     // Renter name, Car owner name, car specs, last 2 data will be renting amount and renting time
     std::vector<LeasingCar> cars;
     std::string filename = FileHandler::GetAvailableLeasingCars();;
-    std::ifstream file(filename);
+    std::fstream file;
+    file.open(filename, std::ios::out | std::ios::app);
+    file.close();
+    file.open(filename, std::ios::in | std::ios::out | std::ios::app);
 
     if (!file.is_open())
     {
@@ -283,7 +294,10 @@ std::vector<RentingCar> UpdateRentingCars()
     // Renter name, Car owner name, car specs, last 2 data will be renting amount and renting time
     std::vector<RentingCar> cars;
     std::string filename = FileHandler::GetAvailableRentingCars();
-    std::ifstream file(filename);
+    std::fstream file;
+    file.open(filename, std::ios::out | std::ios::app);
+    file.close();
+    file.open(filename, std::ios::in | std::ios::out | std::ios::app);
 
     if (!file.is_open())
     {
@@ -364,7 +378,10 @@ std::vector<RentingCar> UpdateRentedCars()
     // Renter name, Car owner name, car specs, last 2 data will be renting amount and renting time
     std::vector<RentingCar> cars;
     std::string filename = FileHandler::GetRentedCarsFileName();
-    std::ifstream file(filename);
+    std::fstream file;
+    file.open(filename, std::ios::out | std::ios::app);
+    file.close();
+    file.open(filename, std::ios::in | std::ios::out | std::ios::app);
 
     if (!file.is_open())
     {
@@ -435,7 +452,7 @@ std::vector<RentingCar> UpdateRentedCars()
 }
 void MenuOptions();
 
-int main()
+int main(int argc, const char* argv[])
 {
     Display::Logo();
 
@@ -485,9 +502,15 @@ void MainClass::MenuOptions()
                     carFactory.DisplayRentedOrLeasedCars(UserLeasedCars);
                     break;
                 case '3':
-                    carFactory.UpdateCarListing(UsersAvailableCars);
+                    carFactory.DisplayRentingCars();
                     break;
                 case '4':
+                    carFactory.DisplayLeasingCars();
+                    break;
+                case '5':
+                    carFactory.UpdateCarListing(UsersAvailableCars);
+                    break;
+                case '6':
                     MainClass::MenuOptions();
                     break;
                 default:
